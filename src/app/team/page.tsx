@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { PlaceHolderImages } from '@/lib/image-assets';
 import { type Metadata } from 'next';
 
 export const metadata: Metadata = {
