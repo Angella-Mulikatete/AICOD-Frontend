@@ -20,13 +20,9 @@ export type NavLink = {
       subLinks: [
         { title: 'Biodiversity', href: '/programs/biodiversity', description: 'Our efforts to conserve nature.' },
         { title: 'Human Rights', href: '/programs/human-rights', description: 'Advocating for justice and equality.' },
-        { title: 'Community &amp; Livelihood', href: '/programs/community-livelihood', description: 'Empowering local communities.' },
+        { title: 'Community', href: '/programs/community-livelihood', description: 'Empowering local communities.' },
       ],
     },
-    // {
-    //   title: 'Donations',
-    //   href: '/donations',
-    // },
     {
       title: 'Partners',
       href: '/partners',

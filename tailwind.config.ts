@@ -17,30 +17,40 @@ export default {
     },
     extend: {
       /* -------------------------
-         BRAND FONTS
+         AICOD BRAND FONTS (Per Brand Guidelines)
       -------------------------- */
       fontFamily: {
-        body: ["Inter", "sans-serif"],
-        headline: ["Space Grotesk", "sans-serif"],
+        // Primary brand fonts
+        arialBlack: ["Arial Black", "Arial", "sans-serif"],
+        arialBold: ["Arial", "Helvetica", "sans-serif"], // Arial Bold is weight-based
+        corsiva: ["Monotype Corsiva", "cursive"],
+        
+        // System fonts (keep for flexibility)
+        body: ["Arial", "Helvetica", "sans-serif"], // Changed to Arial as primary
+        headline: ["Arial Black", "Arial", "sans-serif"],
         code: ["monospace"],
-
-        arialBlack: ["Arial Black", "sans-serif"],
-        arialBold: ["Arial Bold", "Arial", "sans-serif"],
-        corsiva: ["'Monotype Corsiva'", "cursive"],
       },
 
       /* -------------------------
-         BRAND COLORS
+         AICOD BRAND COLORS (Per Brand Guidelines)
+         R=38, G=36, B=109 → #26246D (Navy Blue)
+         R=153, G=202, B=60 → #99CA3C (Green)
+         R=199, G=93, B=48 → #C75D30 (Orange)
+         R=255, G=205, B=51 → #FFCD33 (Yellow)
       -------------------------- */
       colors: {
-        brandBlue: "#26246D",
-        brandGreen: "#99CA3C",
-        brandOrange: "#C75D30",
-        brandYellow: "#FFCD33",
+        // Brand colors
+        brand: {
+          blue: "#26246D",
+          green: "#99CA3C",
+          orange: "#C75D30",
+          yellow: "#FFCD33",
+        },
 
-        /* your existing colors remain untouched */
+        /* Theme color overrides to use brand colors */
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
@@ -50,20 +60,20 @@ export default {
           foreground: "hsl(var(--popover-foreground))",
         },
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "#26246D", // Brand blue
+          foreground: "#ffffff",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: "#99CA3C", // Brand green
+          foreground: "#ffffff",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "#C75D30", // Brand orange
+          foreground: "#ffffff",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -71,12 +81,13 @@ export default {
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
+        ring: "#99CA3C", // Brand green for focus rings
+        
         chart: {
-          "1": "hsl(var(--chart-1))",
-          "2": "hsl(var(--chart-2))",
-          "3": "hsl(var(--chart-3))",
-          "4": "hsl(var(--chart-4))",
+          "1": "#26246D", // Brand blue
+          "2": "#99CA3C", // Brand green
+          "3": "#C75D30", // Brand orange
+          "4": "#FFCD33", // Brand yellow
           "5": "hsl(var(--chart-5))",
         },
         sidebar: {
