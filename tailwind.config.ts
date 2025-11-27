@@ -24,10 +24,11 @@ export default {
         arialBlack: ["Arial Black", "Arial", "sans-serif"],
         arialBold: ["Arial", "Helvetica", "sans-serif"], // Arial Bold is weight-based
         corsiva: ["Monotype Corsiva", "cursive"],
-        
+
         // System fonts (keep for flexibility)
         body: ["Arial", "Helvetica", "sans-serif"], // Changed to Arial as primary
-        headline: ["Arial Black", "Arial", "sans-serif"],
+        headline: ["Arial", "Helvetica", "sans-serif"], // Changed to Arial per user request
+        sans: ["Arial", "Helvetica", "sans-serif"], // Default sans to Arial
         code: ["monospace"],
       },
 
@@ -50,7 +51,7 @@ export default {
         /* Theme color overrides to use brand colors */
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        
+
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
@@ -82,7 +83,7 @@ export default {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "#99CA3C", // Brand green for focus rings
-        
+
         chart: {
           "1": "#26246D", // Brand blue
           "2": "#99CA3C", // Brand green
