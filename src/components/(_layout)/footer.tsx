@@ -21,10 +21,10 @@ export function Footer() {
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
           <div className="col-span-full lg:col-span-1">
             <Link href="/" className="font-headline text-2xl font-bold">
-              <span className="text-brand-blue">A</span>
-              <span className="text-brand-green">I</span>
-              <span className="text-brand-orange">C</span>
-              <span className="text-brand-yellow">O</span>
+              <span className="text-brand-green">A</span>
+              <span className="text-brand-orange">I</span>
+              <span className="text-brand-blue">C</span>
+              <span className="text-brand-blue">O</span>
               <span className="text-brand-blue">D</span>
             </Link>
             <p className="mt-4 text-muted-foreground">
