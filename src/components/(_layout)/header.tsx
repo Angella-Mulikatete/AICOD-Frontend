@@ -58,7 +58,7 @@ export function Header() {
             src={AICODLogo} 
             alt="AICOD Connect" 
             width={200} 
-            height={60}
+            height={160}
             priority
             className="h-auto w-auto max-h-12"
           />

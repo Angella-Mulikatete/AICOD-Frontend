@@ -45,7 +45,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="grid items-center gap-12 md:grid-cols-2">
             <div className="order-2 md:order-1">
-              <h2 className="font-headline text-3xl font-bold text-primary md:text-4xl">
+              <h2 className="font-headline text-3xl font-bold text-brand-green md:text-4xl">
                 Welcome to The Albertine Institute For Community Development
               </h2>
               <p className="mt-4 text-lg text-muted-foreground">
@@ -76,7 +76,7 @@ export default function Home() {
       {/* Core Programs Section */}
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="font-headline text-3xl font-bold text-primary md:text-4xl">Our Core Programs</h2>
+          <h2 className="font-headline text-3xl font-bold text-brand-orange md:text-4xl">Our Core Programs</h2>
           <p className="mx-auto mt-4 max-w-3xl text-lg text-muted-foreground">
             We focus on key areas that are critical for sustainable development and community well-being.
           </p>

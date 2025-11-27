@@ -8,7 +8,7 @@
 --------------------------- */
 @layer base {
   /* Monotype Corsiva - Import if you have the font file */
-  /* If you don't have the font file, you can use a similar cursive font */
+
   @font-face {
     font-family: 'Monotype Corsiva';
     src: local('Monotype Corsiva'), local('MonotypeCorsiva');
