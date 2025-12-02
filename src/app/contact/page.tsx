@@ -1,8 +1,7 @@
-import Image from 'next/image';
-import { getPlaceholderImage } from '@/lib/image-assets';
 import { ContactForm } from '@/components/contact-form';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { type Metadata } from 'next';
+import MapWrapper from '@/components/ui/map-wrapper';
 
 export const metadata: Metadata = {
   title: 'Contact Us',
@@ -10,8 +9,6 @@ export const metadata: Metadata = {
 };
 
 export default function ContactPage() {
-  const mapImage = getPlaceholderImage('contact-map');
-  
   const contactDetails = [
     { icon: MapPin, text: "Kampala, Uganda", href: "#" },
     { icon: Mail, text: "info@aicode.org", href: "mailto:info@aicode.org" },
@@ -28,7 +25,7 @@ export default function ContactPage() {
           </p>
         </div>
       </header>
-      
+
       <div className="container mx-auto px-4 py-16">
         <div className="grid gap-12 md:grid-cols-5 md:gap-16">
           {/* Contact Form */}
@@ -43,9 +40,9 @@ export default function ContactPage() {
             <div className="space-y-6">
               <div className="space-y-4">
                 {contactDetails.map((item, index) => (
-                  <a 
-                    key={index} 
-                    href={item.href} 
+                  <a
+                    key={index}
+                    href={item.href}
                     className="flex items-center gap-4 text-lg text-muted-foreground transition-colors hover:text-primary"
                   >
                     <item.icon className="h-6 w-6 flex-shrink-0 text-accent" />
@@ -53,19 +50,9 @@ export default function ContactPage() {
                   </a>
                 ))}
               </div>
-              {mapImage && (
-                <div className="overflow-hidden rounded-lg shadow-lg">
-                  <Image
-                    src={mapImage.imageUrl}
-                    alt={mapImage.description}
-                    width={600}
-                    height={450}
-                    className="w-full object-cover"
-                    priority={false}
-                    sizes="(max-width: 768px) 100vw, 40vw"
-                  />
-                </div>
-              )}
+              <div className="h-[450px] w-full overflow-hidden rounded-lg shadow-lg relative z-0">
+                <MapWrapper />
+              </div>
             </div>
           </div>
         </div>
