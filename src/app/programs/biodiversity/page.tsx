@@ -1,103 +1,3 @@
-// import Image from 'next/image';
-// import { getPlaceholderImage } from '@/lib/image-assets';
-// import { type Metadata } from 'next';
-// import { CheckCircle } from 'lucide-react';
-
-// export const metadata: Metadata = {
-//   title: 'Biodiversity Program',
-// };
-
-// export default function BiodiversityPage() {
-
-//   const heroImage = getPlaceholderImage('program-biodiversity');
-
-//   const goals = [
-//     "To empower community for the protection and participate in conservation efforts.",
-//     "To advocate for implementation of both indigenous and science backed approaches for conservation.",
-//     "To task duty bearrers to effectively manngagement of natural resurces for sustainable."
-//   ];
-
-//   return (
-//     <div className="animate-enter">
-//       {heroImage && (
-//         <header className="relative h-[40vh] min-h-[300px] w-full text-primary-foreground">
-//           <Image
-//             src={heroImage.imageUrl}
-//             alt={heroImage.description}
-//             fill
-//             className="object-cover"
-//             data-ai-hint={heroImage.imageHint}
-//           />
-//           <div className="absolute inset-0 bg-primary/60" />
-//           <div className="relative z-10 flex h-full flex-col items-center justify-center text-center">
-//             <h1 className="font-headline text-4xl font-bold md:text-5xl">
-//               Biodiversity and Environment
-//             </h1>
-//           </div>
-//         </header>
-//       )}
-
-//       <div className="container mx-auto max-w-4xl px-4 py-16">
-//         <article className="prose prose-lg max-w-none text-foreground prose-headings:font-headline prose-headings:text-primary">
-//           <p className="lead">
-//             The world faces a growing climate crisis, yet many global development projects compromises the environment. This pattern weakens the critical conservation efforts needed to protect global ecosystems and prevent further climate breakdown.
-//           </p>
-//           <p>
-//             A compelling example of this conflict is the rapid growth of oil and gas projects within the sensitive Albertine Rift region. These developments pose serious threats to fragile ecosystems, fundamentally altering the environment and increasing the region’s climate vulnerability. The resulting environmental changes have severe consequences for local grassroots communities whose survival depends entirely on ecological stability and biodiversity.
-//           </p>
-//           <p>
-//             Therefore, this programme aims to empower local grassroots communities by increasing their capacity, awareness, and ability to be resilient and informed about efforts to prevent, mitigate, and restore their environment.
-//           </p>
-//           <p>
-//             This is achieved by advocating for responsible policies and effectively using existing laws to promote environmental conservation while directly addressing the various environmental challenges facing these communities.
-//           </p>
-
-//           <h3>The program Goals</h3>
-//           <ul className="not-prose mt-6 list-none space-y-4 p-0">
-//             {goals.map((goal, index) => (
-//               <li key={index} className="flex items-start gap-3">
-//                 <CheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-accent" />
-//                 <span className="text-lg">{goal}</span>
-//               </li>
-//             ))}
-//           </ul>
-
-
-//           <div className="mt-12 mb-8">
-//             <h2 className="text-2xl font-bold text-brand-green mb-4">The Morther Earth Protection (MEP) Movement</h2>
-//             <div className="grid md:grid-cols-2 gap-8 items-center">
-//               <div>
-//                 <p className="mb-4">
-//                   The Mother Earth Protection (MEP) movement was founded to empower communities to fulfill their role as the &quot;original caretakers of Mother Earth.&quot; The MEP movement&apos;s strategy is built on four main components: Elder to Youth Knowledge Transfer, Protection of Reserve Areas, Innovative and Creative Solutions, and Community Training Programs.
-//                 </p>
-//                 <p>
-//                   Each of these strategies aims to nurture, train, and mentor young Native leaders. The goal is to provide them with the opportunity to integrate traditional knowledge with the latest western technologies to create a powerful Earth management system. This system will protect, manage, and restore Mother Earth, ultimately returning harmony and balance to all people.
-//                 </p>
-//               </div>
-//               <div className="relative aspect-video w-full overflow-hidden rounded-xl shadow-lg">
-//                 <Image
-//                   src="/images/our-story/mep.png"
-//                   alt="Mother Earth Protection Movement"
-//                   fill
-//                   className="object-cover"
-//                 />
-//               </div>
-//             </div>
-//           </div>
-//         </article>
-//       </div>
-//     </div>
-//   );
-// }
-
-
-
-
-
-
-
-
-
 'use client';
 
 import { useState } from 'react';
@@ -160,8 +60,8 @@ export default function BiodiversityPage() {
             />
           </motion.div>
 
-          {/* Brand Overlay: Using Brand Blue with opacity */}
-          <div className="absolute inset-0 bg-[#26246D]/70" />
+          {/* Brand Overlay: Blue with multiply blend for depth */}
+          <div className="absolute inset-0 bg-brand-blue/80 mix-blend-multiply" />
 
           <div className="relative z-10 flex h-full flex-col items-center justify-center text-center px-4">
             <motion.div
@@ -178,7 +78,11 @@ export default function BiodiversityPage() {
                 Biodiversity & <span className="text-brand-green">Environment</span>
               </h1>
 
-              <div className="mt-6 w-24 h-1.5 bg-brand-orange rounded-full mx-auto" />
+              <div className="mt-8 flex justify-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-brand-green"></div>
+                <div className="w-3 h-3 rounded-full bg-brand-yellow"></div>
+                <div className="w-3 h-3 rounded-full bg-brand-orange"></div>
+              </div>
             </motion.div>
           </div>
         </header>

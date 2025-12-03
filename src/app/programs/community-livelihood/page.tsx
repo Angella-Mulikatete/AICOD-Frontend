@@ -71,7 +71,7 @@ export default function CommunityLivelihoodPage() {
           </motion.div>
 
           {/* Brand Overlay: Blue with opacity */}
-          <div className="absolute inset-0 bg-brand-blue/75 mix-blend-multiply" />
+          <div className="absolute inset-0 bg-brand-blue/80 mix-blend-multiply" />
 
           <div className="relative z-10 flex h-full flex-col items-center justify-center text-center px-4">
             <motion.div
@@ -87,7 +87,11 @@ export default function CommunityLivelihoodPage() {
                 Community & <span className="text-brand-orange">Livelihoods</span>
               </h1>
 
-              <div className="mt-6 w-32 h-2 bg-brand-green rounded-full mx-auto" />
+              <div className="mt-8 flex justify-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-brand-green"></div>
+                <div className="w-3 h-3 rounded-full bg-brand-yellow"></div>
+                <div className="w-3 h-3 rounded-full bg-brand-orange"></div>
+              </div>
             </motion.div>
           </div>
         </header>

@@ -23,10 +23,10 @@ export type NavLink = {
         { title: 'Community', href: '/programs/community-livelihood', description: 'Empowering local communities.' },
       ],
     },
-    {
-      title: 'Partners',
-      href: '/partners',
-    },
+    // {
+    //   title: 'Partners',
+    //   href: '/partners',
+    // },
     {
       title: 'Contact Us',
       href: '/contact',
