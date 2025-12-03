@@ -7,34 +7,34 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 
 export default function Home() {
 
-  const heroImage = getPlaceholderImage('home-hero');
   const storyImage = getPlaceholderImage('our-story-main');
 
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative h-[60vh] min-h-[400px] w-full text-primary-foreground">
-        {heroImage && (
-          <Image
-            src={heroImage.imageUrl}
-            alt={heroImage.description}
-            fill
-            className="object-cover"
-            priority
-            data-ai-hint={heroImage.imageHint}
-          />
-        )}
-        <div className="absolute inset-0 bg-primary/60" />
-        <div className="relative z-10 flex h-full flex-col items-center justify-center text-center">
-          <h1 className="font-headline text-4xl font-bold tracking-tight md:text-6xl lg:text-7xl">
+      <section className="relative h-[80vh] min-h-[500px] w-full text-primary-foreground overflow-hidden">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 h-full w-full object-cover"
+          poster="/images/hero-poster.jpg" // Placeholder poster
+        >
+          <source src="https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="relative z-10 flex h-full flex-col items-center justify-center text-center px-4">
+          <h1 className="font-headline text-4xl font-bold tracking-tight md:text-6xl lg:text-7xl mb-6">
             AICOD Connect
           </h1>
-          <p className="mt-4 max-w-2xl text-lg md:text-xl">
-            Driving positive change in biodiversity, human rights, and community livelihoods.
+          <p className="max-w-3xl text-lg md:text-2xl font-light leading-relaxed">
+            &quot;Empowering and equipping the younger generation to defend their communities’ rights is crucial for sustainable change.&quot;
           </p>
-          <Button asChild size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90">
+          <Button asChild size="lg" className="mt-10 bg-accent text-accent-foreground hover:bg-accent/90 text-lg px-8 py-6">
             <Link href="/donations">
-              Support Our Mission <ArrowRight className="ml-2 h-5 w-5" />
+              Support Our Mission <ArrowRight className="ml-2 h-6 w-6" />
             </Link>
           </Button>
         </div>

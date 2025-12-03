@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function HumanRightsPage() {
 
   const heroImage = getPlaceholderImage('program-human-rights');
-  
+
   const keyActivities = [
     'Providing free legal aid and counsel to marginalized community members.',
     'Conducting workshops and training sessions on human rights and civic duties.',
@@ -52,14 +52,36 @@ export default function HumanRightsPage() {
 
           <h3>Key Activities</h3>
           <ul className="not-prose mt-6 list-none space-y-4 p-0">
-              {keyActivities.map((activity, index) => (
-                <li key={index} className="flex items-start gap-3">
-                  <CheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-accent" />
-                  <span className="text-lg">{activity}</span>
-                </li>
-              ))}
+            {keyActivities.map((activity, index) => (
+              <li key={index} className="flex items-start gap-3">
+                <CheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-accent" />
+                <span className="text-lg">{activity}</span>
+              </li>
+            ))}
           </ul>
-          
+
+          <div className="mt-12 mb-8">
+            <h2 className="text-2xl font-bold text-brand-green mb-4">Civic Development Agencies (CDA)</h2>
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              <div>
+                <p className="mb-4">
+                  The host community in the Albertine development areas haven't been adequately involved in the development processes. This consistently violates their rights, breaking both national and international laws during development activities in the region.
+                </p>
+                <p>
+                  To address this, AICOD established the Civic Development Agencies. This is a community-led movement which empowers communitity members to know, understand, and use the laws to demand, defend, and engage leaders, actors, and other relevant stakeholders for their interests and development agenda in these developments. These Agencies keep track of developments and set their own agendas, develop solutions, and bring the capacity, leadership, and resources to make those solutions a reality.
+                </p>
+              </div>
+              <div className="relative aspect-video w-full overflow-hidden rounded-xl shadow-lg">
+                <Image
+                  src="/images/our-story/civic.png"
+                  alt="Civic Development Agencies"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
+          </div>
+
           <h2>Your Voice Matters</h2>
           <p>
             Protecting human rights is a collective effort. By supporting our work, you help give a voice to the voiceless and contribute to building a more just and equitable society. Learn how you can contribute to our advocacy and legal support programs.

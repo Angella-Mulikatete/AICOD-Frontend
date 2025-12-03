@@ -52,18 +52,35 @@ export default function BiodiversityPage() {
 
           <h3>Key Activities</h3>
           <ul className="not-prose mt-6 list-none space-y-4 p-0">
-              {keyActivities.map((activity, index) => (
-                <li key={index} className="flex items-start gap-3">
-                  <CheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-accent" />
-                  <span className="text-lg">{activity}</span>
-                </li>
-              ))}
+            {keyActivities.map((activity, index) => (
+              <li key={index} className="flex items-start gap-3">
+                <CheckCircle className="mt-1 h-5 w-5 flex-shrink-0 text-accent" />
+                <span className="text-lg">{activity}</span>
+              </li>
+            ))}
           </ul>
 
-          <h2>Get Involved</h2>
-          <p>
-            The protection of our planet's biodiversity is a shared responsibility. Whether through donations, volunteering, or spreading awareness, your support can make a significant difference. Join us in our mission to safeguard the natural wonders of the Albertine Rift.
-          </p>
+          <div className="mt-12 mb-8">
+            <h2 className="text-2xl font-bold text-brand-green mb-4">The Mother Earth Protection (MEP) Movement</h2>
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              <div>
+                <p className="mb-4">
+                  The Mother Earth Protection (MEP) movement was founded to empower communities to fulfill their role as the &quot;original caretakers of Mother Earth.&quot; The MEP movement&apos;s strategy is built on four main components: Elder to Youth Knowledge Transfer, Protection of Reserve Areas, Innovative and Creative Solutions, and Community Training Programs.
+                </p>
+                <p>
+                  Each of these strategies aims to nurture, train, and mentor young Native leaders. The goal is to provide them with the opportunity to integrate traditional knowledge with the latest western technologies to create a powerful Earth management system. This system will protect, manage, and restore Mother Earth, ultimately returning harmony and balance to all people.
+                </p>
+              </div>
+              <div className="relative aspect-video w-full overflow-hidden rounded-xl shadow-lg">
+                <Image
+                  src="/images/our-story/mep.png"
+                  alt="Mother Earth Protection Movement"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
+          </div>
         </article>
       </div>
     </div>
