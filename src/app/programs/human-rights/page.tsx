@@ -68,176 +68,181 @@ export default function HumanRightsPage() {
           {/* Brand Overlay: Blue with multiply blend for depth */}
           <div className="absolute inset-0 bg-brand-blue/80 mix-blend-multiply" />
 
-          <div className="relative z-10 flex h-full flex-col items-center justify-center text-center px-4">
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              variants={fadeInUp}
-            >
-              <span className="block text-brand-yellow text-2xl md:text-3xl mb-3" style={{ fontFamily: 'Monotype Corsiva' }}>
-                Equality & Justice
-              </span>
+          <div className="container mx-auto px-4">
+            <div className="relative z-10 flex h-full flex-col items-center justify-center text-center">
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={fadeInUp}
+              >
+                <span className="block text-brand-yellow text-2xl md:text-3xl mb-3" style={{ fontFamily: 'Monotype Corsiva' }}>
+                  Equality & Justice
+                </span>
 
-              <h1 className="font-bold text-4xl md:text-6xl text-white shadow-sm max-w-5xl leading-tight">
-                Human Rights & <br className="hidden md:block" />
-                <span className="text-brand-orange">Inclusive Development</span>
-              </h1>
+                <h1 className="font-bold text-4xl md:text-6xl text-white shadow-sm max-w-5xl leading-tight">
+                  Human Rights & <br className="hidden md:block" />
+                  <span className="text-brand-orange">Inclusive Development</span>
+                </h1>
 
-              <div className="mt-8 flex justify-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-brand-green"></div>
-                <div className="w-3 h-3 rounded-full bg-brand-yellow"></div>
-                <div className="w-3 h-3 rounded-full bg-brand-orange"></div>
-              </div>
-            </motion.div>
+                <div className="mt-8 flex justify-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-brand-green"></div>
+                  <div className="w-3 h-3 rounded-full bg-brand-yellow"></div>
+                  <div className="w-3 h-3 rounded-full bg-brand-orange"></div>
+                </div>
+              </motion.div>
+            </div>
           </div>
         </header>
       )}
 
-      <div className="container mx-auto max-w-6xl px-4 py-16 -mt-16 relative z-20">
+      <div className="container mx-auto px-4 py-16">
+        <div className="max-w-6xl mx-auto -mt-26 relative z-20">
 
-        {/* --- INTRO CARD --- */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="bg-white rounded-xl shadow-xl p-8 md:p-12 border-b-8 border-brand-blue mb-20"
-        >
-          <div className="prose prose-lg max-w-none text-gray-700">
-            <p className="text-xl md:text-2xl leading-relaxed font-bold text-brand-blue mb-6">
-              The intersection of natural resource developments and human rights is a critical concern for host communities.
-            </p>
-            <p className="text-lg">
-              Recognizing these issues, our program promotes human rights and inclusive development by empowering communities, working with key community groups, and building a system to protect their rights in the Albertine development areas.
-            </p>
-          </div>
-        </motion.div>
+          {/* --- INTRO CARD --- */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-white rounded-xl shadow-xl p-8 md:p-12 border-b-8 border-brand-blue mb-20"
+          >
+            <div className="prose prose-lg max-w-none text-gray-700">
+              <p className="text-xl md:text-2xl leading-relaxed font-bold text-brand-blue mb-6">
+                The intersection of natural resource developments and human rights is a critical concern for host communities.
+              </p>
+              <p className="text-lg">
+                Recognizing these issues, our program promotes human rights and inclusive development by empowering communities, working with key community groups, and building a system to protect their rights in the Albertine development areas.
+              </p>
+            </div>
+          </motion.div>
 
-        {/* --- GOALS SECTION --- */}
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="mb-24"
-        >
-          <div className="flex items-center gap-4 mb-10">
-            <div className="h-10 w-2 bg-brand-green rounded-full"></div>
-            <h3 className="text-3xl font-bold text-brand-blue">Strategic Goals</h3>
-          </div>
+          {/* --- GOALS SECTION --- */}
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            className="mb-24"
+          >
+            <div className="flex items-center gap-4 mb-10">
+              <div className="h-10 w-2 bg-brand-green rounded-full"></div>
+              <h3 className="text-3xl font-bold text-brand-blue">Strategic Goals</h3>
+            </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {goals.map((goalString, index) => {
-              // Helper to split title from description based on colon
-              const [title, description] = goalString.split(':');
+            <div className="grid md:grid-cols-3 gap-8">
+              {goals.map((goalString, index) => {
+                // Helper to split title from description based on colon
+                const [title, description] = goalString.split(':');
 
-              return (
-                <motion.div
-                  key={index}
-                  variants={cardVariant}
-                  whileHover={{ y: -10 }}
-                  className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden group hover:shadow-lg transition-all duration-300"
-                >
-                  {/* Top Color Bar */}
-                  <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-brand-blue via-brand-green to-brand-yellow" />
+                return (
+                  <motion.div
+                    key={index}
+                    variants={cardVariant}
+                    whileHover={{ y: -10 }}
+                    className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden group hover:shadow-lg transition-all duration-300"
+                  >
+                    {/* Top Color Bar */}
+                    <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-brand-blue via-brand-green to-brand-yellow" />
 
-                  <div className="bg-brand-blue w-12 h-12 rounded-lg flex items-center justify-center mb-6 shadow-md group-hover:bg-brand-orange transition-colors duration-300">
-                    {goalIcons[index]}
-                  </div>
+                    <div className="bg-brand-blue w-12 h-12 rounded-lg flex items-center justify-center mb-6 shadow-md group-hover:bg-brand-orange transition-colors duration-300">
+                      {goalIcons[index]}
+                    </div>
 
-                  <h4 className="text-lg font-bold text-brand-blue mb-3 min-h-[3.5rem]">
-                    {title}
-                  </h4>
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    {description ? description : goalString}
+                    <h4 className="text-lg font-bold text-brand-blue mb-3 min-h-[3.5rem]">
+                      {title}
+                    </h4>
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      {description ? description : goalString}
+                    </p>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </motion.div>
+
+          {/* --- CIVIC DEVELOPMENT AGENCIES (CDA) SECTION --- */}
+          <div className="bg-gray-50 rounded-[2.5rem] overflow-hidden border border-gray-100">
+            <div className="grid md:grid-cols-2 gap-0">
+
+              {/* Image Side - Order depends on mobile/desktop */}
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="relative min-h-[300px] md:h-full w-full order-1 md:order-2 group"
+              >
+                <Image
+                  src="/images/our-story/civic.png"
+                  alt="Civic Development Agencies"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-brand-blue/10 group-hover:bg-transparent transition-colors duration-500" />
+              </motion.div>
+
+              {/* Content Side */}
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="p-8 md:p-14 order-2 md:order-1 flex flex-col justify-center"
+              >
+                <div className="flex items-center gap-2 mb-4">
+                  <CheckCircle className="text-brand-green w-5 h-5" />
+                  <span className="text-brand-green font-bold uppercase tracking-wider text-sm">Community Led</span>
+                </div>
+
+                <h2 className="text-3xl font-bold text-brand-blue mb-6">
+                  Civic Development Agencies (CDA)
+                </h2>
+
+                <div className="prose prose-lg text-gray-600">
+                  <p className="mb-4">
+                    The host community in the Albertine development areas haven't been adequately involved in the development processes. This consistently violates their rights, breaking both national and international laws.
                   </p>
-                </motion.div>
-              );
-            })}
-          </div>
-        </motion.div>
 
-        {/* --- CIVIC DEVELOPMENT AGENCIES (CDA) SECTION --- */}
-        <div className="bg-gray-50 rounded-[2.5rem] overflow-hidden border border-gray-100">
-          <div className="grid md:grid-cols-2 gap-0">
-
-            {/* Image Side - Order depends on mobile/desktop */}
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="relative min-h-[300px] md:h-full w-full order-1 md:order-2 group"
-            >
-              <Image
-                src="/images/our-story/civic.png"
-                alt="Civic Development Agencies"
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-brand-blue/10 group-hover:bg-transparent transition-colors duration-500" />
-            </motion.div>
-
-            {/* Content Side */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="p-8 md:p-14 order-2 md:order-1 flex flex-col justify-center"
-            >
-              <div className="flex items-center gap-2 mb-4">
-                <CheckCircle className="text-brand-green w-5 h-5" />
-                <span className="text-brand-green font-bold uppercase tracking-wider text-sm">Community Led</span>
-              </div>
-
-              <h2 className="text-3xl font-bold text-brand-blue mb-6">
-                Civic Development Agencies (CDA)
-              </h2>
-
-              <div className="prose prose-lg text-gray-600">
-                <p className="mb-4">
-                  The host community in the Albertine development areas haven't been adequately involved in the development processes. This consistently violates their rights, breaking both national and international laws.
-                </p>
-
-                {/* Collapsible Section */}
-                <AnimatePresence>
-                  {isExpanded && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="py-4 space-y-4">
-                        <p>
-                          To address this, AICOD established the <span className="font-bold text-brand-orange">Civic Development Agencies</span>.
-                        </p>
-                        <p>
-                          This is a community-led movement which empowers community members to know, understand, and use the laws to demand, defend, and engage leaders for their development agenda.
-                        </p>
-                        <div className="bg-white p-4 rounded-lg border-l-4 border-brand-yellow shadow-sm italic text-gray-800">
-                          "These Agencies keep track of developments, set their own agendas, develop solutions, and bring the capacity to make those solutions a reality."
+                  {/* Collapsible Section */}
+                  <AnimatePresence>
+                    {isExpanded && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="py-4 space-y-4">
+                          <p>
+                            To address this, AICOD established the <span className="font-bold text-brand-orange">Civic Development Agencies</span>.
+                          </p>
+                          <p>
+                            This is a community-led movement which empowers community members to know, understand, and use the laws to demand, defend, and engage leaders for their development agenda.
+                          </p>
+                          <div className="bg-white p-4 rounded-lg border-l-4 border-brand-yellow shadow-sm italic text-gray-800">
+                            "These Agencies keep track of developments, set their own agendas, develop solutions, and bring the capacity to make those solutions a reality."
+                          </div>
                         </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
 
-                <button
-                  onClick={() => setIsExpanded(!isExpanded)}
-                  className="mt-6 flex items-center gap-2 px-6 py-3 bg-brand-blue text-white rounded-full font-bold hover:bg-brand-orange transition-all duration-300 shadow-md hover:shadow-lg group w-fit"
-                >
-                  <span>{isExpanded ? "Show Less" : "Read Full Story"}</span>
-                  {isExpanded ? (
-                    <ChevronUp className="w-4 h-4" />
-                  ) : (
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  )}
-                </button>
-              </div>
-            </motion.div>
+                  <button
+                    onClick={() => setIsExpanded(!isExpanded)}
+                    className="mt-6 flex items-center gap-2 px-6 py-3 bg-brand-blue text-white rounded-full font-bold hover:bg-brand-orange transition-all duration-300 shadow-md hover:shadow-lg group w-fit"
+                  >
+                    <span>{isExpanded ? "Show Less" : "Read Full Story"}</span>
+                    {isExpanded ? (
+                      <ChevronUp className="w-4 h-4" />
+                    ) : (
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    )}
+                  </button>
+                </div>
+              </motion.div>
 
+            </div>
           </div>
+
         </div>
 
       </div>

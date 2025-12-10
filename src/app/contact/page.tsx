@@ -1,4 +1,4 @@
-import { ContactForm } from '@/components/contact-form';
+import ContactForm from '@/components/contact-form';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { type Metadata } from 'next';
 import MapWrapper from '@/components/ui/map-wrapper';
