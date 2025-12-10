@@ -3,6 +3,7 @@ import './globals.css';
 import { Header } from '@/components/(_layout)/header';
 import { Footer } from '@/components/(_layout)/footer';
 import { Toaster } from '@/components/ui/sonner';
+import { Toaster as ShadcnToaster } from '@/components/ui/toaster';
 import Chatbot from '@/components/chatbot';
 
 export const metadata: Metadata = {
@@ -34,6 +35,7 @@ export default function RootLayout({
         </div>
         <Chatbot />
         <Toaster />
+        <ShadcnToaster />
       </body>
     </html>
   );
