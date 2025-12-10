@@ -61,18 +61,18 @@ export default function Home() {
             initial="hidden"
             animate="visible"
             variants={fadeInUp}
-            className="max-w-4xl"
+            className="max-w-4xl mx-auto text-center"
           >
 
             <h1 className="font-bold text-5xl md:text-7xl lg:text-8xl text-white mb-6 leading-tight drop-shadow-xl">
-              AICOD <span className="text-brand-green">Connect</span>
+              Welcome <span className="text-brand-green">AICOD</span>
             </h1>
 
-            <p className="text-lg md:text-2xl font-light text-blue-50 leading-relaxed mb-10 max-w-2xl drop-shadow-md">
-              Empowering and equipping the younger generation to defend their communities’ rights for sustainable change.
+            <p className="text-lg md:text-2xl font-light text-blue-50 leading-relaxed mb-10 max-w-2xl mx-auto drop-shadow-md">
+              Empowering and equipping the younger generation to defend their communities' rights for sustainable change.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-5">
+            <div className="flex flex-col sm:flex-row gap-5 justify-center">
               <Button asChild size="lg" className="bg-brand-orange hover:bg-[#a04823] text-white text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent">
                 <Link href="/donations">
                   Support Our Mission <ArrowRight className="ml-2 h-5 w-5" />
@@ -197,7 +197,7 @@ export default function Home() {
                   <div className="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-green group-hover:text-white transition-all duration-300">
                     <Leaf className="h-8 w-8 text-brand-green" />
                   </div>
-                  <CardTitle className="text-2xl font-bold text-brand-blue">Biodiversity</CardTitle>
+                  <CardTitle className="text-2xl font-bold text-brand-blue">Biodiversity & Environment </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-600 mb-8 leading-relaxed">
@@ -219,7 +219,7 @@ export default function Home() {
                   <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-blue group-hover:text-white transition-all duration-300">
                     <HeartHandshake className="h-8 w-8 text-brand-blue" />
                   </div>
-                  <CardTitle className="text-2xl font-bold text-brand-blue">Human Rights</CardTitle>
+                  <CardTitle className="text-2xl font-bold text-brand-blue">Human Rights & Inclusive Development</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-600 mb-8 leading-relaxed">
@@ -241,7 +241,7 @@ export default function Home() {
                   <div className="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-orange group-hover:text-white transition-all duration-300">
                     <Users className="h-8 w-8 text-brand-orange" />
                   </div>
-                  <CardTitle className="text-2xl font-bold text-brand-blue">Livelihoods</CardTitle>
+                  <CardTitle className="text-2xl font-bold text-brand-blue">Community & Livelihoods </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-600 mb-8 leading-relaxed">
