@@ -7,7 +7,7 @@ import { navLinks } from '@/lib/nav-links';
 import { MobileNav } from './mobile-nav';
 import { Button } from '../ui/button';
 import { ChevronDown } from 'lucide-react';
-import AICODLogo from "../../../public/assets/AICOD logo.jpg";
+import AICODLogo from "../../../public/assets/images/aicodlogo.png";
 
 
 

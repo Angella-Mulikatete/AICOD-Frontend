@@ -36,9 +36,15 @@ export default function HumanRightsPage() {
   ];
 
   const goals = [
-    "To empower and build community members’ capacity: This is achived through providing training and building community’s capcity on relevant laws and regulations to land rights, Free Prior and Informed Consent ( FPIC).",
-    "Create Platforms for Engagement: This is achived through provision of forum where communitys interact with duty bearers and stakehoders and foster dialogues among communitys with decision makers to address grievances while advocating for fair practices in resource developments.",
-    "Strengthen Community Movements: This is achived through strong community mobilization to form associations, groups and empowered with capacities to obverse and lead the cause for their own developments."
+    "To empower and build community members’ capacity: This is achieved through providing training and building community’s capacity on relevant laws and regulations to land rights, Free Prior and Informed Consent (FPIC).",
+    "Create Platforms for Engagement: This is achieved through provision of forums where communities interact with duty bearers and stakeholders and foster dialogues to address grievances while advocating for fair practices.",
+    "Strengthen Community Movements: This is achieved through strong community mobilization to form associations, groups and empowered with capacities to observe and lead the cause for their own developments."
+  ];
+
+  const sidebarImages = [
+    "/images/our-story/civic.png",
+    "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?q=80&w=2070&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?q=80&w=2070&auto=format&fit=crop"
   ];
 
   return (
@@ -46,7 +52,7 @@ export default function HumanRightsPage() {
 
       {/* --- HERO SECTION --- */}
       {heroImage && (
-        <header className="relative h-[55vh] min-h-[400px] w-full overflow-hidden">
+        <header className="relative h-[60vh] min-h-[400px] w-full overflow-hidden">
           {/* Parallax-like Image Effect */}
           <motion.div
             initial={{ scale: 1.1 }}
@@ -58,7 +64,7 @@ export default function HumanRightsPage() {
               src={heroImage.imageUrl}
               alt={heroImage.description}
               fill
-              className="object-cover"
+              className="object-cover object-center"
               priority
               data-ai-hint={heroImage.imageHint}
             />
@@ -67,39 +73,41 @@ export default function HumanRightsPage() {
           {/* Brand Overlay: Blue with multiply blend for depth */}
           <div className="absolute inset-0 bg-brand-blue/80 mix-blend-multiply" />
 
-          <div className="container mx-auto px-4 h-full">
-            <div className="relative z-10 flex h-full flex-col items-center justify-center text-center">
-              <motion.div
-                initial="hidden"
-                animate="visible"
-                variants={fadeInUp}
-              >
-                <span className="block text-brand-yellow text-2xl md:text-3xl mb-3" style={{ fontFamily: 'Monotype Corsiva' }}>
-                  Equality & Justice
-                </span>
+          {/* Content Container */}
+          <div className="container mx-auto px-4 h-full relative z-10 flex flex-col items-center justify-center text-center">
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={fadeInUp}
+              className="max-w-4xl"
+            >
+              <span className="block text-brand-yellow text-xl md:text-3xl mb-3" style={{ fontFamily: 'Monotype Corsiva' }}>
+                Equality & Justice
+              </span>
 
-                <h1 className="font-bold text-4xl md:text-6xl text-white shadow-sm max-w-5xl leading-tight">
-                  Human Rights & <br className="hidden md:block" />
-                  <span className="text-brand-orange">Inclusive Development</span>
-                </h1>
+              <h1 className="font-bold text-3xl md:text-6xl text-white shadow-sm leading-tight">
+                Human Rights & <br className="hidden md:block" />
+                <span className="text-brand-orange">Inclusive Development</span>
+              </h1>
 
-                <div className="mt-8 flex justify-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-brand-green"></div>
-                  <div className="w-3 h-3 rounded-full bg-brand-yellow"></div>
-                  <div className="w-3 h-3 rounded-full bg-brand-orange"></div>
-                </div>
-              </motion.div>
-            </div>
+              <div className="mt-8 flex justify-center gap-3">
+                <div className="w-2 md:w-3 h-2 md:h-3 rounded-full bg-brand-green animate-pulse"></div>
+                <div className="w-2 md:w-3 h-2 md:h-3 rounded-full bg-brand-yellow animate-pulse delay-75"></div>
+                <div className="w-2 md:w-3 h-2 md:h-3 rounded-full bg-brand-orange animate-pulse delay-150"></div>
+              </div>
+            </motion.div>
           </div>
         </header>
       )}
 
-      <div className="container mx-auto px-4 py-16">
-        {/* NEW LAYOUT: 2-Column Grid */}
-        <div className="grid lg:grid-cols-12 gap-12">
+      {/* --- MAIN CONTENT --- */}
+      <div className="container mx-auto px-4 py-12 md:py-20">
+        
+        {/* Responsive Grid Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
 
-          {/* --- LEFT COLUMN: CONTENT --- */}
-          <div className="lg:col-span-7 space-y-12">
+          {/* --- LEFT COLUMN: CONTENT (7 Cols) --- */}
+          <div className="lg:col-span-7 space-y-16">
 
             {/* Introduction */}
             <motion.div
@@ -111,7 +119,7 @@ export default function HumanRightsPage() {
               <p className="text-xl md:text-2xl leading-relaxed font-bold text-brand-blue mb-6">
                 The intersection of natural resource developments and human rights is a critical concern for host communities.
               </p>
-              <p className="text-lg">
+              <p className="text-base md:text-lg leading-relaxed">
                 Recognizing these issues, our program promotes human rights and inclusive development by empowering communities, working with key community groups, and building a system to protect their rights in the Albertine development areas.
               </p>
             </motion.div>
@@ -137,18 +145,18 @@ export default function HumanRightsPage() {
                     <motion.div
                       key={index}
                       variants={cardVariant}
-                      className="bg-gray-50 p-6 rounded-xl border border-gray-100 relative group hover:shadow-md transition-all duration-300"
+                      className="bg-gray-50 p-6 rounded-2xl border border-gray-100 relative group hover:shadow-lg transition-all duration-300"
                     >
-                      <div className="flex items-start gap-4">
-                        <div className="bg-brand-blue w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm group-hover:bg-brand-orange transition-colors duration-300">
+                      <div className="flex flex-col sm:flex-row items-start gap-4">
+                        <div className="bg-brand-blue w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm group-hover:scale-110 group-hover:bg-brand-orange transition-all duration-300">
                           {goalIcons[index]}
                         </div>
                         <div>
-                          <h4 className="text-lg font-bold text-brand-blue mb-1">
+                          <h4 className="text-lg font-bold text-brand-blue mb-2 group-hover:text-brand-orange transition-colors">
                             {title}
                           </h4>
-                          <p className="text-gray-600 text-sm leading-relaxed">
-                            {description ? description : goalString}
+                          <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+                            {description ? description.trim() : goalString}
                           </p>
                         </div>
                       </div>
@@ -158,12 +166,12 @@ export default function HumanRightsPage() {
               </div>
             </motion.div>
 
-            {/* CDA Section */}
+            {/* CDA Section - Featured Card */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="bg-gray-50 rounded-3xl overflow-hidden border border-gray-100"
+              className="bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-200"
             >
               <div className="relative h-64 w-full">
                 <Image
@@ -172,50 +180,63 @@ export default function HumanRightsPage() {
                   fill
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute bottom-6 left-6 text-white z-10">
-                  <div className="flex items-center gap-2 mb-1">
-                    <CheckCircle className="text-brand-green w-4 h-4" />
-                    <span className="text-brand-green font-bold uppercase tracking-wider text-xs">Community Led</span>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute bottom-6 left-6 right-6 text-white z-10">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="bg-brand-green p-1 rounded-full">
+                        <CheckCircle className="text-white w-3 h-3" />
+                    </div>
+                    <span className="text-brand-green font-bold uppercase tracking-wider text-xs">Community Led Initiative</span>
                   </div>
-                  <h2 className="text-2xl font-bold">
+                  <h2 className="text-2xl md:text-3xl font-bold leading-tight">
                     Civic Development Agencies (CDA)
                   </h2>
                 </div>
               </div>
 
-              <div className="p-8">
-                <div className="prose prose-lg text-gray-600 mb-6">
+              <div className="p-6 md:p-8 space-y-6">
+                <div className="prose prose-lg text-gray-600">
                   <p>
-                    The host community in the Albertine development areas haven't been adequately involved in the development processes. This consistently violates their rights, breaking both national and international laws.
+                    The host community in the Albertine development areas hasn't been adequately involved in the development processes. This consistently violates their rights, breaking both national and international laws.
                   </p>
                 </div>
 
-                <div className="space-y-4">
-                  <p className="text-gray-700">
+                <div className="bg-slate-50 p-6 rounded-xl border-l-4 border-brand-orange">
+                  <p className="text-gray-700 mb-4">
                     To address this, AICOD established the <span className="font-bold text-brand-orange">Civic Development Agencies</span>.
                   </p>
-                  <p className="text-gray-700">
+                  <p className="text-gray-600 text-sm">
                     This is a community-led movement which empowers community members to know, understand, and use the laws to demand, defend, and engage leaders for their development agenda.
                   </p>
-                  <div className="bg-white p-4 rounded-lg border-l-4 border-brand-yellow shadow-sm italic text-gray-800 text-sm">
-                    "These Agencies keep track of developments, set their own agendas, develop solutions, and bring the capacity to make those solutions a reality."
-                  </div>
+                </div>
+                
+                <div className="flex gap-4 items-start">
+                    <div className="text-brand-yellow text-4xl leading-none font-serif">"</div>
+                    <p className="text-gray-500 italic text-sm md:text-base pt-1">
+                        These Agencies keep track of developments, set their own agendas, develop solutions, and bring the capacity to make those solutions a reality.
+                    </p>
                 </div>
               </div>
             </motion.div>
 
           </div>
 
-          {/* --- RIGHT COLUMN: MEDIA SIDEBAR --- */}
-          <div className="lg:col-span-5">
-            <ProgramMediaSidebar
-              images={[
-                "/images/our-story/civic.png",
-                "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?q=80&w=2070&auto=format&fit=crop",
-                "https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?q=80&w=2070&auto=format&fit=crop"
-              ]}
-            />
+          {/* --- RIGHT COLUMN: MEDIA SIDEBAR (5 Cols) --- */}
+          <div className="lg:col-span-5 w-full">
+            <div className="lg:sticky lg:top-24 space-y-8">
+                
+                {/* Optional Sidebar Context Box */}
+                <div className="hidden lg:block bg-brand-blue/5 rounded-2xl p-6 border border-brand-blue/10">
+                    <h4 className="text-brand-blue font-bold mb-2">Visualizing Impact</h4>
+                    <p className="text-sm text-gray-600">
+                        See how we are transforming rights into reality through our gallery and documentary footage.
+                    </p>
+                </div>
+
+                <ProgramMediaSidebar
+                  images={sidebarImages}
+                />
+            </div>
           </div>
 
         </div>
