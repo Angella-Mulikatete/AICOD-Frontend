@@ -44,7 +44,7 @@ export default function DonationsPage() {
 
           {/* Creative Write-up */}
           <div className="space-y-6">
-            <h2 className="text-3xl font-bold text-brand-blue">Partner With Us</h2>
+            <h2 className="text-3xl font-bold text-brand-blue">Get Involved</h2>
             <div className="w-12 h-1 bg-brand-orange rounded-full" />
             <p className="text-lg text-gray-600 leading-relaxed">
               We believe that true impact is built on trust and protection. To ensure your support reaches the right hands securely, we handle all partnerships and donations through direct contact.

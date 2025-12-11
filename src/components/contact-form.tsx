@@ -1,6 +1,5 @@
 'use client'
 
-
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -143,7 +142,12 @@ export function ContactForm() {
           )}
         />
 
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
+        <Button 
+          type="submit" 
+          // ADDED: bg-brand-orange text-white hover:bg-brand-orange/90
+          className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 transition-colors" 
+          disabled={isSubmitting}
+        >
           {isSubmitting && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}
           {isSubmitting ? 'Sending...' : 'Send Message'}
         </Button>

@@ -7,7 +7,7 @@ import { navLinks } from '@/lib/nav-links';
 import { MobileNav } from './mobile-nav';
 import { Button } from '../ui/button';
 import { ChevronDown } from 'lucide-react';
-import AICODLogo from "../../../public/assets/images/AICOD  log.svg";
+import AICODLogo from "../../../public/assets/images/AICOD logo.jpg";
 
 const Dropdown = ({ link }: { link: any }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,7 +35,7 @@ const Dropdown = ({ link }: { link: any }) => {
                 <li key={subLink.title}>
                   <Link
                     href={subLink.href}
-                    className="block w-full p-2 text-foreground hover:bg-accent hover:text-accent-foreground rounded transition-colors"
+                    className="block w-full p-2 text-foreground hover:bg-brand-orange hover:text-accent-foreground rounded transition-colors"
                   >
                     {subLink.title}
                   </Link>

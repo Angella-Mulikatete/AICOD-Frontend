@@ -177,7 +177,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* --- CORE PROGRAMS --- */}
+{/* --- CORE PROGRAMS --- */}
       <section className="py-20 md:py-24 bg-slate-50">
         {/* ALIGNMENT FIX: Matching Header 'container mx-auto px-4' */}
         <div className="container mx-auto px-4">
@@ -205,8 +205,9 @@ export default function Home() {
             <motion.div variants={fadeInUp}>
               <Card className="h-full border border-slate-100 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group bg-white rounded-2xl overflow-hidden">
                 <CardHeader>
-                  <div className="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-green group-hover:text-white transition-all duration-300">
-                    <Leaf className="h-8 w-8 text-brand-green" />
+                  {/* Added group-hover:text-white to the icon below */}
+                  <div className="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-green transition-all duration-300">
+                    <Leaf className="h-8 w-8 text-brand-green group-hover:text-white transition-colors duration-300" />
                   </div>
                   <CardTitle className="text-2xl font-bold text-brand-blue">Biodiversity & Environment </CardTitle>
                 </CardHeader>
@@ -227,8 +228,9 @@ export default function Home() {
             <motion.div variants={fadeInUp}>
               <Card className="h-full border border-slate-100 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group bg-white rounded-2xl overflow-hidden">
                 <CardHeader>
-                  <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-blue group-hover:text-white transition-all duration-300">
-                    <HeartHandshake className="h-8 w-8 text-brand-blue" />
+                  {/* Added group-hover:text-white to the icon below */}
+                  <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-blue transition-all duration-300">
+                    <HeartHandshake className="h-8 w-8 text-brand-blue group-hover:text-white transition-colors duration-300" />
                   </div>
                   <CardTitle className="text-2xl font-bold text-brand-blue">Human Rights & Inclusive Development</CardTitle>
                 </CardHeader>
@@ -249,8 +251,9 @@ export default function Home() {
             <motion.div variants={fadeInUp}>
               <Card className="h-full border border-slate-100 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group bg-white rounded-2xl overflow-hidden">
                 <CardHeader>
-                  <div className="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-orange group-hover:text-white transition-all duration-300">
-                    <Users className="h-8 w-8 text-brand-orange" />
+                  {/* Added group-hover:text-white to the icon below */}
+                  <div className="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-orange transition-all duration-300">
+                    <Users className="h-8 w-8 text-brand-orange group-hover:text-white transition-colors duration-300" />
                   </div>
                   <CardTitle className="text-2xl font-bold text-brand-blue">Community & Livelihoods </CardTitle>
                 </CardHeader>

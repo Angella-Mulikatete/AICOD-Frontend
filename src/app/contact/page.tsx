@@ -158,16 +158,30 @@ export default function ContactPage() {
                 ))}
               </div>
 
+
               {/* Map Section */}
               <div className="flex-grow min-h-[250px] w-full rounded-2xl overflow-hidden shadow-lg border-2 border-white/10 relative">
-                <MapWrapper />
+                {/* Google Maps Preview Background */}
+                <div className="absolute inset-0 z-0">
+                  <Image
+                    src="/assets/images/map-preview.png"
+                    alt="Google Maps preview"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+
+                {/* Interactive Map Layer */}
+                <div className="relative z-10">
+                  <MapWrapper />
+                </div>
 
                 {/* Map Overlay Button */}
                 <a
                   href="https://maps.google.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="absolute bottom-4 right-4 bg-white text-brand-blue px-4 py-2 rounded-lg text-sm font-bold shadow-lg flex items-center gap-2 hover:bg-brand-orange hover:text-white transition-colors"
+                  className="absolute bottom-4 right-4 bg-white text-brand-blue px-4 py-2 rounded-lg text-sm font-bold shadow-lg flex items-center gap-2 hover:bg-brand-orange hover:text-white transition-colors z-20"
                 >
                   Open in Maps <ArrowRight className="w-4 h-4" />
                 </a>
