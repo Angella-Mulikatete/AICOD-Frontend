@@ -57,7 +57,7 @@ export default function CommunityLivelihoodPage() {
 
       {/* --- HERO SECTION --- */}
       {heroImage && (
-        <header className="relative h-[55vh] min-h-[400px] w-full overflow-hidden">
+        <header className="relative h-[60vh] min-h-[400px] md:min-h-[500px] w-full overflow-hidden">
           {/* Parallax-like Image Effect */}
           <motion.div
             initial={{ scale: 1.1 }}
@@ -69,34 +69,36 @@ export default function CommunityLivelihoodPage() {
               src={heroImage.imageUrl}
               alt={heroImage.description}
               fill
-              className="object-cover"
+              className="object-cover object-center"
               priority
               data-ai-hint={heroImage.imageHint}
             />
           </motion.div>
 
-          {/* Brand Overlay: Blue with opacity */}
+          {/* Brand Overlay */}
           <div className="absolute inset-0 bg-brand-blue/80 mix-blend-multiply" />
 
-          <div className="container mx-auto px-4 h-full">
+          {/* Content Container */}
+          <div className="container mx-auto px-4 sm:px-6 h-full">
             <div className="relative z-10 flex h-full flex-col items-center justify-center text-center">
               <motion.div
                 initial="hidden"
                 animate="visible"
                 variants={fadeInUp}
+                className="w-full max-w-4xl px-2"
               >
-                <span className="block text-brand-yellow text-2xl md:text-3xl mb-2" style={{ fontFamily: 'Monotype Corsiva' }}>
+                <span className="block text-brand-yellow text-xl sm:text-2xl md:text-3xl mb-3" style={{ fontFamily: 'Monotype Corsiva' }}>
                   Empowering People
                 </span>
 
-                <h1 className="font-bold text-4xl md:text-6xl text-white shadow-sm max-w-5xl leading-tight">
-                  Community & <span className="text-brand-orange">Livelihoods</span>
+                <h1 className="font-bold text-3xl sm:text-4xl md:text-6xl text-white shadow-sm leading-tight md:leading-tight">
+                  Community & <span className="text-brand-orange block sm:inline">Livelihoods</span>
                 </h1>
 
-                <div className="mt-8 flex justify-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-brand-green"></div>
-                  <div className="w-3 h-3 rounded-full bg-brand-yellow"></div>
-                  <div className="w-3 h-3 rounded-full bg-brand-orange"></div>
+                <div className="mt-8 flex justify-center gap-3">
+                  <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-brand-green animate-pulse"></div>
+                  <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-brand-yellow animate-pulse delay-75"></div>
+                  <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-brand-orange animate-pulse delay-150"></div>
                 </div>
               </motion.div>
             </div>
@@ -104,11 +106,14 @@ export default function CommunityLivelihoodPage() {
         </header>
       )}
 
-      <div className="container mx-auto px-4 py-16">
-        <div className="grid lg:grid-cols-12 gap-12">
+      {/* --- MAIN CONTENT --- */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+        {/* We use flex-col-reverse on mobile so sidebar content appears after intro if desired, 
+            or keep grid flow. Here standard grid flow works best. */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
 
-          {/* --- LEFT COLUMN: CONTENT --- */}
-          <div className="lg:col-span-7 space-y-12">
+          {/* --- LEFT COLUMN: CONTENT (Spans full width on mobile, 7 cols on desktop) --- */}
+          <div className="lg:col-span-7 space-y-10 md:space-y-12 order-1 lg:order-1">
 
             {/* Intro Content */}
             <motion.div
@@ -120,7 +125,7 @@ export default function CommunityLivelihoodPage() {
               <p className="text-xl md:text-2xl leading-relaxed font-bold text-brand-blue mb-6">
                 This Program aims to enhance the living standards of indigenous and host communities within the Albertine region, especially as it relates to natural resource sector developments.
               </p>
-              <p className="text-lg">
+              <p className="text-base md:text-lg leading-relaxed">
                 This initiative focuses on sustainable practices that empower communities to thrive frugally while respecting their cultural and environmental settings.
               </p>
             </motion.div>
@@ -131,27 +136,27 @@ export default function CommunityLivelihoodPage() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className="pt-8 border-t border-gray-100"
+              className="pt-6 md:pt-8 border-t border-gray-100"
             >
-              <div className="mb-8">
-                <h3 className="text-2xl font-bold text-brand-blue mb-1">Program Goals</h3>
+              <div className="mb-6 md:mb-8">
+                <h3 className="text-2xl md:text-3xl font-bold text-brand-blue mb-2">Program Goals</h3>
                 <div className="w-12 h-1 bg-brand-yellow rounded-full"></div>
               </div>
 
-              <div className="grid gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
                 {goals.map((goal, index) => (
                   <motion.div
                     key={index}
                     variants={cardVariant}
                     whileHover={{ y: -5 }}
-                    className="bg-gray-50 p-6 rounded-2xl border border-gray-100 hover:border-brand-green hover:shadow-lg transition-all duration-300 group flex gap-4 items-start"
+                    className="bg-gray-50 p-5 md:p-6 rounded-2xl border border-gray-100 hover:border-brand-green hover:shadow-md transition-all duration-300 group flex flex-col sm:flex-row gap-4 items-start"
                   >
                     <div className="bg-white w-12 h-12 rounded-full shadow-sm flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
                       {goal.icon}
                     </div>
                     <div>
-                      <h4 className="text-xl font-bold text-brand-blue mb-2">{goal.title}</h4>
-                      <p className="text-gray-600 leading-relaxed text-sm">
+                      <h4 className="text-lg md:text-xl font-bold text-brand-blue mb-2">{goal.title}</h4>
+                      <p className="text-gray-600 leading-relaxed text-sm md:text-base">
                         {goal.desc}
                       </p>
                     </div>
@@ -165,19 +170,19 @@ export default function CommunityLivelihoodPage() {
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-blue-50/50 rounded-2xl p-8 border-l-4 border-brand-green"
+              className="bg-blue-50/50 rounded-2xl p-6 md:p-8 border-l-4 border-brand-green"
             >
-              <h2 className="text-2xl font-bold text-brand-green mb-4">Innovative Livelihood Skills</h2>
-              <div className="prose prose-lg text-gray-600">
+              <h2 className="text-xl md:text-2xl font-bold text-brand-green mb-4">Innovative Livelihood Skills</h2>
+              <div className="prose prose-lg text-gray-600 text-sm md:text-base">
                 <p className="mb-4">
                   Empowering communities devastated by natural resource developments to restore and enrich their livelihoods. We support native-based approaches and movements capable of defending rights and building an entrepreneurship culture.
                 </p>
-                <div className="space-y-4">
+                <div className="space-y-3">
                   <p>
-                    <span className="font-bold text-brand-blue">The Challenge:</span> Due to limited capacity in managing compensation monies from lost land, many community members became vulnerable to poverty.
+                    <span className="font-bold text-brand-blue block sm:inline">The Challenge:</span> Due to limited capacity in managing compensation monies from lost land, many community members became vulnerable to poverty.
                   </p>
                   <p>
-                    <span className="font-bold text-brand-blue">The Solution:</span> AICOD carried out initiatives training on financial literacy, business plan development, bookkeeping, and technology integration.
+                    <span className="font-bold text-brand-blue block sm:inline">The Solution:</span> AICOD carried out initiatives training on financial literacy, business plan development, bookkeeping, and technology integration.
                   </p>
                 </div>
               </div>
@@ -188,11 +193,11 @@ export default function CommunityLivelihoodPage() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="bg-brand-blue rounded-3xl p-8 text-white relative overflow-hidden shadow-xl"
+              className="bg-brand-blue rounded-3xl p-6 md:p-8 text-white relative overflow-hidden shadow-xl"
             >
               {/* Decorative Background Circles */}
-              <div className="absolute -top-20 -left-20 w-64 h-64 bg-brand-green/20 rounded-full blur-3xl"></div>
-              <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-brand-orange/20 rounded-full blur-3xl"></div>
+              <div className="absolute -top-20 -left-20 w-48 md:w-64 h-48 md:h-64 bg-brand-green/20 rounded-full blur-3xl"></div>
+              <div className="absolute -bottom-20 -right-20 w-48 md:w-64 h-48 md:h-64 bg-brand-orange/20 rounded-full blur-3xl"></div>
 
               <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-4">
@@ -200,18 +205,18 @@ export default function CommunityLivelihoodPage() {
                   <span className="text-brand-yellow text-lg" style={{ fontFamily: 'Monotype Corsiva' }}>Collective Action</span>
                 </div>
 
-                <h2 className="text-3xl font-bold text-white mb-6">One Team Initiative</h2>
+                <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">One Team Initiative</h2>
 
-                <div className="space-y-4 text-blue-100 leading-relaxed">
+                <div className="space-y-4 text-blue-100 leading-relaxed text-sm md:text-base">
                   <p>
                     An economic program designed to empower community members to generate their own economic resources.
                   </p>
                   <p>
                     A significant challenge has been lack of access to affordable financing. Our program helps communities leverage local resources to create sustainable opportunities.
                   </p>
-                  <div className="bg-white/10 p-6 rounded-lg mt-6 border-l-4 border-brand-green backdrop-blur-sm">
+                  <div className="bg-white/10 p-5 md:p-6 rounded-lg mt-6 border-l-4 border-brand-green backdrop-blur-sm">
                     <p className="font-bold text-white mb-1">Impact:</p>
-                    <p className="text-sm">Over 100 households have collaborated to launch their own economic projects, attracting stakeholder support and improving lives.</p>
+                    <p className="text-sm md:text-base">Over 100 households have collaborated to launch their own economic projects, attracting stakeholder support and improving lives.</p>
                   </div>
                 </div>
               </div>
@@ -220,10 +225,17 @@ export default function CommunityLivelihoodPage() {
           </div>
 
           {/* --- RIGHT COLUMN: MEDIA SIDEBAR --- */}
-          <div className="lg:col-span-5">
-            <ProgramMediaSidebar
-              images={sidebarImages}
-            />
+          {/* On mobile, this stacks below content. On Desktop, it's sticky to the right. */}
+          <div className="lg:col-span-5 order-2 lg:order-2">
+            <div className="sticky top-24"> 
+              <ProgramMediaSidebar
+                images={sidebarImages}
+              />
+              {/* Optional Mobile-Only Note if the sidebar is complex */}
+              <div className="block lg:hidden mt-4 text-center text-sm text-gray-400">
+                Swipe through gallery
+              </div>
+            </div>
           </div>
 
         </div>

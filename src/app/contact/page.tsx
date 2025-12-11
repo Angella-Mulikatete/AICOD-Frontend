@@ -2,6 +2,7 @@ import { ContactForm } from '@/components/contact-form';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { type Metadata } from 'next';
 import MapWrapper from '@/components/ui/map-wrapper';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: 'Contact Us',
@@ -17,10 +18,26 @@ export default function ContactPage() {
 
   return (
     <div className="animate-enter">
-      <header className="bg-primary py-16 text-primary-foreground md:py-24">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="font-headline text-4xl font-bold md:text-5xl">Get In Touch</h1>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-primary-foreground/80">
+      <header className="relative py-16 text-primary-foreground md:py-24 overflow-hidden">
+        {/* Background Image Layer */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/assets/images/contact-hero.png"
+            alt="Get in touch with AICOD"
+            fill
+            className="object-cover"
+            priority
+          />
+          {/* Brand Color Overlay */}
+          <div className="absolute inset-0 bg-brand-green/70 mix-blend-multiply" />
+          {/* Dark Gradient for text contrast */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+        </div>
+
+        {/* Content Layer */}
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <h1 className="font-headline text-4xl font-bold md:text-5xl drop-shadow-lg">Get In Touch</h1>
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-primary-foreground/90 drop-shadow-md">
             We&apos;d love to hear from you. Whether you have a question, feedback, or want to collaborate, please reach out.
           </p>
         </div>
