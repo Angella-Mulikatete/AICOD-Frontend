@@ -36,7 +36,7 @@ export function Footer() {
   };
 
   return (
-    <footer className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden">
+    <footer className="relative bg-brand-blue text-white overflow-hidden shadow-2xl">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-0 left-0 w-96 h-96 bg-brand-green rounded-full blur-3xl" />
@@ -55,9 +55,9 @@ export function Footer() {
                 <div className="font-headline text-3xl font-bold mb-2 flex items-center gap-1">
                   <span className="text-brand-green group-hover:scale-110 transition-transform inline-block">A</span>
                   <span className="text-brand-orange group-hover:scale-110 transition-transform inline-block">I</span>
-                  <span className="text-brand-blue group-hover:scale-110 transition-transform inline-block">C</span>
-                  <span className="text-brand-blue group-hover:scale-110 transition-transform inline-block">O</span>
-                  <span className="text-brand-blue group-hover:scale-110 transition-transform inline-block">D</span>
+                  <span className=" group-hover:scale-110 transition-transform inline-block">C</span>
+                  <span className=" group-hover:scale-110 transition-transform inline-block">O</span>
+                  <span className=" group-hover:scale-110 transition-transform inline-block">D</span>
                 </div>
               </Link>
               <p className="text-slate-400 mb-6 leading-relaxed text-sm">
