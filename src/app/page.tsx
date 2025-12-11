@@ -78,7 +78,7 @@ export default function Home() {
             </h1>
 
             <p className="text-lg md:text-2xl font-light text-blue-50 leading-relaxed mb-10 max-w-2xl mx-auto drop-shadow-md">
-                Inspired by wonders 
+              Inspired by wonders
             </p>
 
             <div className="flex flex-col sm:flex-row gap-5 justify-center">
@@ -300,17 +300,31 @@ export default function Home() {
       </section>
 
       {/* --- CONTACT CTA --- */}
-      <section className="bg-brand-green py-20">
-        <div className="container mx-auto px-4">
+      <section className="py-20 bg-slate-50">
+        <div className="container mx-auto px-4 md:px-8">
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="bg-brand-orange rounded-[2.5rem] p-10 md:p-16 text-center text-white relative overflow-hidden shadow-2xl"
+            className="rounded-[2.5rem] p-10 md:p-16 text-center text-white relative overflow-hidden shadow-2xl"
           >
+            {/* Background Image Layer */}
+            <div className="absolute inset-0 z-0">
+              <Image
+                src="/assets/images/cta-bg.png"
+                alt="Join us in making a difference"
+                fill
+                className="object-cover"
+              />
+              {/* Orange Overlay for brand consistency */}
+              {/* <div className="absolute inset-0 bg-brand-orange/85 mix-blend-multiply" /> */}
+              {/* Dark gradient for text contrast */}
+              {/* <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" /> */}
+            </div>
+
             {/* Decorative circles */}
-            <div className="absolute top-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
-            <div className="absolute bottom-0 right-0 w-64 h-64 bg-brand-yellow/20 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
+            <div className="absolute top-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 z-[1]"></div>
+            <div className="absolute bottom-0 right-0 w-64 h-64 bg-brand-yellow/20 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 z-[1]"></div>
 
             <h2 className="text-3xl md:text-5xl font-bold mb-6 relative z-10">Ready to Make a Difference?</h2>
             <p className="text-lg md:text-xl text-orange-50 mb-10 max-w-2xl mx-auto relative z-10 leading-relaxed">
