@@ -1,11 +1,10 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
 import { getPlaceholderImage } from '@/lib/image-assets';
 import { storyContent } from './data'; // Assuming data.ts is in the same folder
-import { ChevronDown, ChevronUp, Target, Eye, Quote } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Target, Eye, Quote } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 // --- Animation Variants ---
 const fadeInUp = {
@@ -15,11 +14,6 @@ const fadeInUp = {
 
 export default function OurStoryPage() {
   const storyImage = getPlaceholderImage('our-story-main');
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  // Split content: First 3 paragraphs vs the rest
-  const initialContent = storyContent.history.content.slice(0, 3);
-  const hiddenContent = storyContent.history.content.slice(3);
 
   return (
     <div className="bg-white min-h-screen font-sans text-foreground">
@@ -86,50 +80,18 @@ export default function OurStoryPage() {
                 </h2>
 
                 <article className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
-                  {/* Initial Paragraphs */}
-                  {initialContent.map((para, idx) => (
+                  {/* All Content */}
+                  {storyContent.history.content.map((para, idx) => (
                     <p key={idx} className={idx === 0 ? "text-xl font-medium text-brand-blue/90" : ""}>
                       {para}
                     </p>
                   ))}
 
-                  {/* Hidden Paragraphs with Animation */}
-                  <AnimatePresence>
-                    {isExpanded && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="space-y-4 pt-4">
-                          {hiddenContent.map((para, idx) => (
-                            <p key={`hidden-${idx}`}>{para}</p>
-                          ))}
-
-                          {/* Closing Quote Block */}
-                          <div className="bg-brand-blue/5 p-6 rounded-lg border-l-4 border-brand-green mt-6">
-                            <p className="italic text-brand-blue font-medium m-0">
-                              "Our hope is that the benefits of these initiatives... can be shared globally, fostering a more equitable and sustainable future for all."
-                            </p>
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                  {/* Toggle Button */}
-                  <div className="not-prose mt-8 flex justify-start">
-                    <button
-                      onClick={() => setIsExpanded(!isExpanded)}
-                      className="group flex items-center gap-2 px-6 py-3 rounded-full border-2 border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white font-bold transition-all duration-300"
-                    >
-                      {isExpanded ? (
-                        <>Read Less <ChevronUp className="w-4 h-4" /></>
-                      ) : (
-                        <>Read Full History <ChevronDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" /></>
-                      )}
-                    </button>
+                  {/* Closing Quote Block */}
+                  <div className="bg-brand-blue/5 p-6 rounded-lg border-l-4 border-brand-green mt-6">
+                    <p className="italic text-brand-blue font-medium m-0">
+                      "Our hope is that the benefits of these initiatives... can be shared globally, fostering a more equitable and sustainable future for all."
+                    </p>
                   </div>
                 </article>
               </motion.div>
@@ -192,19 +154,6 @@ export default function OurStoryPage() {
                     </div>
                   </div>
                 </motion.div>
-
-                {/* Decorative Element */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  className="bg-brand-yellow rounded-xl p-6 text-brand-blue text-center shadow-md"
-                >
-                  <p className="font-bold text-sm uppercase tracking-widest mb-1">Established</p>
-                  <p className="text-4xl font-bold" style={{ fontFamily: 'Arial Black, sans-serif' }}>2013</p>
-                  <p className="text-sm opacity-80">Kikuube District, Uganda</p>
-                </motion.div>
-
               </div>
             </div>
 

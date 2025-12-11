@@ -37,64 +37,65 @@ export default function Home() {
     <div className="flex flex-col min-h-screen font-sans overflow-x-hidden">
 
       {/* --- HERO SECTION --- */}
-   <section className="relative h-[85vh] min-h-[600px] w-full overflow-hidden">
-      <motion.div
-        initial={{ scale: 1.1 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 2.5, ease: [0.33, 1, 0.68, 1] as const }}
-        className="absolute inset-0 -z-10"
-      >
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="h-full w-full object-cover"
-          // Poster is the fallback image shown while video loads
-          poster="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=2072&auto=format&fit=crop"
-        >
-          <source 
-            src="/assets/video/aicod.mp4" 
-            type="video/mp4" 
-          />
-          Your browser does not support the video tag.
-        </video>
-      </motion.div>
-
-      <div className="absolute inset-0 bg-gradient-to-r from-brand-blue/95 via-brand-blue/60 to-black/30 mix-blend-multiply" />
-      <div className="absolute inset-0 bg-black/10" />
-
-      {/* --- CONTENT --- */}
-      <div className="relative z-10 flex h-full flex-col justify-center px-4 container mx-auto">
+      <section className="relative h-[85vh] min-h-[600px] w-full overflow-hidden">
         <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={fadeInUp}
-          className="max-w-4xl mx-auto text-center"
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 2.5, ease: [0.33, 1, 0.68, 1] as const }}
+          className="absolute inset-0 -z-10"
         >
-          <h1 className="font-bold text-5xl md:text-7xl lg:text-8xl text-white mb-6 leading-tight drop-shadow-xl">
-            Welcome To <span className="text-brand-green">AICOD</span>
-          </h1>
-
-          <p className="text-lg md:text-2xl font-light text-blue-50 leading-relaxed mb-10 max-w-2xl mx-auto drop-shadow-md">
-            Empowering and equipping the younger generation to defend their communities' rights for sustainable change.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-5 justify-center">
-            <Button asChild size="lg" className="bg-brand-orange hover:bg-[#a04823] text-white text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent">
-              <Link href="/donations">
-                Support Our Mission <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="outline" className="border-2 border-white text-white bg-transparent hover:bg-white hover:text-brand-blue text-lg px-8 py-6 rounded-full transition-all duration-300">
-              <Link href="/programs/biodiversity">
-                Explore Programs
-              </Link>
-            </Button>
-          </div>
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="h-full w-full object-cover"
+            // Poster is the fallback image shown while video loads
+            poster="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=2072&auto=format&fit=crop"
+          >
+            <source
+              src="/assets/video/aicod.mp4"
+              type="video/mp4"
+            />
+            Your browser does not support the video tag.
+          </video>
         </motion.div>
-      </div>
-    </section>
+
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-blue/95 via-brand-blue/60 to-black/30 mix-blend-multiply" />
+        <div className="absolute inset-0 bg-black/10" />
+
+        {/* --- CONTENT --- */}
+        <div className="relative z-10 flex h-full flex-col justify-center px-4 container mx-auto">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={fadeInUp}
+            className="max-w-4xl mx-auto text-center"
+          >
+
+            <h1 className="font-bold text-5xl md:text-7xl lg:text-8xl text-white mb-6 leading-tight drop-shadow-xl">
+              Welcome To <span className="text-brand-green">AICOD</span>
+            </h1>
+
+            <p className="text-lg md:text-2xl font-light text-blue-50 leading-relaxed mb-10 max-w-2xl mx-auto drop-shadow-md">
+                Inspired by wonders And centered
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-5 justify-center">
+              <Button asChild size="lg" className="bg-brand-orange hover:bg-[#a04823] text-white text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent">
+                <Link href="/our-story">
+                  Our Story <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="border-2 border-white text-white bg-transparent hover:bg-white hover:text-brand-blue text-lg px-8 py-6 rounded-full transition-all duration-300">
+                <Link href="/programs/biodiversity">
+                  Explore Programmes
+                </Link>
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      </section>
 
       {/* --- WHO WE ARE + VISION & MISSION --- */}
       <section className="bg-white py-20 md:py-24">
@@ -184,7 +185,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-brand-blue mb-4">Our Core Programs</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-brand-blue mb-4">Our Core Programmes</h2>
             <div className="w-16 h-1.5 bg-brand-orange mx-auto rounded-full mb-4" />
             <p className="max-w-2xl mx-auto text-lg text-gray-500">
               We focus on key areas that are critical for sustainable development and community well-being.
@@ -299,7 +300,7 @@ export default function Home() {
       </section>
 
       {/* --- CONTACT CTA --- */}
-      <section className="bg-brand-blue py-20">
+      <section className="bg-brand-green py-20">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
@@ -323,8 +324,8 @@ export default function Home() {
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white/10 text-lg px-8 py-6 rounded-full bg-transparent">
-                <Link href="/donations" className="flex items-center gap-2">
-                  <HeartHandshake className="w-5 h-5" /> Donate Now
+                <Link href="/our-story" className="flex items-center gap-2">
+                  <ArrowRight className="w-5 h-5" /> Read Our Story
                 </Link>
               </Button>
             </div>

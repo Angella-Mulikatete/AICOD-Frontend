@@ -1,8 +1,9 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Copy, Banknote } from 'lucide-react';
-import { type Metadata } from 'next';
+import { Copy, Mail } from 'lucide-react';
+import { Metadata } from 'next';
+import Link from 'next/link';
 import Image from 'next/image';
+
 
 export const metadata: Metadata = {
   title: 'Donations',
@@ -38,32 +39,40 @@ export default function DonationsPage() {
         </div>
       </header>
 
-      <div className="container mx-auto max-w-2xl px-4 py-16">
-        <Card className="shadow-xl">
-          <CardHeader className="text-center">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-accent text-accent-foreground">
-              <Banknote className="h-6 w-6" />
+      <div className="container mx-auto max-w-4xl px-4 py-16">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+
+          {/* Creative Write-up */}
+          <div className="space-y-6">
+            <h2 className="text-3xl font-bold text-brand-blue">Partner With Us</h2>
+            <div className="w-12 h-1 bg-brand-orange rounded-full" />
+            <p className="text-lg text-gray-600 leading-relaxed">
+              We believe that true impact is built on trust and protection. To ensure your support reaches the right hands securely, we handle all partnerships and donations through direct contact.
+            </p>
+            <p className="text-lg text-gray-600 leading-relaxed">
+              Please reach out to our team to discuss how you can support our mission—whether through financial contribution, equipment, or expertise. We look forward to building a meaningful partnership with you.
+            </p>
+            <div className="pt-4">
+              <Button asChild size="lg" className="bg-brand-green hover:bg-[#7FB32D] text-white rounded-full px-8">
+                <Link href="/contact" className="flex items-center gap-2">
+                  <Mail className="w-5 h-5" /> Contact Us to Support
+                </Link>
+              </Button>
             </div>
-            <CardTitle className="mt-4 font-headline text-3xl">Donate via Bank Transfer</CardTitle>
-            <CardDescription className="text-lg">
-              Please use the details below to make a direct bank transfer.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4 rounded-lg border bg-muted/50 p-6 text-lg">
-              {Object.entries(bankDetails).map(([key, value]) => (
-                <div key={key} className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                  <dt className="font-semibold text-primary">{key}:</dt>
-                  <dd className="font-mono text-muted-foreground">{value}</dd>
-                </div>
-              ))}
-            </div>
-            <div className="mt-6 text-center text-sm text-muted-foreground">
-              <p>For international transfers, please ensure you use the correct SWIFT code. If you have any questions or need a receipt for your donation, please contact us at <a href="mailto:info@aicode.org" className="text-accent underline">info@aicode.org</a>.</p>
-              <p className="mt-2 font-semibold">Thank you for your generosity!</p>
-            </div>
-          </CardContent>
-        </Card>
+          </div>
+
+          {/* Photo */}
+          <div className="relative h-[400px] w-full rounded-2xl overflow-hidden shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-500">
+            <Image
+              src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070&auto=format&fit=crop"
+              alt="Volunteers helping community"
+              fill
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-brand-blue/10 mix-blend-multiply" />
+          </div>
+
+        </div>
       </div>
     </div>
   );
