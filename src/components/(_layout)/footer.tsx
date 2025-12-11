@@ -114,7 +114,7 @@ export function Footer() {
 
                 {/* Programs */}
                 <div>
-                  <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-wider">Programs</h3>
+                  <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-wider">Programmes</h3>
                   <ul className="space-y-3">
                     {navLinks.find(l => l.title === 'Programmes')?.subLinks?.map(link => (
                       <li key={link.title}>
