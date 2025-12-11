@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { getPlaceholderImage } from '@/lib/image-assets';
-import { CheckCircle, ChevronDown, ChevronUp, Leaf, Globe } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { CheckCircle, Leaf, Globe } from 'lucide-react';
+import { ProgramMediaSidebar } from '@/components/program-media-sidebar';
 
 // --- Animation Variants ---
 const fadeIn = {
@@ -26,9 +26,6 @@ const cardVariant = {
 };
 
 export default function BiodiversityPage() {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  // Using placeholder logic from your snippet
   const heroImage = getPlaceholderImage('program-biodiversity');
 
   const goals = [
@@ -63,7 +60,8 @@ export default function BiodiversityPage() {
           {/* Brand Overlay: Blue with multiply blend for depth */}
           <div className="absolute inset-0 bg-brand-blue/80 mix-blend-multiply" />
 
-          <div className="container mx-auto px-4">
+          {/* ADDED h-full HERE so the container fills the header height */}
+          <div className="container mx-auto px-4 h-full">
             <div className="relative z-10 flex h-full flex-col items-center justify-center text-center">
               <motion.div
                 initial="hidden"
@@ -91,137 +89,102 @@ export default function BiodiversityPage() {
       )}
 
       <div className="container mx-auto px-4 py-16">
-        <div className="max-w-5xl mx-auto -mt-26 relative z-20">
+        <div className="grid lg:grid-cols-12 gap-12">
 
-          {/* --- MAIN ARTICLE CARD --- */}
-          <motion.article
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="bg-white rounded-xl shadow-xl p-8 md:p-12 border-t-8 border-brand-green"
-          >
-            {/* Lead Paragraph (Always Visible) */}
-            <div className="prose prose-lg max-w-none text-gray-700">
+          {/* --- LEFT COLUMN: CONTENT --- */}
+          <div className="lg:col-span-7 space-y-12">
+
+            {/* Main Article */}
+            <motion.article
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="prose prose-lg max-w-none text-gray-700"
+            >
               <p className="text-xl md:text-2xl leading-relaxed font-bold text-brand-blue mb-8">
                 The world faces a growing climate crisis, yet many global development projects compromise the environment. This pattern weakens critical conservation efforts needed to protect ecosystems.
               </p>
-            </div>
 
-            {/* Collapsible Content */}
-            <AnimatePresence>
-              {isExpanded && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.5, ease: "easeInOut" }}
-                  className="overflow-hidden"
-                >
-                  <div className="prose prose-lg max-w-none text-gray-600 space-y-6 pt-4">
-                    <p>
-                      A compelling example of this conflict is the rapid growth of oil and gas projects within the sensitive Albertine Rift region. These developments pose serious threats to fragile ecosystems, fundamentally altering the environment and increasing the region’s climate vulnerability.
-                    </p>
-                    <p>
-                      The resulting environmental changes have severe consequences for local grassroots communities whose survival depends entirely on ecological stability and biodiversity.
-                    </p>
+              <div className="space-y-6 text-gray-600">
+                <p>
+                  A compelling example of this conflict is the rapid growth of oil and gas projects within the sensitive Albertine Rift region. These developments pose serious threats to fragile ecosystems, fundamentally altering the environment and increasing the region’s climate vulnerability.
+                </p>
+                <p>
+                  The resulting environmental changes have severe consequences for local grassroots communities whose survival depends entirely on ecological stability and biodiversity.
+                </p>
 
-                    {/* Decorative Quote using Brand Styles */}
-                    <div className="my-8 pl-6 border-l-4 border-brand-orange bg-orange-50/50 p-6 rounded-r-lg">
-                      <p className="text-2xl text-brand-blue" style={{ fontFamily: 'Monotype Corsiva' }}>
-                        "Therefore, this programme aims to empower local grassroots communities by increasing their capacity, awareness, and ability to be resilient."
-                      </p>
-                    </div>
+                {/* Decorative Quote using Brand Styles */}
+                <div className="my-8 pl-6 border-l-4 border-brand-orange bg-orange-50/50 p-6 rounded-r-lg">
+                  <p className="text-2xl text-brand-blue" style={{ fontFamily: 'Monotype Corsiva' }}>
+                    "Therefore, this programme aims to empower local grassroots communities by increasing their capacity, awareness, and ability to be resilient."
+                  </p>
+                </div>
 
-                    <p>
-                      This is achieved by advocating for responsible policies and effectively using existing laws to promote environmental conservation while directly addressing the various environmental challenges facing these communities.
-                    </p>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Toggle Button */}
-            <div className="mt-8 flex justify-center">
-              <button
-                onClick={() => setIsExpanded(!isExpanded)}
-                className="group flex items-center gap-2 px-8 py-3 rounded-full bg-brand-blue text-white hover:bg-[#1a194d] transition-all duration-300 font-bold shadow-lg hover:shadow-xl"
-              >
-                <span>{isExpanded ? "Show Less" : "Read Full Story"}</span>
-                {isExpanded ? (
-                  <ChevronUp className="w-5 h-5 text-brand-green" />
-                ) : (
-                  <ChevronDown className="w-5 h-5 text-brand-green group-hover:translate-y-0.5 transition-transform" />
-                )}
-              </button>
-            </div>
-          </motion.article>
-
-          {/* --- STRATEGIC GOALS SECTION --- */}
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            className="mt-20"
-          >
-            <div className="flex flex-col md:flex-row md:items-center gap-4 mb-10 border-b border-gray-200 pb-4">
-              <div className="bg-brand-green/10 p-3 rounded-full w-fit">
-                <Leaf className="text-brand-green w-8 h-8" />
+                <p>
+                  This is achieved by advocating for responsible policies and effectively using existing laws to promote environmental conservation while directly addressing the various environmental challenges facing these communities.
+                </p>
               </div>
-              <div>
-                <h3 className="text-3xl font-bold text-brand-blue">Program Goals</h3>
+            </motion.article>
+
+            {/* Strategic Goals Section */}
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="pt-8 border-t border-gray-100"
+            >
+              <div className="flex flex-col gap-4 mb-8">
+                <div className="flex items-center gap-3">
+                  <div className="bg-brand-green/10 p-2 rounded-full">
+                    <Leaf className="text-brand-green w-6 h-6" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-brand-blue">Program Goals</h3>
+                </div>
                 <p className="text-gray-500">Our commitment to a sustainable future</p>
               </div>
-            </div>
 
-            <div className="grid md:grid-cols-3 gap-6">
-              {goals.map((goal, index) => (
-                <motion.div
-                  key={index}
-                  variants={cardVariant}
-                  whileHover={{ y: -5 }}
-                  className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:border-brand-green hover:shadow-lg transition-all duration-300 flex flex-col group"
-                >
-                  <div className="mb-4">
-                    <CheckCircle className="w-8 h-8 text-brand-orange group-hover:text-brand-green transition-colors duration-300" />
-                  </div>
-                  <p className="text-gray-700 font-medium leading-relaxed">
-                    {goal}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+              <div className="space-y-4">
+                {goals.map((goal, index) => (
+                  <motion.div
+                    key={index}
+                    variants={cardVariant}
+                    whileHover={{ x: 5 }}
+                    className="flex gap-4 p-4 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
+                    <CheckCircle className="w-6 h-6 text-brand-orange flex-shrink-0 mt-1" />
+                    <p className="text-gray-700 font-medium leading-relaxed">
+                      {goal}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
 
-          {/* --- MOTHER EARTH PROTECTION (MEP) SECTION --- */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="mt-24 rounded-2xl overflow-hidden shadow-2xl bg-brand-blue text-white"
-          >
-            <div className="grid lg:grid-cols-2 gap-0">
+            {/* MEP Movement Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-brand-blue rounded-2xl p-8 text-white shadow-xl relative overflow-hidden"
+            >
+              {/* Background accent */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-green/10 rounded-full blur-3xl -mr-32 -mt-32" />
 
-              {/* Content Side */}
-              <div className="p-8 md:p-14 flex flex-col justify-center relative">
-                {/* Decorative Background Element */}
-                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-brand-green via-brand-yellow to-brand-orange" />
-
+              <div className="relative z-10">
                 <div className="flex items-center gap-2 text-brand-green font-bold uppercase tracking-widest text-sm mb-4">
                   <Globe className="w-4 h-4" />
                   Global Movement
                 </div>
 
-                <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white leading-tight">
+                <h2 className="text-2xl md:text-3xl font-bold mb-6 text-white leading-tight">
                   The Mother Earth Protection <br />
                   <span className="text-brand-yellow" style={{ fontFamily: 'Monotype Corsiva', fontWeight: 'normal' }}>
                     (MEP) Movement
                   </span>
                 </h2>
 
-                <div className="space-y-6 text-blue-100 leading-relaxed text-lg">
+                <div className="space-y-6 text-blue-100 leading-relaxed">
                   <p>
                     Founded to empower communities to fulfill their role as the <span className="font-bold text-white">"original caretakers of Mother Earth,"</span> the MEP movement bridges the gap between ancient wisdom and modern action.
                   </p>
@@ -239,20 +202,20 @@ export default function BiodiversityPage() {
                   </div>
                 </div>
               </div>
+            </motion.div>
 
-              {/* Image Side */}
-              <div className="relative h-[350px] lg:h-auto w-full group overflow-hidden">
-                <Image
-                  src="/images/our-story/mep.png"
-                  alt="Mother Earth Protection Movement"
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                {/* Green Overlay on Hover */}
-                <div className="absolute inset-0 bg-brand-green/20 group-hover:bg-transparent transition-colors duration-500" />
-              </div>
-            </div>
-          </motion.div>
+          </div>
+
+          {/* --- RIGHT COLUMN: MEDIA SIDEBAR --- */}
+          <div className="lg:col-span-5">
+            <ProgramMediaSidebar
+              images={[
+                "/images/our-story/mep.png",
+                "https://images.unsplash.com/photo-1542601906990-24ccd08d7455?q=80&w=2000&auto=format&fit=crop",
+                "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?q=80&w=2000&auto=format&fit=crop"
+              ]}
+            />
+          </div>
 
         </div>
       </div>

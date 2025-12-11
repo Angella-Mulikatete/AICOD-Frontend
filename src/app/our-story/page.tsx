@@ -40,7 +40,7 @@ export default function OurStoryPage() {
         {/* Brand Overlay: Orange mixed with Blue for a warm, serious tone */}
         <div className="absolute inset-0 bg-gradient-to-r from-brand-blue/90 to-brand-orange/80 mix-blend-multiply" />
 
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 h-full">
           <div className="relative z-10 flex h-full flex-col items-center justify-center text-center">
             <motion.div
               initial="hidden"

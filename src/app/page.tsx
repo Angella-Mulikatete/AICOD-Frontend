@@ -54,7 +54,7 @@ export default function Home() {
             poster="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=2072&auto=format&fit=crop"
           >
             <source
-              src="/assets/video/aicod.mp4"
+              src="/assets/video/AICODV.mp4"
               type="video/mp4"
             />
             Your browser does not support the video tag.
