@@ -322,6 +322,10 @@ export default function Home() {
                 fill
                 className="object-cover"
               />
+              {/* Dark overlay for better text contrast on mobile */}
+              <div className="absolute inset-0 bg-black/40 md:bg-black/30" />
+              {/* Gradient overlay for additional depth */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/40" />
             </div>
 
             {/* Decorative circles */}
