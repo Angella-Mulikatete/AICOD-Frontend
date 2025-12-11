@@ -78,7 +78,7 @@ export default function Home() {
             </h1>
 
             <p className="text-lg md:text-2xl font-light text-blue-50 leading-relaxed mb-10 max-w-2xl mx-auto drop-shadow-md">
-                Inspired by wonders And centered
+                Inspired by wonders 
             </p>
 
             <div className="flex flex-col sm:flex-row gap-5 justify-center">
