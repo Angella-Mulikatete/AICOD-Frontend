@@ -30,17 +30,19 @@ export function Footer() {
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle newsletter subscription
     console.log('Subscribe email:', email);
     setEmail('');
   };
 
   return (
-    <footer className="relative bg-brand-blue text-white overflow-hidden shadow-2xl">
+    // CHANGED: bg-brand-blue -> bg-brand-orange
+    <footer className="relative bg-brand-orange text-white overflow-hidden shadow-2xl">
+      
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
+      <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 left-0 w-96 h-96 bg-brand-green rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-brand-orange rounded-full blur-3xl" />
+        {/* CHANGED: Bottom blob from orange to blue for contrast */}
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-brand-blue rounded-full blur-3xl" />
       </div>
 
       <div className="container mx-auto px-4 md:px-8 relative z-10">
@@ -54,13 +56,15 @@ export function Footer() {
               <Link href="/" className="inline-block group">
                 <div className="font-headline text-3xl font-bold mb-2 flex items-center gap-1">
                   <span className="text-brand-green group-hover:scale-110 transition-transform inline-block">A</span>
-                  <span className="text-brand-orange group-hover:scale-110 transition-transform inline-block">I</span>
+                  {/* CHANGED: 'I' color from orange to blue so it shows on orange bg */}
+                  <span className="text-brand-blue group-hover:scale-110 transition-transform inline-block">I</span>
                   <span className=" group-hover:scale-110 transition-transform inline-block">C</span>
                   <span className=" group-hover:scale-110 transition-transform inline-block">O</span>
                   <span className=" group-hover:scale-110 transition-transform inline-block">D</span>
                 </div>
               </Link>
-              <p className="text-slate-400 mb-6 leading-relaxed text-sm">
+              {/* CHANGED: text-slate-400 -> text-orange-50 for better contrast */}
+              <p className="text-orange-50 mb-6 leading-relaxed text-sm">
                 Albertine Institute For Community Development - Empowering communities through sustainable development, human rights advocacy, and environmental conservation.
               </p>
 
@@ -70,7 +74,7 @@ export function Footer() {
                   <a
                     key={social.name}
                     href={social.href}
-                    className="w-10 h-10 rounded-lg bg-white/5 hover:bg-brand-green flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-brand-green/20"
+                    className="w-10 h-10 rounded-lg bg-white/10 hover:bg-brand-blue flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg"
                     aria-label={social.name}
                   >
                     <social.icon className="w-5 h-5" />
@@ -81,7 +85,8 @@ export function Footer() {
               {/* Contact Info */}
               <div className="space-y-3">
                 {contactInfo.map((item, index) => (
-                  <div key={index} className="flex items-start gap-3 text-sm text-slate-400">
+                  // CHANGED: text-slate-400 -> text-orange-50
+                  <div key={index} className="flex items-start gap-3 text-sm text-orange-50">
                     <item.icon className="w-4 h-4 mt-0.5 text-brand-yellow flex-shrink-0" />
                     <span>{item.text}</span>
                   </div>
@@ -98,13 +103,14 @@ export function Footer() {
                   <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-wider">About</h3>
                   <ul className="space-y-3">
                     <li>
-                      <Link href="/our-story" className="text-slate-400 hover:text-brand-green transition-colors text-sm flex items-center gap-2 group">
+                      {/* CHANGED: Hover color to brand-blue because orange background consumes brand-orange */}
+                      <Link href="/our-story" className="text-orange-50 hover:text-brand-blue transition-colors text-sm flex items-center gap-2 group">
                         <span className="w-1 h-1 rounded-full bg-brand-green opacity-0 group-hover:opacity-100 transition-opacity" />
                         Our Story
                       </Link>
                     </li>
                     <li>
-                      <Link href="/cause" className="text-slate-400 hover:text-brand-green transition-colors text-sm flex items-center gap-2 group">
+                      <Link href="/cause" className="text-orange-50 hover:text-brand-blue transition-colors text-sm flex items-center gap-2 group">
                         <span className="w-1 h-1 rounded-full bg-brand-green opacity-0 group-hover:opacity-100 transition-opacity" />
                         Our Cause
                       </Link>
@@ -118,8 +124,9 @@ export function Footer() {
                   <ul className="space-y-3">
                     {navLinks.find(l => l.title === 'Programmes')?.subLinks?.map(link => (
                       <li key={link.title}>
-                        <Link href={link.href} className="text-slate-400 hover:text-brand-orange transition-colors text-sm flex items-center gap-2 group">
-                          <span className="w-1 h-1 rounded-full bg-brand-orange opacity-0 group-hover:opacity-100 transition-opacity" />
+                        {/* CHANGED: Hover color to brand-blue */}
+                        <Link href={link.href} className="text-orange-50 hover:text-brand-blue transition-colors text-sm flex items-center gap-2 group">
+                          <span className="w-1 h-1 rounded-full bg-brand-blue opacity-0 group-hover:opacity-100 transition-opacity" />
                           {link.title}
                         </Link>
                       </li>
@@ -132,13 +139,13 @@ export function Footer() {
                   <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-wider">Support</h3>
                   <ul className="space-y-3">
                     <li>
-                      <Link href="/donations" className="text-slate-400 hover:text-brand-green transition-colors text-sm flex items-center gap-2 group">
+                      <Link href="/donations" className="text-orange-50 hover:text-brand-blue transition-colors text-sm flex items-center gap-2 group">
                         <span className="w-1 h-1 rounded-full bg-brand-green opacity-0 group-hover:opacity-100 transition-opacity" />
                         Donations
                       </Link>
                     </li>
                     <li>
-                      <Link href="/contact" className="text-slate-400 hover:text-brand-green transition-colors text-sm flex items-center gap-2 group">
+                      <Link href="/contact" className="text-orange-50 hover:text-brand-blue transition-colors text-sm flex items-center gap-2 group">
                         <span className="w-1 h-1 rounded-full bg-brand-green opacity-0 group-hover:opacity-100 transition-opacity" />
                         Contact Us
                       </Link>
@@ -150,26 +157,27 @@ export function Footer() {
 
             {/* Right Column: Newsletter */}
             <div className="lg:col-span-3">
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
                 <h3 className="font-bold text-white mb-2 text-lg">Stay Updated</h3>
-                <p className="text-slate-400 text-sm mb-4">
+                <p className="text-orange-50 text-sm mb-4">
                   Subscribe to our newsletter for updates on our programs and impact.
                 </p>
                 <form onSubmit={handleSubscribe} className="space-y-3">
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-orange-200" />
                     <input
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Your email address"
-                      className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent text-sm"
+                      className="w-full pl-10 pr-4 py-2.5 bg-white/10 border border-white/20 rounded-lg text-white placeholder:text-orange-100 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent text-sm"
                       required
                     />
                   </div>
+                  {/* Button kept as brand-green for high contrast against orange */}
                   <button
                     type="submit"
-                    className="w-full bg-brand-green hover:bg-brand-green/90 text-white font-medium py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-brand-green/20 flex items-center justify-center gap-2 text-sm"
+                    className="w-full bg-brand-green hover:bg-brand-green/90 text-white font-medium py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-black/20 flex items-center justify-center gap-2 text-sm"
                   >
                     Subscribe
                     <Send className="w-4 h-4" />
@@ -182,16 +190,16 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-white/10 py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-400">
+        <div className="border-t border-white/20 py-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-orange-100">
             <p>
               &copy; {new Date().getFullYear()} AICOD. All Rights Reserved.
             </p>
             <div className="flex gap-6">
-              <Link href="/privacy" className="hover:text-brand-green transition-colors">
+              <Link href="/privacy" className="hover:text-white transition-colors">
                 Privacy Policy
               </Link>
-              <Link href="/terms" className="hover:text-brand-green transition-colors">
+              <Link href="/terms" className="hover:text-white transition-colors">
                 Terms of Service
               </Link>
             </div>

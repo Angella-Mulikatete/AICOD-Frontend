@@ -7,7 +7,7 @@ import { navLinks } from '@/lib/nav-links';
 import { MobileNav } from './mobile-nav';
 import { Button } from '../ui/button';
 import { ChevronDown } from 'lucide-react';
-import AICODLogo from "../../../public/assets/images/aicodlogo.png";
+import AICODLogo from "../../../public/assets/images/AICOD  log.svg";
 
 const Dropdown = ({ link }: { link: any }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -83,7 +83,7 @@ export function Header() {
               )
             )}
           </nav>
-          <Button asChild className="ml-2 bg-accent text-accent-foreground hover:bg-accent/90">
+          <Button asChild className="ml-2 bg-brand-orange text-accent-foreground hover:bg-accent/90">
             <Link href="/donations">Donate Now</Link>
           </Button>
         </div>
