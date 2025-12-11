@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 
 // --- CONFIGURATION ---
 // Replace this with your actual YouTube Video ID
-const YOUTUBE_VIDEO_ID = 'YOUR_YOUTUBE_VIDEO_ID'; 
+const YOUTUBE_VIDEO_ID = 'YOUR_YOUTUBE_VIDEO_ID';
 
 // --- Animation Variants ---
 const fadeInUp = {
@@ -40,7 +40,7 @@ export default function Home() {
 
       {/* --- HERO SECTION --- */}
       <section className="relative h-[85vh] min-h-[600px] w-full overflow-hidden">
-        
+
         {/* Background Layer */}
         <motion.div
           initial={{ scale: 1.1 }}
@@ -66,7 +66,7 @@ export default function Home() {
           </div>
 
           {/* Optional Fallback Image (Shows while YouTube loads) */}
-          <Image 
+          <Image
             src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=2072&auto=format&fit=crop"
             alt="Hero Background Fallback"
             fill
@@ -309,6 +309,54 @@ export default function Home() {
                 <span className="font-bold text-lg text-gray-400 group-hover:text-brand-blue transition-colors">{partner.name}</span>
               </div>
             ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* --- CONTACT CTA --- */}
+      <section className="py-20 bg-slate-50">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.98 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="rounded-[2.5rem] p-10 md:p-16 text-center text-white relative overflow-hidden shadow-2xl"
+          >
+            {/* Background Image Layer */}
+            <div className="absolute inset-0 z-0">
+              <Image
+                src="/assets/images/cta-bg.png"
+                alt="Join us in making a difference"
+                fill
+                className="object-cover"
+              />
+              {/* Dark overlay for better text contrast on mobile */}
+              <div className="absolute inset-0 bg-black/40 md:bg-black/30" />
+              {/* Gradient overlay for additional depth */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/40" />
+            </div>
+
+            {/* Decorative circles */}
+            <div className="absolute top-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 z-[1]"></div>
+            <div className="absolute bottom-0 right-0 w-64 h-64 bg-brand-yellow/20 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 z-[1]"></div>
+
+            <h2 className="text-3xl md:text-5xl font-bold mb-6 relative z-10">Ready to Make a Difference?</h2>
+            <p className="text-lg md:text-xl text-orange-50 mb-10 max-w-2xl mx-auto relative z-10 leading-relaxed">
+              Whether you want to partner with us, support our cause, or simply learn more about our work in the Albertine region, we would love to hear from you.
+            </p>
+
+            <div className="flex flex-col sm:flex-row justify-center gap-5 relative z-10">
+              <Button asChild size="lg" className="bg-white text-brand-orange hover:bg-brand-yellow hover:text-brand-blue font-bold text-lg px-8 py-6 rounded-full shadow-lg transition-colors">
+                <Link href="/contact" className="flex items-center gap-2">
+                  <Mail className="w-5 h-5" /> Contact Us
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white/10 text-lg px-8 py-6 rounded-full bg-transparent">
+                <Link href="/our-story" className="flex items-center gap-2">
+                  <ArrowRight className="w-5 h-5" /> Read Our Story
+                </Link>
+              </Button>
+            </div>
           </motion.div>
         </div>
       </section>
