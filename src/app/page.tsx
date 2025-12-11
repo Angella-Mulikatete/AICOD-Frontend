@@ -7,6 +7,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { motion } from 'framer-motion';
 
+// --- CONFIGURATION ---
+// Replace this with your actual YouTube Video ID
+const YOUTUBE_VIDEO_ID = 'YOUR_YOUTUBE_VIDEO_ID'; 
+
 // --- Animation Variants ---
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -21,7 +25,6 @@ const staggerContainer = {
   }
 };
 
-// --- Partners Data ---
 const partners = [
   { name: "Global Green Fund", icon: Leaf },
   { name: "Human Rights Watch", icon: Globe },
@@ -31,40 +34,52 @@ const partners = [
   { name: "Eco Systems", icon: Sprout },
 ];
 
-
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen font-sans overflow-x-hidden">
 
       {/* --- HERO SECTION --- */}
       <section className="relative h-[85vh] min-h-[600px] w-full overflow-hidden">
+        
+        {/* Background Layer */}
         <motion.div
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
           transition={{ duration: 2.5, ease: [0.33, 1, 0.68, 1] as const }}
-          className="absolute inset-0 -z-10"
+          className="absolute inset-0 -z-10 overflow-hidden"
         >
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="h-full w-full object-cover"
-            poster="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=2072&auto=format&fit=crop"
-          >
-            <source
-              src="/assets/video/AICODV.mp4"
-              type="video/mp4"
+          {/* 
+             YOUTUBE BACKGROUND EMBED 
+             1. pointer-events-none: Prevents pausing on click
+             2. w-[300%] h-[300%]: Scales video up to simulate 'object-fit: cover' so no black bars appear
+             3. -translate-x/y-1/2: Centers the zoomed video
+          */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300%] h-[300%]">
+            <iframe
+              src="https://www.youtube.com/embed/P85JijiJl0c?autoplay=1&mute=1&loop=1&playlist=P85JijiJl0c&controls=0"
+              className="w-full h-full object-cover"
+              title="Hero Background Video"
+              allow="autoplay; encrypted-media"
+              allowFullScreen
+              style={{ pointerEvents: 'none' }}
             />
-            Your browser does not support the video tag.
-          </video>
+          </div>
+
+          {/* Optional Fallback Image (Shows while YouTube loads) */}
+          <Image 
+            src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=2072&auto=format&fit=crop"
+            alt="Hero Background Fallback"
+            fill
+            className="object-cover -z-20"
+            priority
+          />
         </motion.div>
 
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-blue/95 via-brand-blue/60 to-black/30 mix-blend-multiply" />
-        <div className="absolute inset-0 bg-black/10" />
+        {/* Gradient Overlays for Text Readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-blue/95 via-brand-blue/60 to-black/30 mix-blend-multiply pointer-events-none" />
+        <div className="absolute inset-0 bg-black/10 pointer-events-none" />
 
         {/* --- CONTENT --- */}
-        {/* ALIGNMENT FIX: Matching Header 'container mx-auto px-4' */}
         <div className="relative z-10 flex h-full flex-col justify-center container mx-auto px-4">
           <motion.div
             initial="hidden"
@@ -99,7 +114,6 @@ export default function Home() {
 
       {/* --- WHO WE ARE + VISION & MISSION --- */}
       <section className="bg-white py-20 md:py-24">
-        {/* ALIGNMENT FIX: Matching Header 'container mx-auto px-4' */}
         <div className="container mx-auto px-4">
           <div className="grid items-start gap-16 md:grid-cols-2">
 
@@ -179,7 +193,6 @@ export default function Home() {
 
       {/* --- CORE PROGRAMS --- */}
       <section className="py-20 md:py-24 bg-slate-50">
-        {/* ALIGNMENT FIX: Matching Header 'container mx-auto px-4' */}
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -205,8 +218,7 @@ export default function Home() {
             <motion.div variants={fadeInUp}>
               <Card className="h-full border border-slate-100 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group bg-white rounded-2xl overflow-hidden">
                 <CardHeader>
-                  {/* Added group-hover:text-white to the icon below */}
-                  <div className="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-green transition-all duration-300">
+                  <div className="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-green group-hover:text-white transition-all duration-300">
                     <Leaf className="h-8 w-8 text-brand-green group-hover:text-white transition-colors duration-300" />
                   </div>
                   <CardTitle className="text-2xl font-bold text-brand-blue">Biodiversity & Environment </CardTitle>
@@ -228,8 +240,7 @@ export default function Home() {
             <motion.div variants={fadeInUp}>
               <Card className="h-full border border-slate-100 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group bg-white rounded-2xl overflow-hidden">
                 <CardHeader>
-                  {/* Added group-hover:text-white to the icon below */}
-                  <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-blue transition-all duration-300">
+                  <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-blue group-hover:text-white transition-all duration-300">
                     <HeartHandshake className="h-8 w-8 text-brand-blue group-hover:text-white transition-colors duration-300" />
                   </div>
                   <CardTitle className="text-2xl font-bold text-brand-blue">Human Rights & Inclusive Development</CardTitle>
@@ -251,8 +262,7 @@ export default function Home() {
             <motion.div variants={fadeInUp}>
               <Card className="h-full border border-slate-100 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group bg-white rounded-2xl overflow-hidden">
                 <CardHeader>
-                  {/* Added group-hover:text-white to the icon below */}
-                  <div className="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-orange transition-all duration-300">
+                  <div className="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-orange group-hover:text-white transition-all duration-300">
                     <Users className="h-8 w-8 text-brand-orange group-hover:text-white transition-colors duration-300" />
                   </div>
                   <CardTitle className="text-2xl font-bold text-brand-blue">Community & Livelihoods </CardTitle>
@@ -275,7 +285,6 @@ export default function Home() {
 
       {/* --- PARTNERS CAROUSEL SECTION --- */}
       <section className="py-20 bg-white border-y border-slate-100 overflow-hidden">
-        {/* ALIGNMENT FIX: Matching Header 'container mx-auto px-4' */}
         <div className="container mx-auto px-4 mb-12 text-center">
           <p className="text-sm font-bold text-brand-green uppercase tracking-widest">Our Strategic Partners</p>
           <h2 className="text-3xl font-bold text-brand-blue mt-2">Working Together for Change</h2>
@@ -304,56 +313,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* --- CONTACT CTA --- */}
-      <section className="py-20 bg-slate-50">
-        {/* ALIGNMENT FIX: Matching Header 'container mx-auto px-4' */}
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="rounded-[2.5rem] p-10 md:p-16 text-center text-white relative overflow-hidden shadow-2xl"
-          >
-            {/* Background Image Layer */}
-            <div className="absolute inset-0 z-0">
-              <Image
-                src="/assets/images/cta-bg.png"
-                alt="Join us in making a difference"
-                fill
-                className="object-cover"
-              />
-              {/* Dark overlay for better text contrast on mobile */}
-              <div className="absolute inset-0 bg-black/40 md:bg-black/30" />
-              {/* Gradient overlay for additional depth */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/40" />
-            </div>
-
-            {/* Decorative circles */}
-            <div className="absolute top-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 z-[1]"></div>
-            <div className="absolute bottom-0 right-0 w-64 h-64 bg-brand-yellow/20 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 z-[1]"></div>
-
-            <h2 className="text-3xl md:text-5xl font-bold mb-6 relative z-10">Ready to Make a Difference?</h2>
-            <p className="text-lg md:text-xl text-orange-50 mb-10 max-w-2xl mx-auto relative z-10 leading-relaxed">
-              Whether you want to partner with us, support our cause, or simply learn more about our work in the Albertine region, we would love to hear from you.
-            </p>
-
-            <div className="flex flex-col sm:flex-row justify-center gap-5 relative z-10">
-              <Button asChild size="lg" className="bg-white text-brand-orange hover:bg-brand-yellow hover:text-brand-blue font-bold text-lg px-8 py-6 rounded-full shadow-lg transition-colors">
-                <Link href="/contact" className="flex items-center gap-2">
-                  <Mail className="w-5 h-5" /> Contact Us
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white/10 text-lg px-8 py-6 rounded-full bg-transparent">
-                <Link href="/our-story" className="flex items-center gap-2">
-                  <ArrowRight className="w-5 h-5" /> Read Our Story
-                </Link>
-              </Button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
     </div>
   );
 }
-
