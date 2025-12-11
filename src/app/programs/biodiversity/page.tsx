@@ -162,29 +162,33 @@ export default function BiodiversityPage() {
             </motion.div>
 
             {/* MEP Movement Section */}
-            <motion.div
+     <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="bg-brand-blue rounded-2xl p-8 text-white shadow-xl relative overflow-hidden"
+              // CHANGED: bg-brand-blue -> bg-brand-orange
+              className="bg-brand-orange rounded-2xl p-8 text-white shadow-xl relative overflow-hidden"
             >
-              {/* Background accent */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-green/10 rounded-full blur-3xl -mr-32 -mt-32" />
+              {/* Background accent: Changed to Blue for contrast against Orange */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue/10 rounded-full blur-3xl -mr-32 -mt-32" />
 
               <div className="relative z-10">
-                <div className="flex items-center gap-2 text-brand-green font-bold uppercase tracking-widest text-sm mb-4">
+                {/* CHANGED: text-brand-green -> text-brand-blue (Green vibrates on Orange, Blue pops) */}
+                <div className="flex items-center gap-2 text-brand-blue font-bold uppercase tracking-widest text-sm mb-4">
                   <Globe className="w-4 h-4" />
                   Global Movement
                 </div>
 
                 <h2 className="text-2xl md:text-3xl font-bold mb-6 text-white leading-tight">
                   The Mother Earth Protection <br />
-                  <span className="text-brand-yellow" style={{ fontFamily: 'Monotype Corsiva', fontWeight: 'normal' }}>
+                  {/* CHANGED: text-brand-yellow -> text-brand-blue (Yellow is hard to read on Orange) */}
+                  <span className="text-brand-blue" style={{ fontFamily: 'Monotype Corsiva', fontWeight: 'normal' }}>
                     (MEP) Movement
                   </span>
                 </h2>
 
-                <div className="space-y-6 text-blue-100 leading-relaxed">
+                {/* CHANGED: text-blue-100 -> text-orange-50 */}
+                <div className="space-y-6 text-orange-50 leading-relaxed">
                   <p>
                     Founded to empower communities to fulfill their role as the <span className="font-bold text-white">"original caretakers of Mother Earth,"</span> the MEP movement bridges the gap between ancient wisdom and modern action.
                   </p>
@@ -193,10 +197,12 @@ export default function BiodiversityPage() {
                   </p>
                 </div>
 
-                <div className="mt-8 pt-8 border-t border-white/10">
+                <div className="mt-8 pt-8 border-t border-white/20">
                   <div className="flex items-center gap-4">
-                    <div className="h-10 w-1 bg-brand-orange rounded-full"></div>
-                    <p className="text-sm italic text-blue-200">
+                    {/* CHANGED: bg-brand-orange -> bg-brand-blue (so it is visible) */}
+                    <div className="h-10 w-1 bg-brand-blue rounded-full"></div>
+                    {/* CHANGED: text-blue-200 -> text-orange-100 */}
+                    <p className="text-sm italic text-orange-100">
                       "Integrating traditional knowledge with western technologies to create a powerful Earth management system."
                     </p>
                   </div>
