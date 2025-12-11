@@ -31,62 +31,70 @@ const partners = [
   { name: "Eco Systems", icon: Sprout },
 ];
 
+
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen font-sans overflow-x-hidden">
 
       {/* --- HERO SECTION --- */}
-      <section className="relative h-[85vh] min-h-[600px] w-full overflow-hidden">
-        <motion.div
-          initial={{ scale: 1.1 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 2.5, ease: [0.33, 1, 0.68, 1] as const }}
-          className="absolute inset-0"
+   <section className="relative h-[85vh] min-h-[600px] w-full overflow-hidden">
+      <motion.div
+        initial={{ scale: 1.1 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 2.5, ease: [0.33, 1, 0.68, 1] as const }}
+        className="absolute inset-0 -z-10"
+      >
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="h-full w-full object-cover"
+          // Poster is the fallback image shown while video loads
+          poster="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=2072&auto=format&fit=crop"
         >
-          <Image
-            src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=2072&auto=format&fit=crop"
-            alt="Lush green landscape of Uganda representing the Albertine Region"
-            fill
-            className="object-cover"
-            priority
+          <source 
+            src="/assets/video/aicod.mp4" 
+            type="video/mp4" 
           />
+          Your browser does not support the video tag.
+        </video>
+      </motion.div>
+
+      <div className="absolute inset-0 bg-gradient-to-r from-brand-blue/95 via-brand-blue/60 to-black/30 mix-blend-multiply" />
+      <div className="absolute inset-0 bg-black/10" />
+
+      {/* --- CONTENT --- */}
+      <div className="relative z-10 flex h-full flex-col justify-center px-4 container mx-auto">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={fadeInUp}
+          className="max-w-4xl mx-auto text-center"
+        >
+          <h1 className="font-bold text-5xl md:text-7xl lg:text-8xl text-white mb-6 leading-tight drop-shadow-xl">
+            Welcome To <span className="text-brand-green">AICOD</span>
+          </h1>
+
+          <p className="text-lg md:text-2xl font-light text-blue-50 leading-relaxed mb-10 max-w-2xl mx-auto drop-shadow-md">
+            Empowering and equipping the younger generation to defend their communities' rights for sustainable change.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-5 justify-center">
+            <Button asChild size="lg" className="bg-brand-orange hover:bg-[#a04823] text-white text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent">
+              <Link href="/donations">
+                Support Our Mission <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="border-2 border-white text-white bg-transparent hover:bg-white hover:text-brand-blue text-lg px-8 py-6 rounded-full transition-all duration-300">
+              <Link href="/programs/biodiversity">
+                Explore Programs
+              </Link>
+            </Button>
+          </div>
         </motion.div>
-
-        {/* Gradient Overlay: Enhances text readability while keeping the image visible */}
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-blue/90 via-brand-blue/50 to-black/40 mix-blend-multiply" />
-        <div className="absolute inset-0 bg-black/20" />
-
-        <div className="relative z-10 flex h-full flex-col justify-center px-4 container mx-auto">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={fadeInUp}
-            className="max-w-4xl mx-auto text-center"
-          >
-
-            <h1 className="font-bold text-5xl md:text-7xl lg:text-8xl text-white mb-6 leading-tight drop-shadow-xl">
-              Welcome <span className="text-brand-green">AICOD</span>
-            </h1>
-
-            <p className="text-lg md:text-2xl font-light text-blue-50 leading-relaxed mb-10 max-w-2xl mx-auto drop-shadow-md">
-              Empowering and equipping the younger generation to defend their communities' rights for sustainable change.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-5 justify-center">
-              <Button asChild size="lg" className="bg-brand-orange hover:bg-[#a04823] text-white text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent">
-                <Link href="/donations">
-                  Support Our Mission <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="border-2 border-white text-white bg-transparent hover:bg-white hover:text-brand-blue text-lg px-8 py-6 rounded-full transition-all duration-300">
-                <Link href="/programs/biodiversity">
-                  Explore Programs
-                </Link>
-              </Button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      </div>
+    </section>
 
       {/* --- WHO WE ARE + VISION & MISSION --- */}
       <section className="bg-white py-20 md:py-24">
