@@ -28,7 +28,6 @@ const cardVariant = {
 export default function HumanRightsPage() {
   const heroImage = getPlaceholderImage('program-human-rights');
 
-  // Icons mapped to the specific goals based on index
   const goalIcons = [
     <Scale key="1" className="w-6 h-6 text-white" />,
     <Megaphone key="2" className="w-6 h-6 text-white" />,
@@ -70,40 +69,50 @@ export default function HumanRightsPage() {
             />
           </motion.div>
 
-          {/* Brand Overlay: Blue with multiply blend for depth */}
+          {/* Brand Overlay */}
           <div className="absolute inset-0 bg-brand-blue/80 mix-blend-multiply" />
 
-          {/* Content Container */}
-          <div className="container mx-auto px-4 h-full relative z-10 flex flex-col items-center justify-center text-center">
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              variants={fadeInUp}
-              className="max-w-4xl"
-            >
-              <span className="block text-brand-yellow text-xl md:text-3xl mb-3" style={{ fontFamily: 'Monotype Corsiva' }}>
-                Equality & Justice
-              </span>
+          {/* 
+             ALIGNMENT FIX:
+             Using 'container mx-auto px-4' ensures the content box matches the Header exactly.
+             h-full allows vertical centering within that box.
+          */}
+          <div className="container mx-auto px-4 h-full relative z-10">
+            <div className="flex h-full flex-col items-center justify-center text-center">
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={fadeInUp}
+                className="max-w-4xl"
+              >
+                <span className="block text-brand-yellow text-xl md:text-3xl mb-3" style={{ fontFamily: 'Monotype Corsiva' }}>
+                  Equality & Justice
+                </span>
 
-              <h1 className="font-bold text-3xl md:text-6xl text-white shadow-sm leading-tight">
-                Human Rights & <br className="hidden md:block" />
-                <span className="text-brand-orange">Inclusive Development</span>
-              </h1>
+                <h1 className="font-bold text-3xl md:text-6xl text-white shadow-sm leading-tight">
+                  Human Rights & <br className="hidden md:block" />
+                  <span className="text-brand-orange">Inclusive Development</span>
+                </h1>
 
-              <div className="mt-8 flex justify-center gap-3">
-                <div className="w-2 md:w-3 h-2 md:h-3 rounded-full bg-brand-green animate-pulse"></div>
-                <div className="w-2 md:w-3 h-2 md:h-3 rounded-full bg-brand-yellow animate-pulse delay-75"></div>
-                <div className="w-2 md:w-3 h-2 md:h-3 rounded-full bg-brand-orange animate-pulse delay-150"></div>
-              </div>
-            </motion.div>
+                <div className="mt-8 flex justify-center gap-3">
+                  <div className="w-2 md:w-3 h-2 md:h-3 rounded-full bg-brand-green animate-pulse"></div>
+                  <div className="w-2 md:w-3 h-2 md:h-3 rounded-full bg-brand-yellow animate-pulse delay-75"></div>
+                  <div className="w-2 md:w-3 h-2 md:h-3 rounded-full bg-brand-orange animate-pulse delay-150"></div>
+                </div>
+              </motion.div>
+            </div>
           </div>
         </header>
       )}
 
       {/* --- MAIN CONTENT --- */}
+      {/* 
+         ALIGNMENT FIX:
+         Using 'container mx-auto px-4' ensures the grid starts exactly 
+         where the Logo starts and ends where the Donate button ends.
+      */}
       <div className="container mx-auto px-4 py-12 md:py-20">
         
-        {/* Responsive Grid Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
 
           {/* --- LEFT COLUMN: CONTENT (7 Cols) --- */}

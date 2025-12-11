@@ -50,7 +50,6 @@ export default function Home() {
             muted
             playsInline
             className="h-full w-full object-cover"
-            // Poster is the fallback image shown while video loads
             poster="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=2072&auto=format&fit=crop"
           >
             <source
@@ -65,7 +64,8 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/10" />
 
         {/* --- CONTENT --- */}
-        <div className="relative z-10 flex h-full flex-col justify-center px-4 container mx-auto">
+        {/* ALIGNMENT FIX: Matching Header 'container mx-auto px-4' */}
+        <div className="relative z-10 flex h-full flex-col justify-center container mx-auto px-4">
           <motion.div
             initial="hidden"
             animate="visible"
@@ -99,6 +99,7 @@ export default function Home() {
 
       {/* --- WHO WE ARE + VISION & MISSION --- */}
       <section className="bg-white py-20 md:py-24">
+        {/* ALIGNMENT FIX: Matching Header 'container mx-auto px-4' */}
         <div className="container mx-auto px-4">
           <div className="grid items-start gap-16 md:grid-cols-2">
 
@@ -131,7 +132,7 @@ export default function Home() {
               </Button>
             </motion.div>
 
-            {/* RIGHT: Vision & Mission Cards (Replacing the Image) */}
+            {/* RIGHT: Vision & Mission Cards */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -178,6 +179,7 @@ export default function Home() {
 
       {/* --- CORE PROGRAMS --- */}
       <section className="py-20 md:py-24 bg-slate-50">
+        {/* ALIGNMENT FIX: Matching Header 'container mx-auto px-4' */}
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -270,6 +272,7 @@ export default function Home() {
 
       {/* --- PARTNERS CAROUSEL SECTION --- */}
       <section className="py-20 bg-white border-y border-slate-100 overflow-hidden">
+        {/* ALIGNMENT FIX: Matching Header 'container mx-auto px-4' */}
         <div className="container mx-auto px-4 mb-12 text-center">
           <p className="text-sm font-bold text-brand-green uppercase tracking-widest">Our Strategic Partners</p>
           <h2 className="text-3xl font-bold text-brand-blue mt-2">Working Together for Change</h2>
@@ -277,16 +280,15 @@ export default function Home() {
 
         {/* Infinite Slider */}
         <div className="relative w-full flex">
-          {/* Gradient Masks for fade effect at edges */}
+          {/* Gradient Masks */}
           <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-white to-transparent z-10" />
           <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-white to-transparent z-10" />
 
           <motion.div
             className="flex gap-16 md:gap-24 whitespace-nowrap pl-16"
-            animate={{ x: [0, -1000] }} // Adjust based on content width approx
+            animate={{ x: [0, -1000] }}
             transition={{ repeat: Infinity, ease: "linear", duration: 30 }}
           >
-            {/* Duplicating array 3 times to ensure smooth loop on wide screens */}
             {[...partners, ...partners, ...partners].map((partner, index) => (
               <div key={index} className="flex flex-col items-center gap-3 group cursor-default opacity-60 hover:opacity-100 transition-opacity duration-300">
                 <div className="p-4 bg-slate-50 rounded-full border border-slate-100 group-hover:border-brand-blue/30 group-hover:bg-brand-blue/5 transition-all">
@@ -301,7 +303,8 @@ export default function Home() {
 
       {/* --- CONTACT CTA --- */}
       <section className="py-20 bg-slate-50">
-        <div className="container mx-auto px-4 md:px-8">
+        {/* ALIGNMENT FIX: Matching Header 'container mx-auto px-4' */}
+        <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -316,10 +319,6 @@ export default function Home() {
                 fill
                 className="object-cover"
               />
-              {/* Orange Overlay for brand consistency */}
-              {/* <div className="absolute inset-0 bg-brand-orange/85 mix-blend-multiply" /> */}
-              {/* Dark gradient for text contrast */}
-              {/* <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" /> */}
             </div>
 
             {/* Decorative circles */}
@@ -350,5 +349,4 @@ export default function Home() {
     </div>
   );
 }
-
 
