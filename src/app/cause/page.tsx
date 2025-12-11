@@ -2,8 +2,38 @@
 
 import Image from 'next/image';
 import { getPlaceholderImagesByPrefix } from '@/lib/image-assets';
-import { CheckCircle, TrendingUp, Users, Sprout, School } from 'lucide-react';
+import { CheckCircle, TrendingUp, Users, Sprout, School, Play } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useState } from 'react';
+
+// --- Helper Function to Convert YouTube URL ---
+function getYouTubeEmbedUrl(url: string): string {
+  try {
+    const urlObj = new URL(url);
+    
+    // Handle youtube.com/watch?v=VIDEO_ID
+    if (urlObj.hostname.includes('youtube.com') && urlObj.searchParams.has('v')) {
+      const videoId = urlObj.searchParams.get('v');
+      return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+    }
+    
+    // Handle youtu.be/VIDEO_ID
+    if (urlObj.hostname === 'youtu.be') {
+      const videoId = urlObj.pathname.slice(1);
+      return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+    }
+    
+    // If already an embed URL, return as is
+    if (urlObj.pathname.includes('/embed/')) {
+      return url;
+    }
+    
+    return url;
+  } catch (e) {
+    console.error('Invalid YouTube URL:', url);
+    return url;
+  }
+}
 
 // --- Animation Variants ---
 const fadeInUp = {
@@ -26,6 +56,11 @@ const scaleIn = {
 
 export default function ImpactPage() {
   const impactImages = getPlaceholderImagesByPrefix('impact-');
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+
+  // Your YouTube video URL (watch URL format)
+  const youtubeVideoUrl = 'https://www.youtube.com/watch?v=zPrp684rDJQ&t=2578s';
+  const embedUrl = getYouTubeEmbedUrl(youtubeVideoUrl);
 
   const stats = [
     { value: '10,000+', label: 'Trees Planted', color: 'text-brand-green', icon: Sprout },
@@ -47,11 +82,11 @@ export default function ImpactPage() {
 
       {/* --- HERO SECTION --- */}
       <header className="relative py-20 md:py-32 overflow-hidden text-white">
-        
+
         {/* 1. Background Image Layer */}
         <div className="absolute inset-0 z-0">
-          <Image 
-            src="/assets/images/cause_hero.png" 
+          <Image
+            src="/assets/images/cause_hero.png"
             alt="Impact Background"
             fill
             className="object-cover"
@@ -121,32 +156,52 @@ export default function ImpactPage() {
 
           {/* LEFT COLUMN: Media (Video + Carousel) */}
           <div className="flex flex-col gap-8 lg:sticky lg:top-24 order-2 lg:order-1 w-full">
-            
-            {/* 1. Responsive Video Container */}
+
+            {/* 1. YouTube Video Container with Click-to-Play */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              // aspect-video enforces the 16:9 ratio regardless of screen width
               className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-xl bg-black"
             >
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                // absolute inset-0 forces the video to fill the aspect-ratio container exactly
-                className="absolute inset-0 w-full h-full object-cover"
-                poster="https://images.unsplash.com/photo-1542601906990-24ccd08d7455?q=80&w=2000&auto=format&fit=crop"
-              >
-                <source src="/assets/video/aicod.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-              
-              {/* Overlay Text */}
-              <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md px-4 py-2 rounded-lg text-white text-sm font-medium border border-white/10 z-10">
-                Impact Stories
-              </div>
+              {!isVideoPlaying ? (
+                <>
+                  {/* Poster Image */}
+                  <Image
+                    src="https://images.unsplash.com/photo-1542601906990-24ccd08d7455?q=80&w=2000&auto=format&fit=crop"
+                    alt="Impact Stories Video"
+                    fill
+                    className="object-cover"
+                  />
+
+                  {/* Play Button Overlay */}
+                  <button
+                    onClick={() => setIsVideoPlaying(true)}
+                    className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-all duration-300 group z-10"
+                    aria-label="Play video"
+                  >
+                    <div className="w-20 h-20 rounded-full bg-brand-orange/90 flex items-center justify-center group-hover:scale-110 group-hover:bg-brand-orange transition-all duration-300 shadow-2xl">
+                      <Play className="w-10 h-10 text-white ml-1" fill="white" />
+                    </div>
+                  </button>
+
+                  {/* Overlay Text */}
+                  <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md px-4 py-2 rounded-lg text-white text-sm font-medium border border-white/10 z-10">
+                    Impact Stories - Click to Watch
+                  </div>
+                </>
+              ) : (
+                <>
+                  {/* YouTube iframe with proper embed URL */}
+                  <iframe
+                    src={embedUrl}
+                    title="Impact Stories"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="w-full h-full"
+                  />
+                </>
+              )}
             </motion.div>
 
             {/* 2. Auto-scrolling Photos */}
@@ -229,7 +284,6 @@ export default function ImpactPage() {
     </div>
   );
 }
-
 
 
 

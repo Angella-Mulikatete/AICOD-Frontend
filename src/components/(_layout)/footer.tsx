@@ -132,20 +132,14 @@ export function Footer() {
                   <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-wider">Support</h3>
                   <ul className="space-y-3">
                     <li>
-                      <Link href="/donations" className="text-slate-400 hover:text-brand-blue transition-colors text-sm flex items-center gap-2 group">
-                        <span className="w-1 h-1 rounded-full bg-brand-blue opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <Link href="/donations" className="text-slate-400 hover:text-brand-green transition-colors text-sm flex items-center gap-2 group">
+                        <span className="w-1 h-1 rounded-full bg-brand-green opacity-0 group-hover:opacity-100 transition-opacity" />
                         Donations
                       </Link>
                     </li>
                     <li>
-                      <Link href="/partners" className="text-slate-400 hover:text-brand-blue transition-colors text-sm flex items-center gap-2 group">
-                        <span className="w-1 h-1 rounded-full bg-brand-blue opacity-0 group-hover:opacity-100 transition-opacity" />
-                        Partners
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/contact" className="text-slate-400 hover:text-brand-blue transition-colors text-sm flex items-center gap-2 group">
-                        <span className="w-1 h-1 rounded-full bg-brand-blue opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <Link href="/contact" className="text-slate-400 hover:text-brand-green transition-colors text-sm flex items-center gap-2 group">
+                        <span className="w-1 h-1 rounded-full bg-brand-green opacity-0 group-hover:opacity-100 transition-opacity" />
                         Contact Us
                       </Link>
                     </li>

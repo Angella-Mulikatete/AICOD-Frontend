@@ -77,7 +77,7 @@ export default function CommunityLivelihoodPage() {
             />
           </motion.div>
           <div className="absolute inset-0 bg-brand-blue/80 mix-blend-multiply" />
-          
+
           <div className="container mx-auto px-4 sm:px-6 h-full relative z-10 flex flex-col items-center justify-center text-center">
             <motion.div initial="hidden" animate="visible" variants={fadeInUp} className="max-w-4xl">
               <span className="block text-brand-yellow text-xl sm:text-2xl md:text-3xl mb-3" style={{ fontFamily: 'Monotype Corsiva' }}>
@@ -94,7 +94,7 @@ export default function CommunityLivelihoodPage() {
       {/* --- 2. INTRODUCTORY STATEMENT (Full Width) --- */}
       <section className="py-16 md:py-24 bg-white">
         <div className="container mx-auto px-4 sm:px-6 max-w-4xl text-center">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -114,8 +114,8 @@ export default function CommunityLivelihoodPage() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-brand-blue">Strategic Goals</h2>
           </div>
-          
-          <motion.div 
+
+          <motion.div
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
@@ -148,7 +148,7 @@ export default function CommunityLivelihoodPage() {
 
           {/* LEFT COLUMN: Deep Dive Content (Span 7) */}
           <div className="lg:col-span-7 space-y-12">
-            
+
             {/* Initiative 1: Innovative Skills */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -159,7 +159,7 @@ export default function CommunityLivelihoodPage() {
                 <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-brand-blue font-bold text-xl">1</div>
                 <h2 className="text-2xl md:text-3xl font-bold text-brand-blue">Innovative Livelihood Skills</h2>
               </div>
-              
+
               <div className="bg-white rounded-2xl p-6 md:p-8 border border-gray-200 shadow-sm">
                 <p className="text-gray-600 mb-6 leading-relaxed">
                   Empowering communities devastated by natural resource developments to restore and enrich their livelihoods. We support native-based approaches and movements capable of defending rights and building an entrepreneurship culture.
@@ -187,7 +187,7 @@ export default function CommunityLivelihoodPage() {
             >
               {/* Background Decor */}
               <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl translate-x-1/3 -translate-y-1/3"></div>
-              
+
               <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-6">
                   <span className="px-3 py-1 bg-brand-yellow text-brand-blue text-xs font-bold uppercase rounded-full">Flagship Program</span>
@@ -199,7 +199,7 @@ export default function CommunityLivelihoodPage() {
                   <p>
                     An economic program designed to empower community members to generate their own economic resources, tackling the lack of access to affordable financing.
                   </p>
-                  
+
                   <div className="flex flex-col sm:flex-row gap-6 mt-8 pt-8 border-t border-white/10">
                     <div>
                       <p className="text-3xl font-bold text-brand-yellow mb-1">100+</p>
@@ -228,8 +228,9 @@ export default function CommunityLivelihoodPage() {
                   Witness the transformation in the Albertine region through our media archive.
                 </p>
               </div>
-              
+
               <ProgramMediaSidebar
+                youtubeUrl="https://www.youtube.com/watch?v=8Hc2iKu1nko"
                 images={sidebarImages}
               />
             </div>

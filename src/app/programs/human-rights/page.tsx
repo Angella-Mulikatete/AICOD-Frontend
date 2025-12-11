@@ -112,7 +112,7 @@ export default function HumanRightsPage() {
          where the Logo starts and ends where the Donate button ends.
       */}
       <div className="container mx-auto px-4 py-12 md:py-20">
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
 
           {/* --- LEFT COLUMN: CONTENT (7 Cols) --- */}
@@ -193,7 +193,7 @@ export default function HumanRightsPage() {
                 <div className="absolute bottom-6 left-6 right-6 text-white z-10">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="bg-brand-green p-1 rounded-full">
-                        <CheckCircle className="text-white w-3 h-3" />
+                      <CheckCircle className="text-white w-3 h-3" />
                     </div>
                     <span className="text-brand-green font-bold uppercase tracking-wider text-xs">Community Led Initiative</span>
                   </div>
@@ -218,12 +218,12 @@ export default function HumanRightsPage() {
                     This is a community-led movement which empowers community members to know, understand, and use the laws to demand, defend, and engage leaders for their development agenda.
                   </p>
                 </div>
-                
+
                 <div className="flex gap-4 items-start">
-                    <div className="text-brand-yellow text-4xl leading-none font-serif">"</div>
-                    <p className="text-gray-500 italic text-sm md:text-base pt-1">
-                        These Agencies keep track of developments, set their own agendas, develop solutions, and bring the capacity to make those solutions a reality.
-                    </p>
+                  <div className="text-brand-yellow text-4xl leading-none font-serif">"</div>
+                  <p className="text-gray-500 italic text-sm md:text-base pt-1">
+                    These Agencies keep track of developments, set their own agendas, develop solutions, and bring the capacity to make those solutions a reality.
+                  </p>
                 </div>
               </div>
             </motion.div>
@@ -233,18 +233,19 @@ export default function HumanRightsPage() {
           {/* --- RIGHT COLUMN: MEDIA SIDEBAR (5 Cols) --- */}
           <div className="lg:col-span-5 w-full">
             <div className="lg:sticky lg:top-24 space-y-8">
-                
-                {/* Optional Sidebar Context Box */}
-                <div className="hidden lg:block bg-brand-blue/5 rounded-2xl p-6 border border-brand-blue/10">
-                    <h4 className="text-brand-blue font-bold mb-2">Visualizing Impact</h4>
-                    <p className="text-sm text-gray-600">
-                        See how we are transforming rights into reality through our gallery and documentary footage.
-                    </p>
-                </div>
 
-                <ProgramMediaSidebar
-                  images={sidebarImages}
-                />
+              {/* Optional Sidebar Context Box */}
+              <div className="hidden lg:block bg-brand-blue/5 rounded-2xl p-6 border border-brand-blue/10">
+                <h4 className="text-brand-blue font-bold mb-2">Visualizing Impact</h4>
+                <p className="text-sm text-gray-600">
+                  See how we are transforming rights into reality through our gallery and documentary footage.
+                </p>
+              </div>
+
+              <ProgramMediaSidebar
+                youtubeUrl="https://www.youtube.com/watch?v=6e8m8L9BFa4"
+                images={sidebarImages}
+              />
             </div>
           </div>
 

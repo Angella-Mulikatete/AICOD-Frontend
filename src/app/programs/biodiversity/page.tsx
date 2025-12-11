@@ -206,9 +206,9 @@ export default function BiodiversityPage() {
 
           </div>
 
-          {/* --- RIGHT COLUMN: MEDIA SIDEBAR --- */}
           <div className="lg:col-span-5">
             <ProgramMediaSidebar
+              youtubeUrl="https://www.youtube.com/watch?v=4oAtw0U3DJw"
               images={[
                 "/images/our-story/mep.png",
                 "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?q=80&w=2000&auto=format&fit=crop"

@@ -111,7 +111,7 @@ export default function Home() {
               className="sticky top-24"
             >
               <h4 className="text-brand-green font-bold uppercase tracking-widest text-sm mb-3">Who We Are</h4>
-              <h2 className="text-4xl md:text-5xl font-bold text-brand-blue mb-6">
+              <h2 className="text-3xl md:text-5xl font-bold text-brand-blue mb-6">
                 Restoring Dignity & <br />
                 <span className="text-brand-orange">Protecting Rights</span>
               </h2>
