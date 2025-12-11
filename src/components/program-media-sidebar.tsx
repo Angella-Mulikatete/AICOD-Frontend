@@ -17,7 +17,7 @@ const defaultImages = [
 ];
 
 export function ProgramMediaSidebar({
-    videoUrl = "/assets/video/AICODV.mp4",
+    videoUrl = "/assets/video/aicod.mp4",
     videoPoster = "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=2072&auto=format&fit=crop",
     images = defaultImages,
     className = ""

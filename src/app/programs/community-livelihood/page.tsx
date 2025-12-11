@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { getPlaceholderImage } from '@/lib/image-assets';
-import { Users, Sprout, HandCoins } from 'lucide-react';
+import { Users, Sprout, HandCoins, ArrowRight } from 'lucide-react';
 import { ProgramMediaSidebar } from '@/components/program-media-sidebar';
 
 // --- Animation Variants ---
@@ -21,8 +21,8 @@ const staggerContainer = {
 };
 
 const cardVariant = {
-  hidden: { opacity: 0, scale: 0.95 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
 };
 
 export default function CommunityLivelihoodPage() {
@@ -31,18 +31,21 @@ export default function CommunityLivelihoodPage() {
   const goals = [
     {
       title: "Sustainable Livelihoods",
-      desc: "Build community capacity via sustainable agricultural practices, environmentally friendly strategies, financial literacy, and market access.",
-      icon: <Sprout className="w-6 h-6 text-brand-green" />
+      desc: "Building capacity via sustainable agricultural practices, financial literacy, and market access.",
+      icon: <Sprout className="w-8 h-8 text-white" />,
+      bg: "bg-brand-green"
     },
     {
-      title: "Sustainable Living Standards",
-      desc: "Inspire communities through initiatives that improve access to basic needs like clean water, education, and healthcare.",
-      icon: <Users className="w-6 h-6 text-brand-orange" />
+      title: "Living Standards",
+      desc: "Improving access to basic needs like clean water, education, and healthcare for all families.",
+      icon: <Users className="w-8 h-8 text-white" />,
+      bg: "bg-brand-orange"
     },
     {
-      title: "Natural Resource Governance",
-      desc: "Empower communities to participate in decision-making processes, ensuring their voices are heard in natural resource management.",
-      icon: <HandCoins className="w-6 h-6 text-brand-yellow" />
+      title: "Governance",
+      desc: "Empowering communities to participate in decision-making processes regarding natural resources.",
+      icon: <HandCoins className="w-8 h-8 text-white" />,
+      bg: "bg-brand-yellow"
     }
   ];
 
@@ -55,10 +58,9 @@ export default function CommunityLivelihoodPage() {
   return (
     <div className="bg-white min-h-screen font-sans text-foreground overflow-x-hidden">
 
-      {/* --- HERO SECTION --- */}
+      {/* --- 1. HERO SECTION --- */}
       {heroImage && (
         <header className="relative h-[60vh] min-h-[400px] md:min-h-[500px] w-full overflow-hidden">
-          {/* Parallax-like Image Effect */}
           <motion.div
             initial={{ scale: 1.1 }}
             animate={{ scale: 1 }}
@@ -74,149 +76,139 @@ export default function CommunityLivelihoodPage() {
               data-ai-hint={heroImage.imageHint}
             />
           </motion.div>
-
-          {/* Brand Overlay */}
           <div className="absolute inset-0 bg-brand-blue/80 mix-blend-multiply" />
-
-          {/* Content Container */}
-          <div className="container mx-auto px-4 sm:px-6 h-full">
-            <div className="relative z-10 flex h-full flex-col items-center justify-center text-center">
-              <motion.div
-                initial="hidden"
-                animate="visible"
-                variants={fadeInUp}
-                className="w-full max-w-4xl px-2"
-              >
-                <span className="block text-brand-yellow text-xl sm:text-2xl md:text-3xl mb-3" style={{ fontFamily: 'Monotype Corsiva' }}>
-                  Empowering People
-                </span>
-
-                <h1 className="font-bold text-3xl sm:text-4xl md:text-6xl text-white shadow-sm leading-tight md:leading-tight">
-                  Community & <span className="text-brand-orange block sm:inline">Livelihoods</span>
-                </h1>
-
-                <div className="mt-8 flex justify-center gap-3">
-                  <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-brand-green animate-pulse"></div>
-                  <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-brand-yellow animate-pulse delay-75"></div>
-                  <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-brand-orange animate-pulse delay-150"></div>
-                </div>
-              </motion.div>
-            </div>
+          
+          <div className="container mx-auto px-4 sm:px-6 h-full relative z-10 flex flex-col items-center justify-center text-center">
+            <motion.div initial="hidden" animate="visible" variants={fadeInUp} className="max-w-4xl">
+              <span className="block text-brand-yellow text-xl sm:text-2xl md:text-3xl mb-3" style={{ fontFamily: 'Monotype Corsiva' }}>
+                Empowering People
+              </span>
+              <h1 className="font-bold text-3xl sm:text-4xl md:text-6xl text-white shadow-sm leading-tight">
+                Community & <span className="text-brand-orange block sm:inline">Livelihoods</span>
+              </h1>
+            </motion.div>
           </div>
         </header>
       )}
 
-      {/* --- MAIN CONTENT --- */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-        {/* We use flex-col-reverse on mobile so sidebar content appears after intro if desired, 
-            or keep grid flow. Here standard grid flow works best. */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+      {/* --- 2. INTRODUCTORY STATEMENT (Full Width) --- */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 max-w-4xl text-center">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="prose prose-lg md:prose-xl mx-auto text-gray-700"
+          >
+            <p className="font-medium text-brand-blue leading-relaxed">
+              This Program aims to enhance the living standards of indigenous and host communities within the Albertine region. We focus on sustainable practices that empower communities to thrive frugally while respecting their cultural and environmental settings.
+            </p>
+            <div className="h-1 w-20 bg-brand-yellow mx-auto mt-8 rounded-full" />
+          </motion.div>
+        </div>
+      </section>
 
-          {/* --- LEFT COLUMN: CONTENT (Spans full width on mobile, 7 cols on desktop) --- */}
-          <div className="lg:col-span-7 space-y-10 md:space-y-12 order-1 lg:order-1">
+      {/* --- 3. GOALS GRID (Distinct Section) --- */}
+      <section className="bg-slate-50 py-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-brand-blue">Strategic Goals</h2>
+          </div>
+          
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          >
+            {goals.map((goal, index) => (
+              <motion.div
+                key={index}
+                variants={cardVariant}
+                whileHover={{ y: -10 }}
+                className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 transition-all duration-300 flex flex-col items-center text-center"
+              >
+                <div className={`${goal.bg} w-16 h-16 rounded-2xl flex items-center justify-center mb-6 shadow-lg rotate-3 group-hover:rotate-6 transition-transform`}>
+                  {goal.icon}
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">{goal.title}</h3>
+                <p className="text-gray-600 leading-relaxed text-sm">
+                  {goal.desc}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
 
-            {/* Intro Content */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="prose prose-lg max-w-none text-gray-700"
-            >
-              <p className="text-xl md:text-2xl leading-relaxed font-bold text-brand-blue mb-6">
-                This Program aims to enhance the living standards of indigenous and host communities within the Albertine region, especially as it relates to natural resource sector developments.
-              </p>
-              <p className="text-base md:text-lg leading-relaxed">
-                This initiative focuses on sustainable practices that empower communities to thrive frugally while respecting their cultural and environmental settings.
-              </p>
-            </motion.div>
+      {/* --- 4. DETAILED INITIATIVES (Split Layout) --- */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
 
-            {/* Goals Section */}
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="pt-6 md:pt-8 border-t border-gray-100"
-            >
-              <div className="mb-6 md:mb-8">
-                <h3 className="text-2xl md:text-3xl font-bold text-brand-blue mb-2">Program Goals</h3>
-                <div className="w-12 h-1 bg-brand-yellow rounded-full"></div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
-                {goals.map((goal, index) => (
-                  <motion.div
-                    key={index}
-                    variants={cardVariant}
-                    whileHover={{ y: -5 }}
-                    className="bg-gray-50 p-5 md:p-6 rounded-2xl border border-gray-100 hover:border-brand-green hover:shadow-md transition-all duration-300 group flex flex-col sm:flex-row gap-4 items-start"
-                  >
-                    <div className="bg-white w-12 h-12 rounded-full shadow-sm flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-                      {goal.icon}
-                    </div>
-                    <div>
-                      <h4 className="text-lg md:text-xl font-bold text-brand-blue mb-2">{goal.title}</h4>
-                      <p className="text-gray-600 leading-relaxed text-sm md:text-base">
-                        {goal.desc}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Feature: Innovative Skills */}
+          {/* LEFT COLUMN: Deep Dive Content (Span 7) */}
+          <div className="lg:col-span-7 space-y-12">
+            
+            {/* Initiative 1: Innovative Skills */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-blue-50/50 rounded-2xl p-6 md:p-8 border-l-4 border-brand-green"
             >
-              <h2 className="text-xl md:text-2xl font-bold text-brand-green mb-4">Innovative Livelihood Skills</h2>
-              <div className="prose prose-lg text-gray-600 text-sm md:text-base">
-                <p className="mb-4">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-brand-blue font-bold text-xl">1</div>
+                <h2 className="text-2xl md:text-3xl font-bold text-brand-blue">Innovative Livelihood Skills</h2>
+              </div>
+              
+              <div className="bg-white rounded-2xl p-6 md:p-8 border border-gray-200 shadow-sm">
+                <p className="text-gray-600 mb-6 leading-relaxed">
                   Empowering communities devastated by natural resource developments to restore and enrich their livelihoods. We support native-based approaches and movements capable of defending rights and building an entrepreneurship culture.
                 </p>
-                <div className="space-y-3">
-                  <p>
-                    <span className="font-bold text-brand-blue block sm:inline">The Challenge:</span> Due to limited capacity in managing compensation monies from lost land, many community members became vulnerable to poverty.
-                  </p>
-                  <p>
-                    <span className="font-bold text-brand-blue block sm:inline">The Solution:</span> AICOD carried out initiatives training on financial literacy, business plan development, bookkeeping, and technology integration.
-                  </p>
+                <div className="grid gap-4 bg-slate-50 p-6 rounded-xl">
+                  <div>
+                    <span className="text-sm font-bold uppercase tracking-wider text-brand-orange block mb-1">The Challenge</span>
+                    <p className="text-sm text-gray-700">Mismanagement of land compensation monies leading to increased poverty vulnerability.</p>
+                  </div>
+                  <div className="w-full h-px bg-gray-200"></div>
+                  <div>
+                    <span className="text-sm font-bold uppercase tracking-wider text-brand-green block mb-1">Our Solution</span>
+                    <p className="text-sm text-gray-700">Training on financial literacy, business planning, bookkeeping, and technology integration.</p>
+                  </div>
                 </div>
               </div>
             </motion.div>
 
-            {/* Feature: One Team */}
+            {/* Initiative 2: One Team (Visual Break) */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="bg-brand-blue rounded-3xl p-6 md:p-8 text-white relative overflow-hidden shadow-xl"
+              className="bg-brand-blue rounded-3xl p-8 md:p-10 text-white relative overflow-hidden shadow-2xl"
             >
-              {/* Decorative Background Circles */}
-              <div className="absolute -top-20 -left-20 w-48 md:w-64 h-48 md:h-64 bg-brand-green/20 rounded-full blur-3xl"></div>
-              <div className="absolute -bottom-20 -right-20 w-48 md:w-64 h-48 md:h-64 bg-brand-orange/20 rounded-full blur-3xl"></div>
-
+              {/* Background Decor */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl translate-x-1/3 -translate-y-1/3"></div>
+              
               <div className="relative z-10">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="h-px w-8 bg-brand-yellow"></div>
-                  <span className="text-brand-yellow text-lg" style={{ fontFamily: 'Monotype Corsiva' }}>Collective Action</span>
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="px-3 py-1 bg-brand-yellow text-brand-blue text-xs font-bold uppercase rounded-full">Flagship Program</span>
                 </div>
 
-                <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">One Team Initiative</h2>
+                <h2 className="text-2xl md:text-4xl font-bold text-white mb-6">One Team Initiative</h2>
 
-                <div className="space-y-4 text-blue-100 leading-relaxed text-sm md:text-base">
+                <div className="space-y-6 text-blue-50 leading-relaxed text-base md:text-lg">
                   <p>
-                    An economic program designed to empower community members to generate their own economic resources.
+                    An economic program designed to empower community members to generate their own economic resources, tackling the lack of access to affordable financing.
                   </p>
-                  <p>
-                    A significant challenge has been lack of access to affordable financing. Our program helps communities leverage local resources to create sustainable opportunities.
-                  </p>
-                  <div className="bg-white/10 p-5 md:p-6 rounded-lg mt-6 border-l-4 border-brand-green backdrop-blur-sm">
-                    <p className="font-bold text-white mb-1">Impact:</p>
-                    <p className="text-sm md:text-base">Over 100 households have collaborated to launch their own economic projects, attracting stakeholder support and improving lives.</p>
+                  
+                  <div className="flex flex-col sm:flex-row gap-6 mt-8 pt-8 border-t border-white/10">
+                    <div>
+                      <p className="text-3xl font-bold text-brand-yellow mb-1">100+</p>
+                      <p className="text-xs uppercase tracking-wide opacity-70">Households Joined</p>
+                    </div>
+                    <div>
+                      <p className="text-3xl font-bold text-brand-green mb-1">Economic</p>
+                      <p className="text-xs uppercase tracking-wide opacity-70">Projects Launched</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -224,17 +216,22 @@ export default function CommunityLivelihoodPage() {
 
           </div>
 
-          {/* --- RIGHT COLUMN: MEDIA SIDEBAR --- */}
-          {/* On mobile, this stacks below content. On Desktop, it's sticky to the right. */}
-          <div className="lg:col-span-5 order-2 lg:order-2">
-            <div className="sticky top-24"> 
+          {/* RIGHT COLUMN: Sidebar (Span 5) */}
+          <div className="lg:col-span-5 order-first lg:order-last">
+            <div className="lg:sticky lg:top-24 space-y-6">
+              <div className="bg-brand-orange/5 border border-brand-orange/10 rounded-xl p-6 mb-8">
+                <h4 className="font-bold text-brand-orange mb-2 flex items-center gap-2">
+                  <Users className="w-5 h-5" />
+                  Program Gallery
+                </h4>
+                <p className="text-sm text-gray-600">
+                  Witness the transformation in the Albertine region through our media archive.
+                </p>
+              </div>
+              
               <ProgramMediaSidebar
                 images={sidebarImages}
               />
-              {/* Optional Mobile-Only Note if the sidebar is complex */}
-              <div className="block lg:hidden mt-4 text-center text-sm text-gray-400">
-                Swipe through gallery
-              </div>
             </div>
           </div>
 

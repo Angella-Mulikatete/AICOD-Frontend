@@ -211,7 +211,6 @@ export default function BiodiversityPage() {
             <ProgramMediaSidebar
               images={[
                 "/images/our-story/mep.png",
-                "https://images.unsplash.com/photo-1542601906990-24ccd08d7455?q=80&w=2000&auto=format&fit=crop",
                 "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?q=80&w=2000&auto=format&fit=crop"
               ]}
             />
