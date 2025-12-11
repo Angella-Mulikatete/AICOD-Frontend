@@ -10,7 +10,7 @@ import { ProgramMediaSidebar } from '@/components/program-media-sidebar';
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.6, -0.05, 0.01, 0.99] } }
-};
+} as const;
 
 const staggerContainer = {
   hidden: { opacity: 0 },
@@ -67,6 +67,7 @@ export default function BiodiversityPage() {
                 initial="hidden"
                 animate="visible"
                 variants={fadeIn}
+                className="max-w-4xl"
               >
                 {/* Monotype Corsiva Accent */}
                 <span className="block text-brand-yellow text-2xl md:text-3xl mb-2" style={{ fontFamily: 'Monotype Corsiva' }}>
@@ -132,7 +133,7 @@ export default function BiodiversityPage() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className="pt-8 border-t border-gray-100"
+              className="pt-4 border-t border-gray-100"
             >
               <div className="flex flex-col gap-4 mb-8">
                 <div className="flex items-center gap-3">
@@ -162,7 +163,7 @@ export default function BiodiversityPage() {
             </motion.div>
 
             {/* MEP Movement Section */}
-     <motion.div
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

@@ -79,13 +79,23 @@ export default function CommunityLivelihoodPage() {
           <div className="absolute inset-0 bg-brand-blue/80 mix-blend-multiply" />
 
           <div className="container mx-auto px-4 sm:px-6 h-full relative z-10 flex flex-col items-center justify-center text-center">
-            <motion.div initial="hidden" animate="visible" variants={fadeInUp} className="max-w-4xl">
+            <motion.div 
+              initial="hidden"
+              animate="visible"
+              variants={fadeInUp} 
+              className="max-w-4xl"
+            >
               <span className="block text-brand-yellow text-xl sm:text-2xl md:text-3xl mb-3" style={{ fontFamily: 'Monotype Corsiva' }}>
                 Empowering People
               </span>
               <h1 className="font-bold text-3xl sm:text-4xl md:text-6xl text-white shadow-sm leading-tight">
                 Community & <span className="text-brand-orange block sm:inline">Livelihoods</span>
               </h1>
+              <div className="mt-8 flex justify-center gap-3">
+                  <div className="w-2 md:w-3 h-2 md:h-3 rounded-full bg-brand-green animate-pulse"></div>
+                  <div className="w-2 md:w-3 h-2 md:h-3 rounded-full bg-brand-yellow animate-pulse delay-75"></div>
+                  <div className="w-2 md:w-3 h-2 md:h-3 rounded-full bg-brand-orange animate-pulse delay-150"></div>
+              </div>
             </motion.div>
           </div>
         </header>
@@ -219,7 +229,7 @@ export default function CommunityLivelihoodPage() {
           {/* RIGHT COLUMN: Sidebar (Span 5) */}
           <div className="lg:col-span-5 order-first lg:order-last">
             <div className="lg:sticky lg:top-24 space-y-6">
-              <div className="bg-brand-orange/5 border border-brand-orange/10 rounded-xl p-6 mb-8">
+              {/* <div className="bg-brand-orange/5 border border-brand-orange/10 rounded-xl p-6 mb-8">
                 <h4 className="font-bold text-brand-orange mb-2 flex items-center gap-2">
                   <Users className="w-5 h-5" />
                   Program Gallery
@@ -227,7 +237,7 @@ export default function CommunityLivelihoodPage() {
                 <p className="text-sm text-gray-600">
                   Witness the transformation in the Albertine region through our media archive.
                 </p>
-              </div>
+              </div> */}
 
               <ProgramMediaSidebar
                 youtubeUrl="https://www.youtube.com/watch?v=8Hc2iKu1nko"

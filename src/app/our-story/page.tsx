@@ -82,7 +82,7 @@ export default function OurStoryPage() {
                 <article className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
                   {/* All Content */}
                   {storyContent.history.content.map((para, idx) => (
-                    <p key={idx} className={idx === 0 ? "text-xl" : ""}>
+                    <p key={idx}>
                       {para}
                     </p>
                   ))}

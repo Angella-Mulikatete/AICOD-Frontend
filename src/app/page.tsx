@@ -177,7 +177,7 @@ export default function Home() {
         </div>
       </section>
 
-{/* --- CORE PROGRAMS --- */}
+      {/* --- CORE PROGRAMS --- */}
       <section className="py-20 md:py-24 bg-slate-50">
         {/* ALIGNMENT FIX: Matching Header 'container mx-auto px-4' */}
         <div className="container mx-auto px-4">

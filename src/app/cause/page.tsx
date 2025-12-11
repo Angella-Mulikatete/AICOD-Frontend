@@ -10,27 +10,14 @@ import { useState } from 'react';
 function getYouTubeEmbedUrl(url: string): string {
   try {
     const urlObj = new URL(url);
-    
-    // Handle youtube.com/watch?v=VIDEO_ID
     if (urlObj.hostname.includes('youtube.com') && urlObj.searchParams.has('v')) {
-      const videoId = urlObj.searchParams.get('v');
-      return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+      return `https://www.youtube.com/embed/${urlObj.searchParams.get('v')}`;
     }
-    
-    // Handle youtu.be/VIDEO_ID
     if (urlObj.hostname === 'youtu.be') {
-      const videoId = urlObj.pathname.slice(1);
-      return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+      return `https://www.youtube.com/embed/${urlObj.pathname.slice(1)}`;
     }
-    
-    // If already an embed URL, return as is
-    if (urlObj.pathname.includes('/embed/')) {
-      return url;
-    }
-    
     return url;
   } catch (e) {
-    console.error('Invalid YouTube URL:', url);
     return url;
   }
 }
@@ -58,8 +45,8 @@ export default function ImpactPage() {
   const impactImages = getPlaceholderImagesByPrefix('impact-');
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
-  // Your YouTube video URL (watch URL format)
-  const youtubeVideoUrl = 'https://www.youtube.com/watch?v=zPrp684rDJQ&t=2578s';
+  // Example YouTube URL
+  const youtubeVideoUrl = 'https://www.youtube.com/watch?v=4oAtw0U3DJw';
   const embedUrl = getYouTubeEmbedUrl(youtubeVideoUrl);
 
   const stats = [
@@ -82,7 +69,6 @@ export default function ImpactPage() {
 
       {/* --- HERO SECTION --- */}
       <header className="relative py-20 md:py-32 overflow-hidden text-white">
-
         {/* 1. Background Image Layer */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -92,13 +78,13 @@ export default function ImpactPage() {
             className="object-cover"
             priority
           />
-          {/* Overlays for Text Readability */}
+          {/* Overlays */}
           <div className="absolute inset-0 bg-brand-orange/80 mix-blend-multiply" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         </div>
 
         {/* 2. Content Layer */}
-        <div className="container mx-auto px-4 md:px-8 max-w-7xl relative z-10 text-center">
+        <div className="container mx-auto px-4 relative z-10 text-center">
           <motion.div
             initial="hidden"
             animate="visible"
@@ -120,7 +106,7 @@ export default function ImpactPage() {
 
       {/* --- STATS SECTION --- */}
       <section className="relative -mt-10 mb-16 z-20">
-        <div className="container mx-auto px-4 md:px-8 max-w-7xl">
+        <div className="container mx-auto px-4">
           <motion.div
             variants={staggerContainer}
             initial="hidden"
@@ -151,18 +137,22 @@ export default function ImpactPage() {
       </section>
 
       {/* --- MAIN CONTENT (Split Layout) --- */}
-      <div className="container mx-auto px-4 md:px-8 max-w-7xl py-12 md:py-20">
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-20 items-start">
+      <div className="container mx-auto px-4 py-12 md:py-20">
+        
+        {/* Grid: 1 column on mobile, 2 columns on large screens */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
 
           {/* LEFT COLUMN: Media (Video + Carousel) */}
-          <div className="flex flex-col gap-8 lg:sticky lg:top-24 order-2 lg:order-1 w-full">
+          {/* Order logic: Video shows first on mobile (order-1), Left on desktop */}
+          <div className="w-full flex flex-col gap-8 order-1 lg:sticky lg:top-24">
 
-            {/* 1. YouTube Video Container with Click-to-Play */}
+            {/* 1. YouTube Video Container */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-xl bg-black"
+              // aspect-video ensures 16:9 ratio on ALL devices. w-full fills the container.
+              className="relative w-full aspect-video rounded-xl md:rounded-2xl overflow-hidden shadow-xl bg-black"
             >
               {!isVideoPlaying ? (
                 <>
@@ -177,35 +167,34 @@ export default function ImpactPage() {
                   {/* Play Button Overlay */}
                   <button
                     onClick={() => setIsVideoPlaying(true)}
-                    className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-all duration-300 group z-10"
+                    className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-all duration-300 group z-10"
                     aria-label="Play video"
                   >
-                    <div className="w-20 h-20 rounded-full bg-brand-orange/90 flex items-center justify-center group-hover:scale-110 group-hover:bg-brand-orange transition-all duration-300 shadow-2xl">
-                      <Play className="w-10 h-10 text-white ml-1" fill="white" />
+                    {/* Responsive play button size */}
+                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-brand-orange/90 flex items-center justify-center group-hover:scale-110 group-hover:bg-brand-orange transition-all duration-300 shadow-2xl backdrop-blur-sm">
+                      <Play className="w-8 h-8 md:w-10 md:h-10 text-white ml-1" fill="white" />
                     </div>
                   </button>
 
                   {/* Overlay Text */}
-                  <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md px-4 py-2 rounded-lg text-white text-sm font-medium border border-white/10 z-10">
-                    Impact Stories - Click to Watch
+                  <div className="absolute bottom-3 left-3 md:bottom-4 md:left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-white text-xs md:text-sm font-medium border border-white/10 z-10">
+                    Impact Stories
                   </div>
                 </>
               ) : (
-                <>
-                  {/* YouTube iframe with proper embed URL */}
-                  <iframe
-                    src={embedUrl}
-                    title="Impact Stories"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="w-full h-full"
-                  />
-                </>
+                <iframe
+                  src={`${embedUrl}?autoplay=1`}
+                  title="Impact Stories"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full"
+                />
               )}
             </motion.div>
 
             {/* 2. Auto-scrolling Photos */}
-            <div className="w-full overflow-hidden rounded-2xl shadow-lg border border-gray-100 bg-slate-50 relative h-64">
+            {/* Added w-full to ensure it doesn't overflow horizontally on mobile */}
+            <div className="w-full overflow-hidden rounded-xl md:rounded-2xl shadow-lg border border-gray-100 bg-slate-50 relative h-48 md:h-64">
               <div className="absolute left-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-r from-slate-50 to-transparent pointer-events-none" />
               <div className="absolute right-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-l from-slate-50 to-transparent pointer-events-none" />
 
@@ -213,11 +202,11 @@ export default function ImpactPage() {
                 <motion.div
                   className="flex gap-4 pr-4"
                   animate={{ x: [0, -600] }}
-                  transition={{ repeat: Infinity, ease: "linear", duration: 18 }}
+                  transition={{ repeat: Infinity, ease: "linear", duration: 25 }}
                 >
-                  {/* Repeat images to ensure continuous loop */}
                   {[...impactImages, ...impactImages, ...impactImages].map((img, i) => (
-                    <div key={i} className="relative w-64 h-48 flex-shrink-0 rounded-xl overflow-hidden bg-gray-200">
+                    // Responsive width for carousel items
+                    <div key={i} className="relative w-48 h-36 md:w-64 md:h-48 flex-shrink-0 rounded-lg md:rounded-xl overflow-hidden bg-gray-200">
                       <Image
                         src={img.imageUrl}
                         alt={img.description}
@@ -233,19 +222,20 @@ export default function ImpactPage() {
 
 
           {/* RIGHT COLUMN: Key Achievements Text */}
+          {/* Order-2 puts this below video on mobile, right side on desktop */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="order-1 lg:order-2 w-full"
+            className="w-full order-2"
           >
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-1.5 h-10 bg-brand-orange rounded-full"></div>
-              <h2 className="text-3xl font-bold text-brand-blue">Key Achievements</h2>
+            <div className="flex items-center gap-3 mb-6 md:mb-8">
+              <div className="w-1.5 h-8 md:h-10 bg-brand-orange rounded-full"></div>
+              <h2 className="text-2xl md:text-3xl font-bold text-brand-blue">Key Achievements</h2>
             </div>
 
-            <ul className="space-y-6">
+            <ul className="space-y-4 md:space-y-6">
               {keyAchievements.map((achievement, index) => (
                 <motion.li
                   key={index}
@@ -253,12 +243,13 @@ export default function ImpactPage() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="flex items-start gap-4 group"
+                  className="flex items-start gap-3 md:gap-4 group"
                 >
                   <div className="mt-1 bg-brand-green/10 p-1 rounded-full flex-shrink-0 group-hover:bg-brand-green transition-colors duration-300">
-                    <CheckCircle className="h-5 w-5 text-brand-green group-hover:text-white transition-colors duration-300" />
+                    <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-brand-green group-hover:text-white transition-colors duration-300" />
                   </div>
-                  <span className="text-lg text-gray-600 leading-relaxed group-hover:text-gray-900 transition-colors">
+                  {/* Responsive text size for readability on small screens */}
+                  <span className="text-base md:text-lg text-gray-600 leading-relaxed group-hover:text-gray-900 transition-colors">
                     {achievement}
                   </span>
                 </motion.li>
@@ -266,14 +257,14 @@ export default function ImpactPage() {
             </ul>
 
             {/* Quote Block */}
-            <div className="mt-10 p-6 bg-brand-blue/5 rounded-lg border-l-4 border-brand-blue">
-              <p className="text-brand-blue text-lg italic" style={{ fontFamily: 'Monotype Corsiva' }}>
+            <div className="mt-8 md:mt-10 p-5 md:p-6 bg-brand-blue/5 rounded-xl border-l-4 border-brand-blue">
+              <p className="text-brand-blue text-base md:text-lg italic leading-relaxed" style={{ fontFamily: 'Monotype Corsiva' }}>
                 "Every tree planted and every family supported represents a step towards a sustainable future."
               </p>
             </div>
 
-            <div className="mt-12">
-              <p className="text-gray-500 text-sm">
+            <div className="mt-8 md:mt-12">
+              <p className="text-gray-500 text-xs md:text-sm">
                 * Figures are based on our 2024 Annual Report.
               </p>
             </div>
@@ -284,7 +275,6 @@ export default function ImpactPage() {
     </div>
   );
 }
-
 
 
 
