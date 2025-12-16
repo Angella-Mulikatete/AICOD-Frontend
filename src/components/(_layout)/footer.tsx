@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Facebook, Mail, MapPin, Phone, Send } from 'lucide-react';
+import { Facebook, Mail, MapPin, Phone, Send, Linkedin } from 'lucide-react';
 import { navLinks } from '@/lib/nav-links';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
@@ -19,11 +19,12 @@ export function Footer() {
 
   const socialLinks = [
     { name: 'Facebook', href: '#', icon: Facebook },
-    { name: 'X', href: '#', icon: XIcon },
+    { name: 'X', href: 'https://twitter.com/aicodUg', icon: XIcon },
+    { name: 'LinkedIn', href: 'https://www.linkedin.com/company/104364202/admin/dashboard/', icon: Linkedin }
   ];
 
   const contactInfo = [
-    { icon: MapPin, text: 'Kampala, Uganda' },
+    { icon: MapPin, text: '331 Hoima-Uganda (P.o.box 331)' },
     { icon: Mail, text: 'info@aicode.org' },
     { icon: Phone, text: '+256 123 456 789' },
   ];
@@ -37,7 +38,7 @@ export function Footer() {
   return (
     // CHANGED: bg-brand-blue -> bg-brand-orange
     <footer className="relative bg-brand-orange text-white overflow-hidden shadow-2xl">
-      
+
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 left-0 w-96 h-96 bg-brand-green rounded-full blur-3xl" />

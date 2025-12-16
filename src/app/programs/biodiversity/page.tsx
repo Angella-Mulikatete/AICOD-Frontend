@@ -7,10 +7,10 @@ import { CheckCircle, Leaf, Globe } from 'lucide-react';
 import { ProgramMediaSidebar } from '@/components/program-media-sidebar';
 
 // --- Animation Variants ---
-const fadeIn = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.6, -0.05, 0.01, 0.99] } }
-} as const;
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.33, 1, 0.68, 1] as [number, number, number, number] } }
+};
 
 const staggerContainer = {
   hidden: { opacity: 0 },
@@ -21,17 +21,17 @@ const staggerContainer = {
 };
 
 const cardVariant = {
-  hidden: { opacity: 0, scale: 0.95 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.4 } }
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
 };
 
 export default function BiodiversityPage() {
   const heroImage = getPlaceholderImage('program-biodiversity');
 
   const goals = [
-    "Empower communities to actively participate in protection and conservation efforts.",
-    "Advocate for the implementation of both indigenous knowledge and science-backed approaches.",
-    "Task duty bearers with the effective and sustainable management of natural resources."
+    "To empower community for the protection and participate in conservation efforts.",
+    "To advocate for implementation of both indigenous and science backed approaches for conservation.",
+    "To task duty bearrers to effectively manngagement of natural resurces for sustainable."
   ];
 
   return (
@@ -66,7 +66,7 @@ export default function BiodiversityPage() {
               <motion.div
                 initial="hidden"
                 animate="visible"
-                variants={fadeIn}
+                variants={fadeInUp}
                 className="max-w-4xl"
               >
                 {/* Monotype Corsiva Accent */}
@@ -103,21 +103,18 @@ export default function BiodiversityPage() {
               className="prose prose-lg max-w-none text-gray-700"
             >
               <p className="text-xl md:text-2xl leading-relaxed font-bold text-brand-blue mb-8">
-                The world faces a growing climate crisis, yet many global development projects compromise the environment. This pattern weakens critical conservation efforts needed to protect ecosystems.
+                The world faces a growing climate crisis, yet many global development projects compromises the environment. This pattern weakens the critical conservation efforts needed to protect global ecosystems and prevent further climate breakdown.
               </p>
 
               <div className="space-y-6 text-gray-600">
                 <p>
-                  A compelling example of this conflict is the rapid growth of oil and gas projects within the sensitive Albertine Rift region. These developments pose serious threats to fragile ecosystems, fundamentally altering the environment and increasing the region’s climate vulnerability.
-                </p>
-                <p>
-                  The resulting environmental changes have severe consequences for local grassroots communities whose survival depends entirely on ecological stability and biodiversity.
+                  A compelling example of this conflict is the rapid growth of oil and gas projects within the sensitive Albertine Rift region. These developments pose serious threats to fragile ecosystems, fundamentally altering the environment and increasing the region’s climate vulnerability. The resulting environmental changes have severe consequences for local grassroots communities whose survival depends entirely on ecological stability and biodiversity.
                 </p>
 
                 {/* Decorative Quote using Brand Styles */}
                 <div className="my-8 pl-6 border-l-4 border-brand-orange bg-orange-50/50 p-6 rounded-r-lg">
                   <p className="text-2xl text-brand-blue" style={{ fontFamily: 'Monotype Corsiva' }}>
-                    "Therefore, this programme aims to empower local grassroots communities by increasing their capacity, awareness, and ability to be resilient."
+                    "Therefore, this programme aims to empower local grassroots communities by increasing their capacity, awareness, and ability to be resilient and informed about efforts to prevent, mitigate, and restore their environment."
                   </p>
                 </div>
 

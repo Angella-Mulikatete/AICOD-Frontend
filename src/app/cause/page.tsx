@@ -13,7 +13,6 @@ const causesData = [
   {
     title: "Innovative Livelihood Skills Development",
     content: [
-      "Empowering communities devastated by natural resource developments to restore and enrich their livelihoods. We achieve this by supporting native based approaches and creating movements capable of defending their rights, protecting their environment, and building an entrepreneurship culture.",
       "Empowered and Built community member’s capacity in Financial and Resource Management. During the development phases, where community members affected by oil and gas received compensation for their lost land to major oil and gas projects. Due to limited capacity and support to community in management and use of the compensation monies, this has led to most of native members to lose such resources which has rendered them more vulnerable to poverty and associated challenges.",
       "In response, AICOD carried out initiatives which aimed at strengthening their capacity in financial and resource management. These initiatives among included; training on financial literacy and management skills, business plan development, bookkeeping, technology integration among others."
     ],
@@ -255,11 +254,6 @@ export default function ImpactPage() {
                   </motion.div>
                 </div>
               </div>
-
-              {/* Note for the user based on content provided */}
-              {/* <div className="text-xs text-gray-400 italic bg-gray-50 p-3 rounded-lg border border-dashed border-gray-300">
-                * Media Placeholder: {currentCause.highlight}
-              </div> */}
             </div>
 
             {/* RIGHT COLUMN: Text Content */}

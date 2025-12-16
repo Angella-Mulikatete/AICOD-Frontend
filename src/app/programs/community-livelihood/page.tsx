@@ -79,10 +79,10 @@ export default function CommunityLivelihoodPage() {
           <div className="absolute inset-0 bg-brand-blue/80 mix-blend-multiply" />
 
           <div className="container mx-auto px-4 sm:px-6 h-full relative z-10 flex flex-col items-center justify-center text-center">
-            <motion.div 
+            <motion.div
               initial="hidden"
               animate="visible"
-              variants={fadeInUp} 
+              variants={fadeInUp}
               className="max-w-4xl"
             >
               <span className="block text-brand-yellow text-xl sm:text-2xl md:text-3xl mb-3" style={{ fontFamily: 'Monotype Corsiva' }}>
@@ -92,9 +92,9 @@ export default function CommunityLivelihoodPage() {
                 Community & <span className="text-brand-orange block sm:inline">Livelihoods</span>
               </h1>
               <div className="mt-8 flex justify-center gap-3">
-                  <div className="w-2 md:w-3 h-2 md:h-3 rounded-full bg-brand-green animate-pulse"></div>
-                  <div className="w-2 md:w-3 h-2 md:h-3 rounded-full bg-brand-yellow animate-pulse delay-75"></div>
-                  <div className="w-2 md:w-3 h-2 md:h-3 rounded-full bg-brand-orange animate-pulse delay-150"></div>
+                <div className="w-2 md:w-3 h-2 md:h-3 rounded-full bg-brand-green animate-pulse"></div>
+                <div className="w-2 md:w-3 h-2 md:h-3 rounded-full bg-brand-yellow animate-pulse delay-75"></div>
+                <div className="w-2 md:w-3 h-2 md:h-3 rounded-full bg-brand-orange animate-pulse delay-150"></div>
               </div>
             </motion.div>
           </div>
@@ -102,7 +102,8 @@ export default function CommunityLivelihoodPage() {
       )}
 
       {/* --- 2. INTRODUCTORY STATEMENT (Full Width) --- */}
-      <section className="py-16 md:py-24 bg-white">
+      {/* --- 2. INTRODUCTORY STATEMENT (Full Width) --- */}
+      <section className="py-10 md:py-16 bg-white">
         <div className="container mx-auto px-4 sm:px-6 max-w-4xl text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -119,7 +120,8 @@ export default function CommunityLivelihoodPage() {
       </section>
 
       {/* --- 3. GOALS GRID (Distinct Section) --- */}
-      <section className="bg-slate-50 py-16">
+      {/* --- 3. GOALS GRID (Distinct Section) --- */}
+      <section className="bg-slate-50 py-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-brand-blue">Strategic Goals</h2>
@@ -153,8 +155,9 @@ export default function CommunityLivelihoodPage() {
       </section>
 
       {/* --- 4. DETAILED INITIATIVES (Split Layout) --- */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+      {/* --- 4. DETAILED INITIATIVES (Split Layout) --- */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
 
           {/* LEFT COLUMN: Deep Dive Content (Span 7) */}
           <div className="lg:col-span-7 space-y-12">

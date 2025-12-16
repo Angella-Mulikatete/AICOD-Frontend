@@ -9,8 +9,8 @@ import { ProgramMediaSidebar } from '@/components/program-media-sidebar';
 // --- Animation Variants ---
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-} as const;
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.33, 1, 0.68, 1] as [number, number, number, number] } }
+};
 
 const staggerContainer = {
   hidden: { opacity: 0 },
@@ -21,7 +21,7 @@ const staggerContainer = {
 };
 
 const cardVariant = {
-  hidden: { opacity: 0, scale: 0.95 },
+  hidden: { opacity: 0, scale: 0.9 },
   visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
 };
 
@@ -35,9 +35,9 @@ export default function HumanRightsPage() {
   ];
 
   const goals = [
-    "To empower and build community members’ capacity: This is achieved through providing training and building community’s capacity on relevant laws and regulations to land rights, Free Prior and Informed Consent (FPIC).",
-    "Create Platforms for Engagement: This is achieved through provision of forums where communities interact with duty bearers and stakeholders and foster dialogues to address grievances while advocating for fair practices.",
-    "Strengthen Community Movements: This is achieved through strong community mobilization to form associations, groups and empowered with capacities to observe and lead the cause for their own developments."
+    "To empower and build community members’ capacity: This is achived through providing training and building community’s capcity on relevant laws and regulations to land rights, Free Prior and Informed Consent ( FPIC).",
+    "Create Platforms for Engagement: This is achived through provision of forum where communitys interact with duty bearers and stakehoders and foster dialogues among communitys with decision makers to address grievances while advocating for fair practices in resource developments.",
+    "Strengthen Community Movements: This is achived through strong community mobilization to form associations, groups and empowered with capacities to obverse and lead the cause for their own developments."
   ];
 
   const sidebarImages = [
@@ -106,11 +106,7 @@ export default function HumanRightsPage() {
       )}
 
       {/* --- MAIN CONTENT --- */}
-      {/* 
-         ALIGNMENT FIX:
-         Using 'container mx-auto px-4' ensures the grid starts exactly 
-         where the Logo starts and ends where the Donate button ends.
-      */}
+
       <div className="container mx-auto px-4 py-12 md:py-20">
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
@@ -126,10 +122,10 @@ export default function HumanRightsPage() {
               className="prose prose-lg max-w-none text-gray-700"
             >
               <p className="text-xl md:text-2xl leading-relaxed font-bold text-brand-blue mb-6">
-                The intersection of natural resource developments and human rights is a critical concern for host communities.
+                The intersection of natural resource developments and human rights is a critical concern for host communities, particularly the native populations who often bear the burdens of large scale projects while facing violations of their rights.
               </p>
               <p className="text-base md:text-lg leading-relaxed">
-                Recognizing these issues, our program promotes human rights and inclusive development by empowering communities, working with key community groups, and building a system to protect their rights in the Albertine development areas.
+                Recognizing these issues, our program promotes human rights and inclusive development by empowering communities, working with key community groups and building a system to protect their rights in the Albertine development areas.
               </p>
             </motion.div>
 
@@ -176,7 +172,7 @@ export default function HumanRightsPage() {
             </motion.div>
 
             {/* CDA Section - Featured Card */}
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -226,7 +222,7 @@ export default function HumanRightsPage() {
                   </p>
                 </div>
               </div>
-            </motion.div>
+            </motion.div> */}
 
           </div>
 
