@@ -24,7 +24,7 @@ export function Footer() {
   ];
 
   const contactInfo = [
-    { icon: MapPin, text: '331 Hoima-Uganda (P.o.box 331)' },
+    { icon: MapPin, text: 'P.O Box 331 Hoima-Uganda' },
     { icon: Mail, text: 'info@aicode.org' },
     { icon: Phone, text: '+256 123 456 789' },
   ];
