@@ -269,11 +269,6 @@ export default function ImpactPage() {
                 ))}
               </div>
 
-              <div className="mt-8 md:mt-10 p-5 md:p-6 bg-brand-blue/5 rounded-xl border-l-4 border-brand-blue">
-                <p className="text-brand-blue text-base md:text-lg italic leading-relaxed" style={{ fontFamily: 'Monotype Corsiva' }}>
-                  "Empowering communities to build a sustainable future together."
-                </p>
-              </div>
 
             </div>
 

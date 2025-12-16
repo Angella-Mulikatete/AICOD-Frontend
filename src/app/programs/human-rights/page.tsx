@@ -171,73 +171,11 @@ export default function HumanRightsPage() {
               </div>
             </motion.div>
 
-            {/* CDA Section - Featured Card */}
-            {/* <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-200"
-            >
-              <div className="relative h-64 w-full">
-                <Image
-                  src="/images/our-story/civic.png"
-                  alt="Civic Development Agencies"
-                  fill
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                <div className="absolute bottom-6 left-6 right-6 text-white z-10">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="bg-brand-green p-1 rounded-full">
-                      <CheckCircle className="text-white w-3 h-3" />
-                    </div>
-                    <span className="text-brand-green font-bold uppercase tracking-wider text-xs">Community Led Initiative</span>
-                  </div>
-                  <h2 className="text-2xl md:text-3xl font-bold leading-tight">
-                    Civic Development Agencies (CDA)
-                  </h2>
-                </div>
-              </div>
-
-              <div className="p-6 md:p-8 space-y-6">
-                <div className="prose prose-lg text-gray-600">
-                  <p>
-                    The host community in the Albertine development areas hasn't been adequately involved in the development processes. This consistently violates their rights, breaking both national and international laws.
-                  </p>
-                </div>
-
-                <div className="bg-slate-50 p-6 rounded-xl border-l-4 border-brand-orange">
-                  <p className="text-gray-700 mb-4">
-                    To address this, AICOD established the <span className="font-bold text-brand-orange">Civic Development Agencies</span>.
-                  </p>
-                  <p className="text-gray-600 text-sm">
-                    This is a community-led movement which empowers community members to know, understand, and use the laws to demand, defend, and engage leaders for their development agenda.
-                  </p>
-                </div>
-
-                <div className="flex gap-4 items-start">
-                  <div className="text-brand-yellow text-4xl leading-none font-serif">"</div>
-                  <p className="text-gray-500 italic text-sm md:text-base pt-1">
-                    These Agencies keep track of developments, set their own agendas, develop solutions, and bring the capacity to make those solutions a reality.
-                  </p>
-                </div>
-              </div>
-            </motion.div> */}
-
           </div>
 
           {/* --- RIGHT COLUMN: MEDIA SIDEBAR (5 Cols) --- */}
           <div className="lg:col-span-5 w-full">
             <div className="lg:sticky lg:top-24 space-y-8">
-
-              {/* Optional Sidebar Context Box */}
-              <div className="hidden lg:block bg-brand-blue/5 rounded-2xl p-6 border border-brand-blue/10">
-                <h4 className="text-brand-blue font-bold mb-2">Visualizing Impact</h4>
-                <p className="text-sm text-gray-600">
-                  See how we are transforming rights into reality through our gallery and documentary footage.
-                </p>
-              </div>
-
               <ProgramMediaSidebar
                 youtubeUrl="https://www.youtube.com/watch?v=6e8m8L9BFa4"
                 images={sidebarImages}

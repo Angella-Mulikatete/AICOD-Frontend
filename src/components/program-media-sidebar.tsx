@@ -122,7 +122,7 @@ export function ProgramMediaSidebar({
                         transition={{
                             repeat: Infinity,
                             ease: "linear",
-                            duration: 25
+                            duration: 15
                         }}
                     >
                         {[...images, ...images, ...images, ...images].map((imgUrl, i) => (
