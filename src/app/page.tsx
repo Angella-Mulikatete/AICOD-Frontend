@@ -89,10 +89,16 @@ export default function Home() {
           >
 
             <h1 className="font-bold text-5xl md:text-7xl lg:text-8xl text-white mb-6 leading-tight drop-shadow-xl">
-              Welcome To <span className="text-brand-green">AICOD</span>
+              Welcome To 
+                {/* <span className="text-brand-green">AICOD</span> */}
+                <span className="text-brand-green ">A</span>
+                <span className="text-brand-orange">I</span>
+                <span className="text-brand-blue ">C</span>
+                <span className="text-brand-blue ">O</span>
+                <span className="text-brand-blue ">D</span>
             </h1>
 
-            <p className="text-lg md:text-2xl font-light text-blue-50 leading-relaxed mb-10 max-w-2xl mx-auto drop-shadow-md text-justify">
+            <p className="text-lg md:text-2xl font-light text-blue-50 leading-relaxed mb-10 max-w-2xl mx-auto drop-shadow-md ">
               Inspired by wonders
             </p>
 
