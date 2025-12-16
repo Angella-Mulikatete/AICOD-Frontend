@@ -2,9 +2,60 @@
 
 import Image from 'next/image';
 import { getPlaceholderImagesByPrefix } from '@/lib/image-assets';
-import { CheckCircle, TrendingUp, Users, Sprout, School, Play } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { CheckCircle, TrendingUp, Users, Sprout, School, Play, ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+
+// --- Data ---
+const causesData = [
+  {
+    title: "Innovative Livelihood Skills Development",
+    content: [
+      "Empowering communities devastated by natural resource developments to restore and enrich their livelihoods. We achieve this by supporting native based approaches and creating movements capable of defending their rights, protecting their environment, and building an entrepreneurship culture.",
+      "Empowered and Built community member’s capacity in Financial and Resource Management. During the development phases, where community members affected by oil and gas received compensation for their lost land to major oil and gas projects. Due to limited capacity and support to community in management and use of the compensation monies, this has led to most of native members to lose such resources which has rendered them more vulnerable to poverty and associated challenges.",
+      "In response, AICOD carried out initiatives which aimed at strengthening their capacity in financial and resource management. These initiatives among included; training on financial literacy and management skills, business plan development, bookkeeping, technology integration among others."
+    ],
+    highlight: "Space for Three sliding/slow moving photos from Rwamutonga training with Sun Makers and a video with testimonies from the trained beneficiaries."
+  },
+  {
+    title: "The Mother Earth Protection (MEP) Movement",
+    content: [
+      "The Mother Earth Protection (MEP) movement was founded to empower communities to fulfill their role as the \"original caretakers of Mother Earth.\"",
+      "The MEP movement's strategy is built on four main components: Elder to Youth Knowledge Transfer, Protection of Reserve Areas, Innovative and Creative Solutions, and Community Training Programs.",
+      "Each of these strategies aims to nurture, train, and mentor young Native leaders. The goal is to provide them with the opportunity to integrate traditional knowledge with the latest western technologies to create a powerful Earth management system. This system will protect, manage, and restore Mother Earth, ultimately returning harmony and balance to all people."
+    ],
+    highlight: "Three Photos from CFM work in Kaseeta and a video/short 1 minute documentary from the same group."
+  },
+  {
+    title: "One Team",
+    content: [
+      "Our initiative is economic program designed to empower community members and build their capacity to generate their own economic resources. The goal is to address their livelihood needs directly.",
+      "A significant challenge for the community has been a lack of access to affordable financing, despite their abundant local resources. Our program helps them leverage these resources to create sustainable financial opportunities.",
+      "So far, this initiative has brought together over 100 households, who have collaborated to launch their own economic projects. This success has attracted support from various stakeholders, significantly improving the lives of community members."
+    ],
+    highlight: "space for three slow/sliding photos and a 1 Minute video."
+  },
+  {
+    title: "Civic Development Agencies (CDA)",
+    content: [
+      "The host community in the Albertine development areas haven't been adequately involved in the development processes. This consistently violates their rights, breaking both national and international laws during development activities in the region.",
+      "To address this, AICOD established the Civic Development Agencies. This is a community-led movement which empowers communitity members to know, understand, and use the laws to demand, defend, and engage leaders, actors, and other relevant stakeholders for their interests and development agenda in these developments.",
+      "These Agencies keep track of developments and set their own agendas, develop solutions, and bring the capacity, leadership, and resources to make those solutions a reality."
+    ],
+    highlight: "Three slow/sliding Photos of Boreholes constructed due to community’s demand (Rwamutonga Borehole Photos will be used here) and a video about impact on our work."
+  },
+  {
+    title: "The Community Seed Bank",
+    content: [
+      "The community members have continually encountered significant impediments, primarily stemming from the lack of access to affordable and timely seeds, vulnerability to diseases and pests attributable to substandard seed quality, and climate induced stressors.",
+      "Furthermore, financial constraints hindering the timely procurement of quality seeds invariably lead to delayed planting, among other consequential issues.",
+      "This initiative furnishes community members with access to affordable, timely, and climate-resilient seed varieties, including those capable of withstanding prolonged drought and diseases. By provisioning these hybrid seeds, the seed bank has demonstrably enhanced the community's food production and household incomes, thereby presenting a pragmatic solution to a global challenge."
+    ],
+    highlight: "Space for three sliding/slow motion moving photos and 1 Minute video."
+  }
+];
 
 // --- Helper Function to Convert YouTube URL ---
 function getYouTubeEmbedUrl(url: string): string {
@@ -44,8 +95,9 @@ const scaleIn = {
 export default function ImpactPage() {
   const impactImages = getPlaceholderImagesByPrefix('impact-');
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [activePage, setActivePage] = useState(0);
 
-  // Example YouTube URL
+  // Example YouTube URL (Placeholder for now as specific videos weren't provided URLs yet)
   const youtubeVideoUrl = 'https://www.youtube.com/watch?v=4oAtw0U3DJw';
   const embedUrl = getYouTubeEmbedUrl(youtubeVideoUrl);
 
@@ -56,13 +108,7 @@ export default function ImpactPage() {
     { value: '1,200+', label: 'People Trained', color: 'text-brand-yellow', icon: School },
   ];
 
-  const keyAchievements = [
-    'Established 5 community-managed forests, protecting over 2,000 hectares of critical habitat.',
-    'Provided legal aid to over 300 individuals in land rights disputes.',
-    'Launched a successful women\'s cooperative for artisanal crafts, boosting household incomes by an average of 40%.',
-    'Implemented environmental education programs in 15 local schools, reaching over 5,000 students.',
-    'Facilitated the creation of 3 sustainable farming initiatives, improving food security for hundreds of families.'
-  ];
+  const currentCause = causesData[activePage];
 
   return (
     <div className="bg-white min-h-screen font-sans text-foreground">
@@ -105,29 +151,31 @@ export default function ImpactPage() {
       </header>
 
       {/* --- STATS SECTION --- */}
-      <section className="relative -mt-10 mb-16 z-20">
+      {/* Reduced bottom margin from mb-16 to mb-8. Reduced internal padding. */}
+      <section className="relative -mt-10 mb-8 z-20">
         <div className="container mx-auto px-4">
           <motion.div
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+            className="grid grid-cols-2 md:grid-cols-4 gap-4"
+          // Corrected grid col definition for tighter layout
           >
             {stats.map((stat, index) => (
               <motion.div
                 key={stat.label}
                 variants={scaleIn}
                 whileHover={{ y: -5 }}
-                className="bg-white rounded-xl shadow-xl p-6 text-center border-b-4 border-transparent hover:border-brand-orange transition-all duration-300"
+                className="bg-white rounded-xl shadow-xl p-4 text-center border-b-4 border-transparent hover:border-brand-orange transition-all duration-300"
               >
-                <div className={`mx-auto w-12 h-12 mb-4 rounded-full bg-gray-50 flex items-center justify-center ${stat.color}`}>
-                  <stat.icon className="w-6 h-6" />
+                <div className={`mx-auto w-10 h-10 mb-3 rounded-full bg-gray-50 flex items-center justify-center ${stat.color}`}>
+                  <stat.icon className="w-5 h-5" />
                 </div>
-                <p className={`text-3xl md:text-4xl font-bold mb-2 ${stat.color}`}>
+                <p className={`text-2xl md:text-3xl font-bold mb-1 ${stat.color}`}>
                   {stat.value}
                 </p>
-                <p className="text-xs md:text-sm font-bold uppercase tracking-wider text-gray-500">
+                <p className="text-xs font-bold uppercase tracking-wider text-gray-500">
                   {stat.label}
                 </p>
               </motion.div>
@@ -136,369 +184,143 @@ export default function ImpactPage() {
         </div>
       </section>
 
-      {/* --- MAIN CONTENT (Split Layout) --- */}
-      <div className="container mx-auto px-4 py-12 md:py-20">
-        
-        {/* Grid: 1 column on mobile, 2 columns on large screens */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-
-          {/* LEFT COLUMN: Media (Video + Carousel) */}
-          {/* Order logic: Video shows first on mobile (order-1), Left on desktop */}
-          <div className="w-full flex flex-col gap-8 order-1 lg:sticky lg:top-24">
-
-            {/* 1. YouTube Video Container */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              // aspect-video ensures 16:9 ratio on ALL devices. w-full fills the container.
-              className="relative w-full aspect-video rounded-xl md:rounded-2xl overflow-hidden shadow-xl bg-black"
-            >
-              {!isVideoPlaying ? (
-                <>
-                  {/* Poster Image */}
-                  <Image
-                    src="https://images.unsplash.com/photo-1542601906990-24ccd08d7455?q=80&w=2000&auto=format&fit=crop"
-                    alt="Impact Stories Video"
-                    fill
-                    className="object-cover"
-                  />
-
-                  {/* Play Button Overlay */}
-                  <button
-                    onClick={() => setIsVideoPlaying(true)}
-                    className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-all duration-300 group z-10"
-                    aria-label="Play video"
-                  >
-                    {/* Responsive play button size */}
-                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-brand-orange/90 flex items-center justify-center group-hover:scale-110 group-hover:bg-brand-orange transition-all duration-300 shadow-2xl backdrop-blur-sm">
-                      <Play className="w-8 h-8 md:w-10 md:h-10 text-white ml-1" fill="white" />
-                    </div>
-                  </button>
-
-                  {/* Overlay Text */}
-                  <div className="absolute bottom-3 left-3 md:bottom-4 md:left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-white text-xs md:text-sm font-medium border border-white/10 z-10">
-                    Impact Stories
-                  </div>
-                </>
-              ) : (
-                <iframe
-                  src={`${embedUrl}?autoplay=1`}
-                  title="Impact Stories"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="absolute inset-0 w-full h-full"
-                />
-              )}
-            </motion.div>
-
-            {/* 2. Auto-scrolling Photos */}
-            {/* Added w-full to ensure it doesn't overflow horizontally on mobile */}
-            <div className="w-full overflow-hidden rounded-xl md:rounded-2xl shadow-lg border border-gray-100 bg-slate-50 relative h-48 md:h-64">
-              <div className="absolute left-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-r from-slate-50 to-transparent pointer-events-none" />
-              <div className="absolute right-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-l from-slate-50 to-transparent pointer-events-none" />
-
-              <div className="flex h-full items-center">
-                <motion.div
-                  className="flex gap-4 pr-4"
-                  animate={{ x: [0, -600] }}
-                  transition={{ repeat: Infinity, ease: "linear", duration: 25 }}
-                >
-                  {[...impactImages, ...impactImages, ...impactImages].map((img, i) => (
-                    // Responsive width for carousel items
-                    <div key={i} className="relative w-48 h-36 md:w-64 md:h-48 flex-shrink-0 rounded-lg md:rounded-xl overflow-hidden bg-gray-200">
-                      <Image
-                        src={img.imageUrl}
-                        alt={img.description}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                  ))}
-                </motion.div>
-              </div>
-            </div>
-          </div>
-
-
-          {/* RIGHT COLUMN: Key Achievements Text */}
-          {/* Order-2 puts this below video on mobile, right side on desktop */}
+      {/* --- MAIN CONTENT (Pagination + Split Layout) --- */}
+      <div className="container mx-auto px-4 py-8 md:py-12">
+        {/* Dynamic Content Area */}
+        <AnimatePresence mode="wait">
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="w-full order-2"
+            key={activePage}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.4 }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start min-h-[500px]"
           >
-            <div className="flex items-center gap-3 mb-6 md:mb-8">
-              <div className="w-1.5 h-8 md:h-10 bg-brand-orange rounded-full"></div>
-              <h2 className="text-2xl md:text-3xl font-bold text-brand-blue">Key Achievements</h2>
+            {/* LEFT COLUMN: Media (Video + Carousel) */}
+            <div className="w-full flex flex-col gap-8 order-1 lg:sticky lg:top-24">
+              {/* 1. YouTube Video Container */}
+              <div className="relative w-full aspect-video rounded-xl md:rounded-2xl overflow-hidden shadow-xl bg-black">
+                {!isVideoPlaying ? (
+                  <>
+                    <Image
+                      src="https://images.unsplash.com/photo-1542601906990-24ccd08d7455?q=80&w=2000&auto=format&fit=crop"
+                      alt="Impact Stories Video"
+                      fill
+                      className="object-cover"
+                    />
+                    <button
+                      onClick={() => setIsVideoPlaying(true)}
+                      className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-all duration-300 group z-10"
+                      aria-label="Play video"
+                    >
+                      <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-brand-orange/90 flex items-center justify-center group-hover:scale-110 group-hover:bg-brand-orange transition-all duration-300 shadow-2xl backdrop-blur-sm">
+                        <Play className="w-8 h-8 md:w-10 md:h-10 text-white ml-1" fill="white" />
+                      </div>
+                    </button>
+                    <div className="absolute bottom-3 left-3 md:bottom-4 md:left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-white text-xs md:text-sm font-medium border border-white/10 z-10">
+                      See Impact
+                    </div>
+                  </>
+                ) : (
+                  <iframe
+                    src={`${embedUrl}?autoplay=1`}
+                    title="Impact Stories"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="absolute inset-0 w-full h-full"
+                  />
+                )}
+              </div>
+
+              <div className="w-full overflow-hidden rounded-xl md:rounded-2xl shadow-lg border border-gray-100 bg-slate-50 relative h-48 md:h-64">
+                <div className="absolute left-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-r from-slate-50 to-transparent pointer-events-none" />
+                <div className="absolute right-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-l from-slate-50 to-transparent pointer-events-none" />
+
+                <div className="flex h-full items-center">
+                  <motion.div
+                    className="flex gap-4 pr-4"
+                    animate={{ x: [0, -600] }}
+                    transition={{ repeat: Infinity, ease: "linear", duration: 15 }} // Reduced duration from 25 to 15 for faster scroll
+                  >
+                    {[...impactImages, ...impactImages, ...impactImages, ...impactImages].map((img, i) => (
+                      <div key={i} className="relative w-48 h-36 md:w-64 md:h-48 flex-shrink-0 rounded-lg md:rounded-xl overflow-hidden bg-gray-200">
+                        <Image
+                          src={img.imageUrl}
+                          alt={img.description}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    ))}
+                  </motion.div>
+                </div>
+              </div>
+
+              {/* Note for the user based on content provided */}
+              {/* <div className="text-xs text-gray-400 italic bg-gray-50 p-3 rounded-lg border border-dashed border-gray-300">
+                * Media Placeholder: {currentCause.highlight}
+              </div> */}
             </div>
 
-            <ul className="space-y-4 md:space-y-6">
-              {keyAchievements.map((achievement, index) => (
-                <motion.li
-                  key={index}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className="flex items-start gap-3 md:gap-4 group"
-                >
-                  <div className="mt-1 bg-brand-green/10 p-1 rounded-full flex-shrink-0 group-hover:bg-brand-green transition-colors duration-300">
-                    <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-brand-green group-hover:text-white transition-colors duration-300" />
-                  </div>
-                  {/* Responsive text size for readability on small screens */}
-                  <span className="text-base md:text-lg text-gray-600 leading-relaxed group-hover:text-gray-900 transition-colors">
-                    {achievement}
-                  </span>
-                </motion.li>
-              ))}
-            </ul>
+            {/* RIGHT COLUMN: Text Content */}
+            <div className="w-full order-2">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-1.5 h-8 md:h-10 bg-brand-orange rounded-full"></div>
+                <h2 className="text-2xl md:text-3xl font-bold text-brand-blue">{currentCause.title}</h2>
+              </div>
 
-            {/* Quote Block */}
-            <div className="mt-8 md:mt-10 p-5 md:p-6 bg-brand-blue/5 rounded-xl border-l-4 border-brand-blue">
-              <p className="text-brand-blue text-base md:text-lg italic leading-relaxed" style={{ fontFamily: 'Monotype Corsiva' }}>
-                "Every tree planted and every family supported represents a step towards a sustainable future."
-              </p>
+              <div className="space-y-6 text-gray-600 text-lg leading-relaxed text-justify">
+                {currentCause.content.map((paragraph, idx) => (
+                  <p key={idx}>{paragraph}</p>
+                ))}
+              </div>
+
+              <div className="mt-8 md:mt-10 p-5 md:p-6 bg-brand-blue/5 rounded-xl border-l-4 border-brand-blue">
+                <p className="text-brand-blue text-base md:text-lg italic leading-relaxed" style={{ fontFamily: 'Monotype Corsiva' }}>
+                  "Empowering communities to build a sustainable future together."
+                </p>
+              </div>
+
             </div>
 
-            <div className="mt-8 md:mt-12">
-              <p className="text-gray-500 text-xs md:text-sm">
-                * Figures are based on our 2024 Annual Report.
-              </p>
-            </div>
           </motion.div>
 
-        </div>
+          {/* Pagination Controls */}
+          <div className="flex justify-center items-center gap-2  flex-wrap p-10">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setActivePage(prev => Math.max(0, prev - 1))}
+              disabled={activePage === 0}
+              className="rounded-full w-10 h-10 p-0"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            {causesData.map((_, idx) => (
+              <Button
+                key={idx}
+                variant={activePage === idx ? "default" : "outline"}
+                className={cn(
+                  "rounded-full w-10 h-10 p-0 transition-all font-bold",
+                  activePage === idx ? "bg-brand-blue text-white hover:bg-brand-orange" : "text-gray-500 hover:text-brand-orange"
+                )}
+                onClick={() => setActivePage(idx)}
+              >
+                {idx + 1}
+              </Button>
+            ))}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setActivePage(prev => Math.min(causesData.length - 1, prev + 1))}
+              disabled={activePage === causesData.length - 1}
+              className="rounded-full w-10 h-10 p-0"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </AnimatePresence>
       </div>
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-// 'use client';
-
-// import Image from 'next/image';
-// import { getPlaceholderImagesByPrefix } from '@/lib/image-assets';
-// import { CheckCircle, TrendingUp, Users, Sprout, School } from 'lucide-react';
-// import { motion } from 'framer-motion';
-
-// // --- Animation Variants ---
-// const fadeInUp = {
-//   hidden: { opacity: 0, y: 30 },
-//   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.33, 1, 0.68, 1] as [number, number, number, number] } }
-// };
-
-// const staggerContainer = {
-//   hidden: { opacity: 0 },
-//   visible: {
-//     opacity: 1,
-//     transition: { staggerChildren: 0.15 }
-//   }
-// };
-
-// const scaleIn = {
-//   hidden: { opacity: 0, scale: 0.9 },
-//   visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
-// };
-
-// export default function ImpactPage() {
-//   const impactImages = getPlaceholderImagesByPrefix('impact-');
-
-//   // Stats with specific brand colors assigned
-//   const stats = [
-//     { value: '10,000+', label: 'Trees Planted', color: 'text-brand-green', icon: Sprout },
-//     { value: '500+', label: 'Families Supported', color: 'text-brand-orange', icon: Users },
-//     { value: '25+', label: 'Communities Engaged', color: 'text-brand-blue', icon: TrendingUp },
-//     { value: '1,200+', label: 'People Trained', color: 'text-brand-yellow', icon: School },
-//   ];
-
-//   const keyAchievements = [
-//     'Established 5 community-managed forests, protecting over 2,000 hectares of critical habitat.',
-//     'Provided legal aid to over 300 individuals in land rights disputes.',
-//     'Launched a successful women\'s cooperative for artisanal crafts, boosting household incomes by an average of 40%.',
-//     'Implemented environmental education programs in 15 local schools, reaching over 5,000 students.',
-//     'Facilitated the creation of 3 sustainable farming initiatives, improving food security for hundreds of families.'
-//   ];
-
-//   return (
-//     <div className="bg-white min-h-screen font-sans text-foreground">
-
-//       {/* --- HERO SECTION --- */}
-//       <header className="relative bg-brand-orange py-20 md:py-28 overflow-hidden text-white">
-//         {/* Decorative Background Elements */}
-//         <div className="absolute top-0 right-0 w-64 h-64 bg-brand-green/20 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
-//         <div className="absolute bottom-0 left-0 w-64 h-64 bg-brand-blue/20 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2"></div>
-
-//         <div className="container mx-auto px-4 text-center relative z-10">
-//           <motion.div
-//             initial="hidden"
-//             animate="visible"
-//             variants={fadeInUp}
-//           >
-//             <span className="block text-brand-yellow text-2xl md:text-3xl mb-4" style={{ fontFamily: 'Monotype Corsiva' }}>
-//               Driving Change
-//             </span>
-//             <h1 className="font-bold text-4xl md:text-6xl mb-6 shadow-sm">
-//               Our <span className="text-brand-blue">Cause</span>
-//             </h1>
-//             <p className="mx-auto max-w-2xl text-lg md:text-xl text-orange-50 leading-relaxed">
-//               We define our success not just by numbers, but by the tangible, positive changes we create together with our communities.
-//             </p>
-//           </motion.div>
-//         </div>
-//       </header>
-
-//       {/* --- STATS SECTION --- */}
-//       <section className="relative -mt-10 mb-16 z-20">
-//         <div className="container mx-auto px-4">
-//           <motion.div
-//             variants={staggerContainer}
-//             initial="hidden"
-//             whileInView="visible"
-//             viewport={{ once: true }}
-//             className="grid grid-cols-2 lg:grid-cols-4 gap-6"
-//           >
-//             {stats.map((stat, index) => (
-//               <motion.div
-//                 key={stat.label}
-//                 variants={scaleIn}
-//                 whileHover={{ y: -5 }}
-//                 className="bg-white rounded-xl shadow-xl p-6 text-center border-b-4 border-transparent hover:border-brand-orange transition-all duration-300"
-//               >
-//                 <div className={`mx-auto w-12 h-12 mb-4 rounded-full bg-gray-50 flex items-center justify-center ${stat.color}`}>
-//                   <stat.icon className="w-6 h-6" />
-//                 </div>
-//                 <p className={`text-3xl md:text-4xl font-bold mb-2 ${stat.color}`}>
-//                   {stat.value}
-//                 </p>
-//                 <p className="text-xs md:text-sm font-bold uppercase tracking-wider text-gray-500">
-//                   {stat.label}
-//                 </p>
-//               </motion.div>
-//             ))}
-//           </motion.div>
-//         </div>
-//       </section>
-
-//       {/* --- MAIN CONTENT (Split Layout) --- */}
-//       <div className="container mx-auto max-w-7xl px-4 py-12 md:py-20">
-//         <div className="grid gap-12 lg:grid-cols-2 lg:gap-20 items-start">
-
-//           {/* LEFT COLUMN: Media (Video + Carousel) - Mirror of Programmes */}
-//           <div className="flex flex-col gap-8 sticky top-24 order-2 lg:order-1">
-//             {/* 1. Video */}
-//             <motion.div
-//               initial={{ opacity: 0, scale: 0.95 }}
-//               whileInView={{ opacity: 1, scale: 1 }}
-//               viewport={{ once: true }}
-//               className="rounded-2xl overflow-hidden shadow-xl aspect-video relative bg-black"
-//             >
-//               <video
-//                 autoPlay
-//                 loop
-//                 muted
-//                 playsInline
-//                 className="h-full w-full object-cover"
-//                 poster="https://images.unsplash.com/photo-1542601906990-24ccd08d7455?q=80&w=2000&auto=format&fit=crop"
-//               >
-//                 <source src="/assets/video/aicod.mp4" type="video/mp4" />
-//                 Your browser does not support the video tag.
-//               </video>
-//               {/* Overlay Text */}
-//               <div className="absolute bottom-4 left-4 bg-black/50 backdrop-blur-sm px-4 py-2 rounded-lg text-white text-sm font-medium">
-//                 Impact Stories
-//               </div>
-//             </motion.div>
-
-//             {/* 2. Auto-scrolling Photos */}
-//             <div className="overflow-hidden rounded-2xl shadow-lg border border-gray-100 bg-slate-50 relative h-64">
-//               <div className="absolute left-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-r from-slate-50 to-transparent" />
-//               <div className="absolute right-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-l from-slate-50 to-transparent" />
-
-//               <div className="flex h-full items-center">
-//                 <motion.div
-//                   className="flex gap-4 pr-4"
-//                   animate={{ x: [0, -600] }}
-//                   transition={{ repeat: Infinity, ease: "linear", duration: 18 }} // Slightly different speed
-//                 >
-//                   {/* Repeat images */}
-//                   {[...impactImages, ...impactImages, ...impactImages].map((img, i) => (
-//                     <div key={i} className="relative w-64 h-48 flex-shrink-0 rounded-xl overflow-hidden">
-//                       <Image
-//                         src={img.imageUrl}
-//                         alt={img.description}
-//                         fill
-//                         className="object-cover"
-//                       />
-//                     </div>
-//                   ))}
-//                 </motion.div>
-//               </div>
-//             </div>
-//           </div>
-
-
-//           {/* RIGHT COLUMN: Key Achievements Text - Mirror of Programmes */}
-//           <motion.div
-//             initial={{ opacity: 0, x: 30 }}
-//             whileInView={{ opacity: 1, x: 0 }}
-//             viewport={{ once: true }}
-//             transition={{ duration: 0.6 }}
-//             className="order-1 lg:order-2"
-//           >
-//             <div className="flex items-center gap-3 mb-8">
-//               <div className="w-1.5 h-10 bg-brand-orange rounded-full"></div>
-//               <h2 className="text-3xl font-bold text-brand-blue">Key Achievements</h2>
-//             </div>
-
-//             <ul className="space-y-6">
-//               {keyAchievements.map((achievement, index) => (
-//                 <motion.li
-//                   key={index}
-//                   initial={{ opacity: 0, x: 20 }}
-//                   whileInView={{ opacity: 1, x: 0 }}
-//                   viewport={{ once: true }}
-//                   transition={{ delay: index * 0.1 }}
-//                   className="flex items-start gap-4 group"
-//                 >
-//                   <div className="mt-1 bg-brand-green/10 p-1 rounded-full flex-shrink-0 group-hover:bg-brand-green transition-colors duration-300">
-//                     <CheckCircle className="h-5 w-5 text-brand-green group-hover:text-white transition-colors duration-300" />
-//                   </div>
-//                   <span className="text-lg text-gray-600 leading-relaxed group-hover:text-gray-900 transition-colors">
-//                     {achievement}
-//                   </span>
-//                 </motion.li>
-//               ))}
-//             </ul>
-
-//             {/* Quote Block */}
-//             <div className="mt-10 p-6 bg-brand-blue/5 rounded-lg border-l-4 border-brand-blue">
-//               <p className="text-brand-blue text-lg italic" style={{ fontFamily: 'Monotype Corsiva' }}>
-//                 "Every tree planted and every family supported represents a step towards a sustainable future."
-//               </p>
-//             </div>
-
-//             <div className="mt-12">
-//               <p className="text-gray-500 text-sm">
-//                 * Figures are based on our 2024 Annual Report.
-//               </p>
-//             </div>
-//           </motion.div>
-
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }

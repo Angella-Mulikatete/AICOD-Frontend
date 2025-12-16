@@ -92,7 +92,7 @@ export default function Home() {
               Welcome To <span className="text-brand-green">AICOD</span>
             </h1>
 
-            <p className="text-lg md:text-2xl font-light text-blue-50 leading-relaxed mb-10 max-w-2xl mx-auto drop-shadow-md">
+            <p className="text-lg md:text-2xl font-light text-blue-50 leading-relaxed mb-10 max-w-2xl mx-auto drop-shadow-md text-justify">
               Inspired by wonders
             </p>
 
@@ -130,7 +130,7 @@ export default function Home() {
                 <span className="text-brand-orange">Protecting Rights</span>
               </h2>
 
-              <div className="prose prose-lg text-gray-600 mb-8">
+              <div className="prose prose-lg text-gray-600 mb-8 text-justify">
                 <p>
                   Founded in 2013, the Albertine Institute for Community Development (AICOD) emerged as a response to the pressing challenges faced by host communities in Uganda’s oil-rich Albertine region.
                 </p>
@@ -165,7 +165,7 @@ export default function Home() {
                     </div>
                     <h3 className="text-2xl font-bold text-brand-blue font-headline">Our Vision</h3>
                   </div>
-                  <p className="text-xl text-gray-600 italic leading-relaxed pl-2 border-l-2 border-brand-yellow">
+                  <p className="text-xl text-gray-600 italic leading-relaxed pl-2 border-l-2 border-brand-yellow text-justify">
                     "A community with respected rights, improved livelihoods, and a safe, clean environment."
                   </p>
                 </CardContent>
@@ -180,7 +180,7 @@ export default function Home() {
                     </div>
                     <h3 className="text-2xl font-bold text-brand-green font-headline">Our Mission</h3>
                   </div>
-                  <p className="text-xl text-gray-600 italic leading-relaxed pl-2 border-l-2 border-brand-yellow">
+                  <p className="text-xl text-gray-600 italic leading-relaxed pl-2 border-l-2 border-brand-yellow text-justify">
                     "To advocate for the promotion and protection of the rights of disadvantaged communities, thereby safeguarding their livelihoods."
                   </p>
                 </CardContent>
@@ -202,7 +202,7 @@ export default function Home() {
           >
             <h2 className="text-3xl md:text-4xl font-bold text-brand-blue mb-4">Our Core Programmes</h2>
             <div className="w-16 h-1.5 bg-brand-orange mx-auto rounded-full mb-4" />
-            <p className="max-w-2xl mx-auto text-lg text-gray-500">
+            <p className="max-w-2xl mx-auto text-lg text-gray-500 text-justify">
               We focus on key areas that are critical for sustainable development and community well-being.
             </p>
           </motion.div>
