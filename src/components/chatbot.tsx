@@ -52,7 +52,7 @@ export default function Chatbot() {
     setInput('');
     setIsLoading(true);
 
-    const { success, response } = await getChatbotResponse(input, messages);
+    const { success, response } = await getChatbotResponse(input, newMessages);
 
     const botMessage: Message = { role: 'model', content: response };
     setMessages((prev) => [...prev, botMessage]);

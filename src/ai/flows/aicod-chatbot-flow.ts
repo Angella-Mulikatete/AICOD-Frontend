@@ -31,12 +31,17 @@ export async function aicodChatbot(input: AICODChatbotInput): Promise<AICODChatb
 
 const prompt = ai.definePrompt({
   name: 'aicodChatbotPrompt',
-  input: { schema: AICODChatbotInputSchema },
+  input: {
+    schema: z.object({
+      message: z.string(),
+      historyString: z.string(),
+    })
+  },
   output: { schema: AICODChatbotOutputSchema },
   prompt: `You are a helpful AI chatbot for the Albertine Institute For Community Development (AICOD). AICOD focuses on Biodiversity, Human Rights, and Community & Livelihood.
 
   Conversation history:
-  {{history}}
+  {{historyString}}
 
   Respond to the following user message:
   {{message}}
@@ -50,9 +55,13 @@ const aicodChatbotFlow = ai.defineFlow(
     outputSchema: AICODChatbotOutputSchema,
   },
   async input => {
+    const historyString = input.history && input.history.length > 0
+      ? input.history.map(m => `${m.role}: ${m.content}`).join('\n')
+      : 'No previous messages.';
+
     const { output } = await prompt({
-      ...input,
-      history: input.history?.map(m => `${m.role}: ${m.content}`).join('\n')
+      message: input.message,
+      historyString: historyString
     });
     return output!;
   }
