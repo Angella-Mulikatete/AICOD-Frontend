@@ -105,13 +105,13 @@ export function Footer() {
                   <ul className="space-y-3">
                     <li>
                       {/* CHANGED: Hover color to brand-blue because orange background consumes brand-orange */}
-                      <Link href="/our-story" className="text-orange-50 hover:text-brand-blue transition-colors text-sm flex items-center gap-2 group">
+                      <Link href="/our-story" className="text-orange-50 hover:text-brand-yellow transition-colors text-sm flex items-center gap-2 group">
                         <span className="w-1 h-1 rounded-full bg-brand-green opacity-0 group-hover:opacity-100 transition-opacity" />
                         Our Story
                       </Link>
                     </li>
                     <li>
-                      <Link href="/cause" className="text-orange-50 hover:text-brand-blue transition-colors text-sm flex items-center gap-2 group">
+                      <Link href="/cause" className="text-orange-50 hover:text-brand-yellow transition-colors text-sm flex items-center gap-2 group">
                         <span className="w-1 h-1 rounded-full bg-brand-green opacity-0 group-hover:opacity-100 transition-opacity" />
                         Our Cause
                       </Link>
@@ -126,8 +126,8 @@ export function Footer() {
                     {navLinks.find(l => l.title === 'Programmes')?.subLinks?.map(link => (
                       <li key={link.title}>
                         {/* CHANGED: Hover color to brand-blue */}
-                        <Link href={link.href} className="text-orange-50 hover:text-brand-blue transition-colors text-sm flex items-center gap-2 group">
-                          <span className="w-1 h-1 rounded-full bg-brand-blue opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <Link href={link.href} className="text-orange-50 hover:text-brand-yellow transition-colors text-sm flex items-center gap-2 group">
+                          <span className="w-1 h-1 rounded-full bg-brand-green opacity-0 group-hover:opacity-100 transition-opacity" />
                           {link.title}
                         </Link>
                       </li>
@@ -140,13 +140,13 @@ export function Footer() {
                   <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-wider">Support</h3>
                   <ul className="space-y-3">
                     <li>
-                      <Link href="/donations" className="text-orange-50 hover:text-brand-blue transition-colors text-sm flex items-center gap-2 group">
+                      <Link href="/donations" className="text-orange-50 hover:text-brand-yellow transition-colors text-sm flex items-center gap-2 group">
                         <span className="w-1 h-1 rounded-full bg-brand-green opacity-0 group-hover:opacity-100 transition-opacity" />
                         Donations
                       </Link>
                     </li>
                     <li>
-                      <Link href="/contact" className="text-orange-50 hover:text-brand-blue transition-colors text-sm flex items-center gap-2 group">
+                      <Link href="/contact" className="text-orange-50 hover:text-brand-yellow transition-colors text-sm flex items-center gap-2 group">
                         <span className="w-1 h-1 rounded-full bg-brand-green opacity-0 group-hover:opacity-100 transition-opacity" />
                         Contact Us
                       </Link>

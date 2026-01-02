@@ -8,11 +8,15 @@
  * - AICODChatbotOutput - The return type for the aicodChatbot function.
  */
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import { ai } from '@/ai/genkit';
+import { z } from 'genkit';
 
 const AICODChatbotInputSchema = z.object({
   message: z.string().describe('The user message to the chatbot.'),
+  history: z.array(z.object({
+    role: z.enum(['user', 'model']),
+    content: z.string(),
+  })).optional().describe('The conversation history.'),
 });
 export type AICODChatbotInput = z.infer<typeof AICODChatbotInputSchema>;
 
@@ -27,12 +31,14 @@ export async function aicodChatbot(input: AICODChatbotInput): Promise<AICODChatb
 
 const prompt = ai.definePrompt({
   name: 'aicodChatbotPrompt',
-  input: {schema: AICODChatbotInputSchema},
-  output: {schema: AICODChatbotOutputSchema},
+  input: { schema: AICODChatbotInputSchema },
+  output: { schema: AICODChatbotOutputSchema },
   prompt: `You are a helpful AI chatbot for the Albertine Institute For Community Development (AICOD). AICOD focuses on Biodiversity, Human Rights, and Community & Livelihood.
 
-  Respond to the following user message:
+  Conversation history:
+  {{history}}
 
+  Respond to the following user message:
   {{message}}
   `,
 });
@@ -44,7 +50,10 @@ const aicodChatbotFlow = ai.defineFlow(
     outputSchema: AICODChatbotOutputSchema,
   },
   async input => {
-    const {output} = await prompt(input);
+    const { output } = await prompt({
+      ...input,
+      history: input.history?.map(m => `${m.role}: ${m.content}`).join('\n')
+    });
     return output!;
   }
 );

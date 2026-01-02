@@ -12,7 +12,7 @@ import { contactFormSchema } from './schemas';
 export async function submitContactForm(data: z.infer<typeof contactFormSchema>) {
   try {
     const validatedData = contactFormSchema.parse(data);
-    
+
     // Simulate sending an email
     console.log('New Contact Form Submission:');
     console.log('Name:', validatedData.name);
@@ -31,13 +31,13 @@ export async function submitContactForm(data: z.infer<typeof contactFormSchema>)
  * Server action to get a response from the AI chatbot.
  * It calls the Genkit flow and returns the response.
  */
-export async function getChatbotResponse(message: string): Promise<{ success: boolean; response: string }> {
+export async function getChatbotResponse(message: string, history?: { role: 'user' | 'model'; content: string }[]): Promise<{ success: boolean; response: string }> {
   if (!message || message.trim().length === 0) {
     return { success: false, response: 'Please enter a message.' };
   }
 
   try {
-    const result = await aicodChatbot({ message });
+    const result = await aicodChatbot({ message, history });
     return { success: true, response: result.response };
   } catch (error) {
     console.error('Error getting chatbot response:', error);

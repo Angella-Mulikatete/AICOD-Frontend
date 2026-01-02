@@ -91,7 +91,7 @@ export default function Home() {
             <h1 className="font-bold text-5xl md:text-7xl lg:text-8xl text-white mb-6 leading-tight drop-shadow-xl">
               Welcome To 
                 {/* <span className="text-brand-green">AICOD</span> */}
-                <span className="text-brand-green ">A</span>
+                <span className="text-brand-green "> A</span>
                 <span className="text-brand-orange">I</span>
                 <span className="text-brand-blue ">C</span>
                 <span className="text-brand-blue ">O</span>
