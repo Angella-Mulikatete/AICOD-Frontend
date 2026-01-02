@@ -37,7 +37,7 @@ export function Footer() {
 
   return (
     // CHANGED: bg-brand-blue -> bg-brand-orange
-    <footer className="relative bg-brand-orange text-white overflow-hidden shadow-2xl">
+    <footer className="relative bg-brand-blue text-white overflow-hidden shadow-2xl">
 
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
