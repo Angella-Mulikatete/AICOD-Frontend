@@ -57,8 +57,7 @@ export function Footer() {
               <Link href="/" className="inline-block group">
                 <div className="font-headline text-3xl font-bold mb-2 flex items-center gap-1">
                   <span className="text-brand-green group-hover:scale-110 transition-transform inline-block">A</span>
-                  {/* CHANGED: 'I' color from orange to blue so it shows on orange bg */}
-                  <span className="text-brand-blue group-hover:scale-110 transition-transform inline-block">I</span>
+                  <span className="text-brand-green group-hover:scale-110 transition-transform inline-block">I</span>
                   <span className=" group-hover:scale-110 transition-transform inline-block">C</span>
                   <span className=" group-hover:scale-110 transition-transform inline-block">O</span>
                   <span className=" group-hover:scale-110 transition-transform inline-block">D</span>
