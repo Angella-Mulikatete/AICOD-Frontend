@@ -25,16 +25,16 @@ export default function ContactPage() {
     {
       icon: MapPin,
       label: "Visit Us",
-      text: "Kampala, Uganda",
-      subtext: "Plot 45, Albertine Road",
+      text: "Hoima, Kikube",
+      subtext: "Hoima district, Uganda",
       href: "#"
     },
     {
       icon: Mail,
       label: "Email Us",
-      text: "info@aicode.org",
+      text: "info@albertinecommunity.org",
       subtext: "We reply within 24 hours",
-      href: "mailto:info@aicode.org"
+      href: "mailto:info@albertinecommunity.org"
     },
     {
       icon: Phone,

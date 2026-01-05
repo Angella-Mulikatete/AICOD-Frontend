@@ -2,7 +2,9 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Menu } from 'lucide-react';
+import AICODLogo from "../../../public/assets/images/AICOD logo.jpg";
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import {
@@ -25,8 +27,14 @@ export function MobileNav() {
       </SheetTrigger>
       <SheetContent side="left">
         <div className="flex h-full flex-col py-6">
-          <Link href="/" className="px-4 font-headline text-2xl font-bold" onClick={() => setIsOpen(false)}>
-            AICOD Uganda
+          <Link href="/" className="px-4 flex items-center" onClick={() => setIsOpen(false)}>
+            <Image
+              src={AICODLogo}
+              alt="AICOD Logo"
+              width={160}
+              height={50}
+              className="h-10 w-auto object-contain"
+            />
           </Link>
           <div className="mt-8 flex flex-col gap-2">
             <Accordion type="single" collapsible className="w-full">
@@ -65,9 +73,9 @@ export function MobileNav() {
             </Accordion>
           </div>
           <div className="mt-auto px-4">
-             <Button asChild className="w-full bg-brand-orange text-white hover:bg-brand-orange/90" onClick={() => setIsOpen(false)}>
-                <Link href="/donations">Donate Now</Link>
-             </Button>
+            <Button asChild className="w-full bg-brand-orange text-white hover:bg-brand-orange/90" onClick={() => setIsOpen(false)}>
+              <Link href="/donations">Donate Now</Link>
+            </Button>
           </div>
         </div>
       </SheetContent>

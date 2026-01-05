@@ -28,7 +28,6 @@ export const storyContent: StoryContent = {
             "However, as developmental pressures mounted, we expanded our focus and introduced new programmes, including Biodiversity and Environment and Community & Livelihoods. Subsequently, we incorporated social enterprise models to address communities’ needs amidst the challenges brought by these developments",
             "The impacts of these developments extend beyond local communities and resonate globally.",
             "We believe through the social enterprise model, it is essential to create economically resilient communities, financially stable institution while together generating innovative ideas to achieve ceaseless solutions to local and global problems.",
-            "Our hope is that the benefits of these initiatives and methodologies can be shared globally, fostering a more equitable and sustainable future for all."
         ]
     },
     vision: "A community with respected rights, improved livelihoods, and a safe, clean environment.",

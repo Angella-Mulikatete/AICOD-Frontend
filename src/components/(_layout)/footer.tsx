@@ -6,6 +6,7 @@ import { Facebook, Mail, MapPin, Phone, Send, Linkedin } from 'lucide-react';
 import { navLinks } from '@/lib/nav-links';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import AICODLogo from "../../../public/assets/images/AICOD logo.jpg";
 
 const XIcon = () => (
   <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 fill-current">
@@ -25,7 +26,7 @@ export function Footer() {
 
   const contactInfo = [
     { icon: MapPin, text: 'P.O Box 331 Hoima-Uganda' },
-    { icon: Mail, text: 'info@aicode.org' },
+    { icon: Mail, text: 'info@albertinecommunity.org' },
     { icon: Phone, text: '+256 123 456 789' },
   ];
 
@@ -55,12 +56,14 @@ export function Footer() {
             {/* Left Column: Brand & Mission */}
             <div className="lg:col-span-4">
               <Link href="/" className="inline-block group">
-                <div className="font-headline text-3xl font-bold mb-2 flex items-center gap-1">
-                  <span className="text-brand-green group-hover:scale-110 transition-transform inline-block">A</span>
-                  <span className="text-brand-orange group-hover:scale-110 transition-transform inline-block">I</span>
-                  <span className=" group-hover:scale-110 transition-transform inline-block">C</span>
-                  <span className=" group-hover:scale-110 transition-transform inline-block">O</span>
-                  <span className=" group-hover:scale-110 transition-transform inline-block">D</span>
+                <div className="mb-4">
+                  <Image
+                    src={AICODLogo}
+                    alt="AICOD Logo"
+                    width={180}
+                    height={60}
+                    className="h-12 w-auto object-contain"
+                  />
                 </div>
               </Link>
               {/* CHANGED: text-slate-400 -> text-orange-50 for better contrast */}
@@ -160,7 +163,7 @@ export function Footer() {
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
                 <h3 className="font-bold text-white mb-2 text-lg">Stay Updated</h3>
                 <p className="text-orange-50 text-sm mb-4">
-                  Subscribe to our newsletter for updates on our programs and impact.
+                  Subscribe to our newsletter for updates on our programmes and cause.
                 </p>
                 <form onSubmit={handleSubscribe} className="space-y-3">
                   <div className="relative">
@@ -190,7 +193,7 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-white/20 py-6">
+        {/* <div className="border-t border-white/20 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-orange-100">
             <p>
               &copy; {new Date().getFullYear()} AICOD. All Rights Reserved.
@@ -204,7 +207,7 @@ export function Footer() {
               </Link>
             </div>
           </div>
-        </div>
+        </div> */}
 
       </div>
     </footer>
