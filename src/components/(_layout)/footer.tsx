@@ -26,8 +26,8 @@ export function Footer() {
 
   const contactInfo = [
     { icon: MapPin, text: 'P.O Box 331 Hoima-Uganda' },
-    { icon: Mail, text: 'info@albertinecommunity.org' },
-    { icon: Phone, text: '+256 123 456 789' },
+    { icon: Mail, text: 'info@albertinecommunity.org', href: 'mailto:info@albertinecommunity.org' },
+    { icon: Phone, text: '+256 123 456 789', href: 'tel:+256123456789' },
   ];
 
   const handleSubscribe = (e: React.FormEvent) => {
@@ -88,10 +88,13 @@ export function Footer() {
               {/* Contact Info */}
               <div className="space-y-3">
                 {contactInfo.map((item, index) => (
-                  // CHANGED: text-slate-400 -> text-orange-50
                   <div key={index} className="flex items-start gap-3 text-sm text-orange-50">
                     <item.icon className="w-4 h-4 mt-0.5 text-brand-yellow flex-shrink-0" />
-                    <span>{item.text}</span>
+                    {item.href ? (
+                      <a href={item.href} className="hover:text-brand-yellow transition-colors">{item.text}</a>
+                    ) : (
+                      <span>{item.text}</span>
+                    )}
                   </div>
                 ))}
               </div>
@@ -163,7 +166,7 @@ export function Footer() {
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
                 <h3 className="font-bold text-white mb-2 text-lg">Stay Updated</h3>
                 <p className="text-orange-50 text-sm mb-4">
-                  Subscribe to our newsletter for updates on our programmes and cause.
+                  Subscribe to our newsletter by emailing us at <a href="mailto:info@albertinecommunity.org" className="text-brand-yellow hover:underline">info@albertinecommunity.org</a>
                 </p>
                 <form onSubmit={handleSubscribe} className="space-y-3">
                   <div className="relative">

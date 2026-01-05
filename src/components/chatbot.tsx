@@ -20,6 +20,7 @@ export default function Chatbot() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,18 +30,13 @@ export default function Chatbot() {
   }, [isOpen, messages.length]);
 
   useEffect(() => {
-    if (scrollAreaRef.current) {
-      // A bit of a hack to scroll to bottom after new message is rendered.
-      setTimeout(() => {
-        if (scrollAreaRef.current) {
-          const viewport = scrollAreaRef.current.querySelector('[data-slot="scroll-area-viewport"]');
-          if (viewport) {
-            viewport.scrollTop = viewport.scrollHeight;
-          }
-        }
+    if (isOpen) {
+      const timer = setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
       }, 100);
+      return () => clearTimeout(timer);
     }
-  }, [messages]);
+  }, [messages, isLoading, isOpen]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,11 +58,11 @@ export default function Chatbot() {
   return (
     <>
       <Button
-        className="fixed bottom-6 right-6 h-16 w-16 rounded-full bg-primary shadow-lg transition-transform hover:scale-110 hover:bg-primary/90"
+        className="fixed bottom-6 right-6 h-16 w-16 rounded-full bg-brand-orange shadow-lg transition-transform hover:scale-110 hover:bg-brand-orange/90"
         onClick={() => setIsOpen(true)}
         aria-label="Open Chatbot"
       >
-        <BotMessageSquare className="h-8 w-8 text-primary-foreground" />
+        <BotMessageSquare className="h-8 w-8 text-white" />
       </Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -96,7 +92,7 @@ export default function Chatbot() {
                     className={cn(
                       'max-w-[75%] rounded-lg px-3 py-2 text-sm',
                       message.role === 'user'
-                        ? 'bg-primary text-primary-foreground'
+                        ? 'bg-brand-orange text-white'
                         : 'bg-muted text-muted-foreground'
                     )}
                   >
@@ -116,6 +112,7 @@ export default function Chatbot() {
                   </div>
                 </div>
               )}
+              <div ref={messagesEndRef} />
             </div>
           </ScrollArea>
 
