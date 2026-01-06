@@ -57,13 +57,11 @@ export function Footer() {
             <div className="lg:col-span-4">
               <Link href="/" className="inline-block group">
                 <div className="mb-4">
-                  <Image
-                    src={AICODLogo}
-                    alt="AICOD Logo"
-                    width={180}
-                    height={60}
-                    className="h-12 w-auto object-contain"
-                  />
+                  <h1 className="text-4xl font-extrabold tracking-tight">
+                    <span className="text-brand-green">A</span>
+                    <span className="text-brand-orange">I</span>
+                    <span className="text-white">COD</span>
+                  </h1>
                 </div>
               </Link>
               {/* CHANGED: text-slate-400 -> text-orange-50 for better contrast */}
