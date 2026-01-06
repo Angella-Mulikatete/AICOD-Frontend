@@ -76,7 +76,7 @@ export default function OurStoryPage() {
                 className="bg-white rounded-2xl shadow-xl p-8 md:p-12 border-t-8 border-brand-orange"
               >
                 <h2 className="text-3xl font-bold text-brand-blue mb-8 flex items-center gap-3">
-                  <span className="text-brand-orange text-4xl" style={{ fontFamily: 'Monotype Corsiva' }}>The Journey</span> of AICOD
+                  <span className="text-brand-orange text-4xl" style={{ fontFamily: 'Monotype Corsiva' }}>Our Journey</span> 
                 </h2>
 
                 <article className="prose prose-lg max-w-none text-gray-700 leading-relaxed">

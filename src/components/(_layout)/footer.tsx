@@ -19,7 +19,7 @@ export function Footer() {
   const [email, setEmail] = useState('');
 
   const socialLinks = [
-    { name: 'Facebook', href: '#', icon: Facebook },
+    { name: 'Facebook', href: 'https://www.facebook.com/profile.php?id=100082838281335', icon: Facebook },
     { name: 'X', href: 'https://twitter.com/aicodUg', icon: XIcon },
     { name: 'LinkedIn', href: 'https://www.linkedin.com/company/104364202/admin/dashboard/', icon: Linkedin }
   ];
