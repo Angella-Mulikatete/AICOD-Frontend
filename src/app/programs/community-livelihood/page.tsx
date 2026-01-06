@@ -114,7 +114,7 @@ export default function CommunityLivelihoodPage() {
             <p className="leading-relaxed text-gray-600 text-lg">
               This Program aims to enhance the living standards of indigenous and host communities 
               within the <span className="font-semibold text-brand-blue">Albertine region</span>, 
-              especially as it relates to natural resource sector developments. 
+              especially as it relates to natural resource sector developments.This initiative focuses on sustainable practices that empower communities to thrive frugally while respecting their cultural and environmental settings. 
             </p>
           </motion.div>
         </div>
