@@ -12,10 +12,12 @@ export async function subscribeToNewsletter(email: string) {
     }
 
     const gmailUser = process.env.GMAIL_USER;
-    const gmailPass = process.env.GMAIL_APP_PASSWORD;
+    const clientId = process.env.GOOGLE_CLIENT_ID;
+    const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+    const refreshToken = process.env.GOOGLE_REFRESH_TOKEN;
 
-    if (!gmailUser || !gmailPass) {
-        console.error('Newsletter Error: GMAIL_USER or GMAIL_APP_PASSWORD not set in environment variables');
+    if (!gmailUser || !clientId || !clientSecret || !refreshToken) {
+        console.error('Newsletter Error: Missing OAuth2 environment variables');
         return { success: false, message: 'Server configuration error. Please try again later.' };
     }
 
@@ -23,8 +25,11 @@ export async function subscribeToNewsletter(email: string) {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
+                type: 'OAuth2',
                 user: gmailUser,
-                pass: gmailPass,
+                clientId: clientId,
+                clientSecret: clientSecret,
+                refreshToken: refreshToken,
             },
         });
 
