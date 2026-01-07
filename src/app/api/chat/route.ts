@@ -82,7 +82,7 @@ export async function POST(req: Request) {
         }
 
         const result = streamText({
-            model: google('gemini-1.5-pro'), // Using stable version for deployment reliability
+            model: google('gemini-2.5-flash'), // Using stable version for deployment reliability
             system: systemContext,
             messages,
             temperature: 0.7,
