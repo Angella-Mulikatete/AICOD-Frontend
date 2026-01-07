@@ -59,8 +59,21 @@ Example of including UI data:
 Always be proactive in guiding users to their requested destinations while maintaining a tone of conservation and community empowerment.`
 
 export async function POST(req: Request) {
+    console.log('Chat API: POST request received');
     try {
+        const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY;
+        console.log('Chat API: API Key present:', !!apiKey);
+
+        if (!apiKey) {
+            console.error('Chat API: No API key found in environment variables');
+            return new Response(JSON.stringify({ error: 'API configuration missing' }), {
+                status: 500,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
+
         const { messages, userId, learningStyle } = await req.json()
+        console.log('Chat API: Processing request for user:', userId);
 
         let systemContext = ASSISTANT_SYSTEM_PROMPT
 
@@ -69,7 +82,7 @@ export async function POST(req: Request) {
         }
 
         const result = streamText({
-            model: google('gemini-2.5-flash'), // Using flash for speed and reliability
+            model: google('gemini-1.5-pro'), // Using stable version for deployment reliability
             system: systemContext,
             messages,
             temperature: 0.7,
@@ -79,10 +92,14 @@ export async function POST(req: Request) {
             },
         })
 
+        console.log('Chat API: Stream initiated successfully');
         return result.toTextStreamResponse()
-    } catch (error) {
+    } catch (error: any) {
         console.error('Chat API error:', error)
-        return new Response(JSON.stringify({ error: 'Failed to process chat request' }), {
+        return new Response(JSON.stringify({
+            error: 'Failed to process chat request',
+            details: error.message || 'Unknown error'
+        }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' },
         })

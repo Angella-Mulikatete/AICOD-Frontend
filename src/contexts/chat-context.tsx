@@ -107,20 +107,34 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
                     }),
                 });
 
-                if (!response.ok) throw new Error('Failed to send message');
+                console.log('Chat Context: API Response Status:', response.status);
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    console.error('Chat Context: API Error Data:', errorData);
+                    throw new Error(errorData.error || 'Failed to send message');
+                }
 
                 const reader = response.body?.getReader();
                 const decoder = new TextDecoder();
                 let assistantContent = '';
 
                 if (reader) {
+                    console.log('Chat Context: Starting to read stream...');
                     while (true) {
                         const { done, value } = await reader.read();
-                        if (done) break;
+                        if (done) {
+                            console.log('Chat Context: Stream reading complete');
+                            break;
+                        }
 
                         const chunk = decoder.decode(value);
                         assistantContent += chunk;
                     }
+                }
+
+                if (!assistantContent) {
+                    console.warn('Chat Context: Received empty response from assistant');
                 }
 
                 // Parse UI data if present
