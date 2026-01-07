@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import AICODLogo from "../../../public/assets/images/AICOD logo.jpg";
 import { toast } from 'sonner';
+import { subscribeToNewsletter } from '@/lib/newsletter-action';
 
 const XIcon = () => (
   <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 fill-current">
@@ -39,14 +40,14 @@ export function Footer() {
     setIsSubmitting(true);
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      const result = await subscribeToNewsletter(email);
 
-      toast.success('Thank you for subscribing to our newsletter!', {
-        description: 'You will now receive updates from AICOD.'
-      });
-
-      setEmail('');
+      if (result.success) {
+        toast.success(result.message);
+        setEmail('');
+      } else {
+        toast.error(result.message);
+      }
     } catch (error) {
       toast.error('Something went wrong. Please try again later.');
     } finally {
