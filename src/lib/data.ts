@@ -10,17 +10,17 @@ export interface Partner {
 export const partners: Partner[] = [
   {
     name: 'Land is Life',
-    logo: PlaceHolderImages.find(p => p.id === 'partner-logo-1')!,
+    logo: PlaceHolderImages.find(p => p.id === 'Land.png')!,
     website: '#',
   },
   {
     name: 'SUNMAKERS',
-    logo: PlaceHolderImages.find(p => p.id === 'partner-logo-2')!,
+    logo: PlaceHolderImages.find(p => p.id === 'Sunmaker.jpg')!,
     website: '#',
   },
   {
     name: 'Environmental Defenders',
-    logo: PlaceHolderImages.find(p => p.id === 'partner-logo-3')!,
+    logo: PlaceHolderImages.find(p => p.id === 'environmental.svg')!,
     website: '#',
   },
   {
@@ -30,7 +30,7 @@ export const partners: Partner[] = [
   },
   {
     name: 'ACCU',
-    logo: PlaceHolderImages.find(p => p.id === 'partner-logo-5')!,
+    logo: PlaceHolderImages.find(p => p.id === 'ACCU_web_logo2.jpg')!,
     website: '#',
   },
   {
