@@ -31,7 +31,6 @@ AICOD was founded in 2013 in Hoima/Kikuube district in response to challenges fa
 
 ### 3. Operational Details
 - **Donations**: We handle partnerships/donations through direct contact to ensure security. 
-- **Bank Info**: Equity Bank Uganda Limited | Account: Albertine Institute For Community Development | No: 1032101921319 | Swift: EQBLUGKA | Branch: Kampala Road.
 - **Contact**: info@albertinecommunity.org | +256 123 456 789 | Location: Hoima, Kikube district, Uganda.
 - **Partners**: Land is Life, SUNMAKERS, Environmental Defenders, TERRA FM 95.0, ACCU, MIRAC.
 
