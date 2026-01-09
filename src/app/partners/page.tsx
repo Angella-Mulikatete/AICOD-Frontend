@@ -23,24 +23,21 @@ export default function PartnersPage() {
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-8">
           {partners.map((partner) => (
-            partner.logo && (
-              <Link key={partner.name} href={partner.website} target="_blank" rel="noopener noreferrer" className="group">
-                <Card className="h-full transform transition-transform duration-300 group-hover:scale-105 group-hover:shadow-xl">
-                  <CardContent className="flex h-full flex-col items-center justify-center p-6">
-                    <div className="relative h-16 w-full">
-                      <Image
-                        src={partner.logo.imageUrl}
-                        alt={`${partner.name} logo`}
-                        fill
-                        className="object-contain"
-                        data-ai-hint={partner.logo.imageHint}
-                      />
-                    </div>
-                    <p className="mt-4 text-center font-semibold text-primary opacity-0 transition-opacity duration-300 group-hover:opacity-100">{partner.name}</p>
-                  </CardContent>
-                </Card>
-              </Link>
-            )
+            <Link key={partner.name} href={partner.website} target="_blank" rel="noopener noreferrer" className="group">
+              <Card className="h-full transform transition-transform duration-300 group-hover:scale-105 group-hover:shadow-xl">
+                <CardContent className="flex h-full flex-col items-center justify-center p-6">
+                  <div className="relative h-16 w-full">
+                    <Image
+                      src={partner.logo}
+                      alt={`${partner.name} logo`}
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                  <p className="mt-4 text-center font-semibold text-primary opacity-0 transition-opacity duration-300 group-hover:opacity-100">{partner.name}</p>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
         </div>
       </div>
