@@ -32,6 +32,7 @@ export default function PartnersPage() {
                       alt={`${partner.name} logo`}
                       fill
                       className="object-contain"
+                      unoptimized
                     />
                   </div>
                   <p className="mt-4 text-center font-semibold text-primary opacity-0 transition-opacity duration-300 group-hover:opacity-100">{partner.name}</p>
