@@ -8,7 +8,6 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import AICODLogo from "../../../public/assets/images/AICOD logo.jpg";
 import { toast } from 'sonner';
-import { subscribeToNewsletter } from '@/lib/newsletter-action';
 
 const XIcon = () => (
   <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 fill-current">
@@ -40,15 +39,27 @@ export function Footer() {
     setIsSubmitting(true);
 
     try {
-      const result = await subscribeToNewsletter(email);
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
 
-      if (result.success) {
-        toast.success(result.message);
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success(data.message || 'Thank you for subscribing!');
         setEmail('');
       } else {
-        toast.error(result.message);
+        // Handle duplicate subscriber gracefully
+        if (data.alreadySubscribed) {
+          toast.info(data.error);
+        } else {
+          toast.error(data.error || 'Failed to subscribe. Please try again.');
+        }
       }
     } catch (error) {
+      console.error('Newsletter error:', error);
       toast.error('Something went wrong. Please try again later.');
     } finally {
       setIsSubmitting(false);

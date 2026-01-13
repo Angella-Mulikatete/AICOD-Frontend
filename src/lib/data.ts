@@ -1,41 +1,43 @@
-import type { ImagePlaceholder } from './image-assets';
-import { PlaceHolderImages } from './image-assets';
-
 export interface Partner {
   name: string;
-  logo: ImagePlaceholder;
+  logo: string;
   website: string;
 }
 
 export const partners: Partner[] = [
   {
     name: 'Land is Life',
-    logo: PlaceHolderImages.find(p => p.id === 'partner-logo-1')!,
+    logo: '/assets/images/Land.png',
     website: '#',
   },
+
   {
     name: 'SUNMAKERS',
-    logo: PlaceHolderImages.find(p => p.id === 'partner-logo-2')!,
+    logo: '/assets/images/Sunmaker.jpg',
     website: '#',
   },
+
   {
     name: 'Environmental Defenders',
-    logo: PlaceHolderImages.find(p => p.id === 'partner-logo-3')!,
+    logo: '/assets/images/environmental.svg',
     website: '#',
   },
+
   {
     name: 'TERRA FM 95.0 FM',
-    logo: PlaceHolderImages.find(p => p.id === 'partner-logo-4')!,
+    logo: '/assets/images/aicodlogo.png', // Temporary - replace with actual logo
     website: '#',
   },
+
   {
     name: 'ACCU',
-    logo: PlaceHolderImages.find(p => p.id === 'partner-logo-5')!,
+    logo: '/assets/images/ACCU_web_logo2.jpg',
     website: '#',
   },
+
   {
     name: 'MIRAC',
-    logo: PlaceHolderImages.find(p => p.id === 'partner-logo-6')!,
+    logo: '/assets/images/aicodlogo.png', // Temporary - replace with actual logo
     website: '#',
-  },
+  }
 ];

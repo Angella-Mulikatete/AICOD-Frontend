@@ -73,7 +73,7 @@ export function AICODChatbot() {
                             </div>
                             <div>
                                 <h3 className="font-semibold text-sm leading-tight">AICOD Assistant</h3>
-                                <p className="text-[10px] text-white/80">Empowering Communities</p>
+                                <p className="text-[10px] text-white/80">Inspired by wonders</p>
                             </div>
                         </div>
                         <Button
