@@ -44,7 +44,7 @@ export default function CommunityLivelihoodPage() {
     {
       title: "To empower community for increased participation in Natural Resource governance",
       desc: "Advocate for inclusive participation of community members in decision-making processes concerning natural resource management, ensuring their voices and concerns are heard and addressed",
-      icon: <Scale className="w-8 h-8 text-white" />, 
+      icon: <Scale className="w-8 h-8 text-white" />,
       bg: "bg-brand-yellow"
     }
   ];
@@ -111,10 +111,10 @@ export default function CommunityLivelihoodPage() {
             className="prose prose-lg md:prose-xl mx-auto text-gray-700"
           >
             <h2 className="text-3xl font-bold text-brand-blue mb-6">Program Overview</h2>
-            <p className="leading-relaxed text-gray-600 text-lg">
-              This Program aims to enhance the living standards of indigenous and host communities 
-              within the <span className="font-semibold text-brand-blue">Albertine region</span>, 
-              especially as it relates to natural resource sector developments. 
+            <p className="leading-relaxed text-gray-600 text-lg text-justify">
+              This Program aims to enhance the living standards of indigenous and host communities
+              within the <span className="font-semibold text-brand-blue">Albertine region</span>,
+              especially as it relates to natural resource sector developments. This initiative focuses on sustainable practices that empower communities to thrive frugally while respecting their cultural and environmental settings.
             </p>
           </motion.div>
         </div>
@@ -124,10 +124,10 @@ export default function CommunityLivelihoodPage() {
       <div className="bg-slate-50/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-            
+
             {/* === LEFT COLUMN: Goals & Conclusion (Span 7) === */}
             <div className="lg:col-span-7 space-y-16">
-              
+
               {/* Strategic Goals Section */}
               <div className="space-y-8">
                 <div className="border-l-4 border-brand-orange pl-4">
@@ -135,7 +135,7 @@ export default function CommunityLivelihoodPage() {
                   <p className="text-gray-500 text-sm mt-1">Our key objectives for community development</p>
                 </div>
 
-                <motion.div 
+                <motion.div
                   variants={staggerContainer}
                   initial="hidden"
                   whileInView="visible"
@@ -196,7 +196,7 @@ export default function CommunityLivelihoodPage() {
                 */}
                 <ProgramMediaSidebar
                   images={sidebarImages}
-                   youtubeUrl="https://www.youtube.com/watch?v=8Hc2iKu1nko"
+                  youtubeUrl="https://www.youtube.com/watch?v=8Hc2iKu1nko"
                 />
               </div>
             </div>
@@ -210,78 +210,78 @@ export default function CommunityLivelihoodPage() {
 
 
 
-          // <div className="lg:col-span-7 space-y-12">
+// <div className="lg:col-span-7 space-y-12">
 
-          //   {/* Initiative 1: Innovative Skills */}
-          //   <motion.div
-          //     initial={{ opacity: 0, x: -20 }}
-          //     whileInView={{ opacity: 1, x: 0 }}
-          //     viewport={{ once: true }}
-          //   >
-          //     <div className="flex items-center gap-4 mb-6">
-          //       <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-brand-blue font-bold text-xl">1</div>
-          //       <h2 className="text-2xl md:text-3xl font-bold text-brand-blue">Innovative Livelihood Skills</h2>
-          //     </div>
+//   {/* Initiative 1: Innovative Skills */}
+//   <motion.div
+//     initial={{ opacity: 0, x: -20 }}
+//     whileInView={{ opacity: 1, x: 0 }}
+//     viewport={{ once: true }}
+//   >
+//     <div className="flex items-center gap-4 mb-6">
+//       <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-brand-blue font-bold text-xl">1</div>
+//       <h2 className="text-2xl md:text-3xl font-bold text-brand-blue">Innovative Livelihood Skills</h2>
+//     </div>
 
-          //     <div className="bg-white rounded-2xl p-6 md:p-8 border border-gray-200 shadow-sm">
-          //       <p className="text-gray-600 mb-6 leading-relaxed">
-          //         Empowering communities devastated by natural resource developments to restore and enrich their livelihoods. We support native-based approaches and movements capable of defending rights and building an entrepreneurship culture.
-          //       </p>
-          //       <div className="grid gap-4 bg-slate-50 p-6 rounded-xl">
-          //         <div>
-          //           <span className="text-sm font-bold uppercase tracking-wider text-brand-orange block mb-1">The Challenge</span>
-          //           <p className="text-sm text-gray-700">Mismanagement of land compensation monies leading to increased poverty vulnerability.</p>
-          //         </div>
-          //         <div className="w-full h-px bg-gray-200"></div>
-          //         <div>
-          //           <span className="text-sm font-bold uppercase tracking-wider text-brand-green block mb-1">Our Solution</span>
-          //           <p className="text-sm text-gray-700">Training on financial literacy, business planning, bookkeeping, and technology integration.</p>
-          //         </div>
-          //       </div>
-          //     </div>
-          //   </motion.div>
+//     <div className="bg-white rounded-2xl p-6 md:p-8 border border-gray-200 shadow-sm">
+//       <p className="text-gray-600 mb-6 leading-relaxed">
+//         Empowering communities devastated by natural resource developments to restore and enrich their livelihoods. We support native-based approaches and movements capable of defending rights and building an entrepreneurship culture.
+//       </p>
+//       <div className="grid gap-4 bg-slate-50 p-6 rounded-xl">
+//         <div>
+//           <span className="text-sm font-bold uppercase tracking-wider text-brand-orange block mb-1">The Challenge</span>
+//           <p className="text-sm text-gray-700">Mismanagement of land compensation monies leading to increased poverty vulnerability.</p>
+//         </div>
+//         <div className="w-full h-px bg-gray-200"></div>
+//         <div>
+//           <span className="text-sm font-bold uppercase tracking-wider text-brand-green block mb-1">Our Solution</span>
+//           <p className="text-sm text-gray-700">Training on financial literacy, business planning, bookkeeping, and technology integration.</p>
+//         </div>
+//       </div>
+//     </div>
+//   </motion.div>
 
-          //   {/* Initiative 2: One Team (Visual Break) */}
-          //   <motion.div
-          //     initial={{ opacity: 0, y: 20 }}
-          //     whileInView={{ opacity: 1, y: 0 }}
-          //     viewport={{ once: true }}
-          //     className="bg-brand-blue rounded-3xl p-8 md:p-10 text-white relative overflow-hidden shadow-2xl"
-          //   >
-          //     <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl translate-x-1/3 -translate-y-1/3"></div>
+//   {/* Initiative 2: One Team (Visual Break) */}
+//   <motion.div
+//     initial={{ opacity: 0, y: 20 }}
+//     whileInView={{ opacity: 1, y: 0 }}
+//     viewport={{ once: true }}
+//     className="bg-brand-blue rounded-3xl p-8 md:p-10 text-white relative overflow-hidden shadow-2xl"
+//   >
+//     <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl translate-x-1/3 -translate-y-1/3"></div>
 
-          //     <div className="relative z-10">
-          //       <div className="flex items-center gap-3 mb-6">
-          //         <span className="px-3 py-1 bg-brand-yellow text-brand-blue text-xs font-bold uppercase rounded-full">Flagship Program</span>
-          //       </div>
+//     <div className="relative z-10">
+//       <div className="flex items-center gap-3 mb-6">
+//         <span className="px-3 py-1 bg-brand-yellow text-brand-blue text-xs font-bold uppercase rounded-full">Flagship Program</span>
+//       </div>
 
-          //       <h2 className="text-2xl md:text-4xl font-bold text-white mb-6">One Team Initiative</h2>
+//       <h2 className="text-2xl md:text-4xl font-bold text-white mb-6">One Team Initiative</h2>
 
-          //       <div className="space-y-6 text-blue-50 leading-relaxed text-base md:text-lg">
-          //         <p>
-          //           An economic program designed to empower community members to generate their own economic resources, tackling the lack of access to affordable financing.
-          //         </p>
+//       <div className="space-y-6 text-blue-50 leading-relaxed text-base md:text-lg">
+//         <p>
+//           An economic program designed to empower community members to generate their own economic resources, tackling the lack of access to affordable financing.
+//         </p>
 
-          //         <div className="flex flex-col sm:flex-row gap-6 mt-8 pt-8 border-t border-white/10">
-          //           <div>
-          //             <p className="text-3xl font-bold text-brand-yellow mb-1">100+</p>
-          //             <p className="text-xs uppercase tracking-wide opacity-70">Households Joined</p>
-          //           </div>
-          //           <div>
-          //             <p className="text-3xl font-bold text-brand-green mb-1">Economic</p>
-          //             <p className="text-xs uppercase tracking-wide opacity-70">Projects Launched</p>
-          //           </div>
-          //         </div>
-          //       </div>
-          //     </div>
-          //   </motion.div>
+//         <div className="flex flex-col sm:flex-row gap-6 mt-8 pt-8 border-t border-white/10">
+//           <div>
+//             <p className="text-3xl font-bold text-brand-yellow mb-1">100+</p>
+//             <p className="text-xs uppercase tracking-wide opacity-70">Households Joined</p>
+//           </div>
+//           <div>
+//             <p className="text-3xl font-bold text-brand-green mb-1">Economic</p>
+//             <p className="text-xs uppercase tracking-wide opacity-70">Projects Launched</p>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   </motion.div>
 
-          // </div>
-
-
+// </div>
 
 
-              {/* <div className="bg-brand-orange/5 border border-brand-orange/10 rounded-xl p-6 mb-8">
+
+
+{/* <div className="bg-brand-orange/5 border border-brand-orange/10 rounded-xl p-6 mb-8">
                 <h4 className="font-bold text-brand-orange mb-2 flex items-center gap-2">
                   <Users className="w-5 h-5" />
                   Program Gallery

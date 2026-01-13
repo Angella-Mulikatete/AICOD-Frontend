@@ -7,6 +7,8 @@ import { navLinks } from '@/lib/nav-links';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import AICODLogo from "../../../public/assets/images/AICOD logo.jpg";
+import { toast } from 'sonner';
+import { subscribeToNewsletter } from '@/lib/newsletter-action';
 
 const XIcon = () => (
   <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 fill-current">
@@ -17,9 +19,10 @@ const XIcon = () => (
 
 export function Footer() {
   const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const socialLinks = [
-    { name: 'Facebook', href: '#', icon: Facebook },
+    { name: 'Facebook', href: 'https://www.facebook.com/profile.php?id=100082838281335', icon: Facebook },
     { name: 'X', href: 'https://twitter.com/aicodUg', icon: XIcon },
     { name: 'LinkedIn', href: 'https://www.linkedin.com/company/104364202/admin/dashboard/', icon: Linkedin }
   ];
@@ -30,10 +33,26 @@ export function Footer() {
     { icon: Phone, text: '+256 123 456 789', href: 'tel:+256123456789' },
   ];
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Subscribe email:', email);
-    setEmail('');
+    if (!email) return;
+
+    setIsSubmitting(true);
+
+    try {
+      const result = await subscribeToNewsletter(email);
+
+      if (result.success) {
+        toast.success(result.message);
+        setEmail('');
+      } else {
+        toast.error(result.message);
+      }
+    } catch (error) {
+      toast.error('Something went wrong. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -57,13 +76,11 @@ export function Footer() {
             <div className="lg:col-span-4">
               <Link href="/" className="inline-block group">
                 <div className="mb-4">
-                  <Image
-                    src={AICODLogo}
-                    alt="AICOD Logo"
-                    width={180}
-                    height={60}
-                    className="h-12 w-auto object-contain"
-                  />
+                  <h1 className="text-4xl font-extrabold tracking-tight">
+                    <span className="text-brand-green">A</span>
+                    <span className="text-brand-orange">I</span>
+                    <span className="text-white">COD</span>
+                  </h1>
                 </div>
               </Link>
               {/* CHANGED: text-slate-400 -> text-orange-50 for better contrast */}
@@ -183,10 +200,20 @@ export function Footer() {
                   {/* Button kept as brand-green for high contrast against orange */}
                   <button
                     type="submit"
-                    className="w-full bg-brand-green hover:bg-brand-green/90 text-white font-medium py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-black/20 flex items-center justify-center gap-2 text-sm"
+                    disabled={isSubmitting}
+                    className="w-full bg-brand-green hover:bg-brand-green/90 text-white font-medium py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-black/20 flex items-center justify-center gap-2 text-sm disabled:opacity-70 disabled:cursor-not-allowed"
                   >
-                    Subscribe
-                    <Send className="w-4 h-4" />
+                    {isSubmitting ? (
+                      <>
+                        Subscribing...
+                        <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      </>
+                    ) : (
+                      <>
+                        Subscribe
+                        <Send className="w-4 h-4" />
+                      </>
+                    )}
                   </button>
                 </form>
               </div>

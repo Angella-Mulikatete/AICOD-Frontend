@@ -26,12 +26,12 @@ const staggerContainer = {
 };
 
 const partners = [
-  { name: "Global Green Fund", icon: Leaf },
-  { name: "Human Rights Watch", icon: Globe },
-  { name: "Civic Response", icon: Users },
-  { name: "Govt of Uganda", icon: Building2 },
-  { name: "Dev Partners Intl", icon: Handshake },
-  { name: "Eco Systems", icon: Sprout },
+  { name: "Land is Life", icon: Leaf },
+  { name: "SUNMAKERS", icon: Sprout },
+  { name: "Environmental Defenders", icon: Globe },
+  { name: "TERRA FM 95.0 FM", icon: Users },
+  { name: "ACCU", icon: Building2 },
+  { name: "MIRAC", icon: Handshake },
 ];
 
 export default function Home() {
@@ -89,13 +89,13 @@ export default function Home() {
           >
 
             <h1 className="font-bold text-5xl md:text-7xl lg:text-8xl text-white mb-6 leading-tight drop-shadow-xl">
-              Welcome To 
-                {/* <span className="text-brand-green">AICOD</span> */}
-                <span className="text-brand-green "> A</span>
-                <span className="text-brand-orange">I</span>
-                <span className="text-brand-blue ">C</span>
-                <span className="text-brand-blue ">O</span>
-                <span className="text-brand-blue ">D</span>
+              Welcome To
+              {/* <span className="text-brand-green">AICOD</span> */}
+              <span className="text-brand-green "> A</span>
+              <span className="text-brand-orange">I</span>
+              <span className="text-brand-blue ">C</span>
+              <span className="text-brand-blue ">O</span>
+              <span className="text-brand-blue ">D</span>
             </h1>
 
             <p className="text-lg md:text-2xl font-light text-blue-50 leading-relaxed mb-10 max-w-2xl mx-auto drop-shadow-md ">

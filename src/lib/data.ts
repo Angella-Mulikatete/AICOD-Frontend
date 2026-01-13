@@ -9,32 +9,32 @@ export interface Partner {
 
 export const partners: Partner[] = [
   {
-    name: 'Global Wildlife Fund',
+    name: 'Land is Life',
     logo: PlaceHolderImages.find(p => p.id === 'partner-logo-1')!,
     website: '#',
   },
   {
-    name: 'Humanity United',
+    name: 'SUNMAKERS',
     logo: PlaceHolderImages.find(p => p.id === 'partner-logo-2')!,
     website: '#',
   },
   {
-    name: 'Community Builders Co.',
+    name: 'Environmental Defenders',
     logo: PlaceHolderImages.find(p => p.id === 'partner-logo-3')!,
     website: '#',
   },
   {
-    name: 'Eco Warriors Initiative',
+    name: 'TERRA FM 95.0 FM',
     logo: PlaceHolderImages.find(p => p.id === 'partner-logo-4')!,
     website: '#',
   },
   {
-    name: 'Justice For All',
+    name: 'ACCU',
     logo: PlaceHolderImages.find(p => p.id === 'partner-logo-5')!,
     website: '#',
   },
   {
-    name: 'Sustainable Futures Group',
+    name: 'MIRAC',
     logo: PlaceHolderImages.find(p => p.id === 'partner-logo-6')!,
     website: '#',
   },
