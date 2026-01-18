@@ -81,13 +81,8 @@ export default function ProgramsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-white">
-      {/* Animated Hero Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="relative bg-gradient-to-r from-brand-blue via-brand-green to-brand-blue bg-[length:200%_100%] py-24 text-center text-white overflow-hidden"
-      >
+      {/* Hero Header */}
+      <div className="relative bg-gradient-to-r from-brand-blue via-brand-green to-brand-blue bg-[length:200%_100%] py-24 text-center text-white overflow-hidden">
         {/* Animated background particles */}
         <div className="absolute inset-0 opacity-20">
           {[...Array(20)].map((_, i) => (
@@ -157,7 +152,7 @@ export default function ProgramsPage() {
             ))}
           </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
 
       {/* Categories with Animation */}
       {categories.length > 0 && (
@@ -186,8 +181,8 @@ export default function ProgramsPage() {
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setSelectedCategory(null)}
                 className={`px-6 py-3 rounded-full font-semibold transition-all shadow-lg ${selectedCategory === null
-                    ? 'bg-brand-blue text-white shadow-brand-blue/50'
-                    : 'bg-white text-gray-700 hover:shadow-xl'
+                  ? 'bg-brand-blue text-white shadow-brand-blue/50'
+                  : 'bg-white text-gray-700 hover:shadow-xl'
                   }`}
               >
                 All Programs ({programs.length})
@@ -202,8 +197,8 @@ export default function ProgramsPage() {
                   transition={{ delay: index * 0.1 }}
                   onClick={() => setSelectedCategory(category.id)}
                   className={`px-6 py-3 rounded-full font-semibold transition-all shadow-lg ${selectedCategory === category.id
-                      ? 'text-white shadow-2xl'
-                      : 'bg-white text-gray-700 hover:shadow-xl'
+                    ? 'text-white shadow-2xl'
+                    : 'bg-white text-gray-700 hover:shadow-xl'
                     }`}
                   style={{
                     backgroundColor: selectedCategory === category.id ? category.color : undefined,
@@ -246,6 +241,7 @@ export default function ProgramsPage() {
                       alt={program.title}
                       fill
                       className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 

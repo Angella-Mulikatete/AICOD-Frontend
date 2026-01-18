@@ -52,15 +52,24 @@ export default function BiodiversityPage() {
     fetch('http://localhost:8000/api/v1/programs?category_slug=biodiversity')
       .then(res => res.json())
       .then(response => {
+        console.log('Biodiversity API Response:', response);
+
         if (response.success && response.data && response.data.length > 0) {
           // Use the first biodiversity program
-          setProgram(response.data[0]);
+          const programData = response.data[0];
+          console.log('Using BACKEND data for biodiversity:', programData.title);
+          setProgram(programData);
           setUseBackend(true);
+        } else {
+          console.log('No biodiversity programs found, using default data');
+          setProgram(DEFAULT_PROGRAM);
+          setUseBackend(false);
         }
         setLoading(false);
       })
       .catch(error => {
-        console.log('Using default data (backend program not found)');
+        console.error('API Error:', error);
+        console.log('Using default data (backend error)');
         setProgram(DEFAULT_PROGRAM);
         setUseBackend(false);
         setLoading(false);

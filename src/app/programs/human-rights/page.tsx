@@ -5,8 +5,9 @@ import Image from 'next/image';
 import { getPlaceholderImage } from '@/lib/image-assets';
 import { CheckCircle, Scale, Megaphone, Users2 } from 'lucide-react';
 import { ProgramMediaSidebar } from '@/components/program-media-sidebar';
+import { useEffect, useState } from 'react';
 
-// --- Animation Variants ---
+// Animation Variants
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.33, 1, 0.68, 1] as [number, number, number, number] } }
@@ -14,10 +15,7 @@ const fadeInUp = {
 
 const staggerContainer = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 }
-  }
+  visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
 };
 
 const cardVariant = {
@@ -25,7 +23,55 @@ const cardVariant = {
   visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
 };
 
+// DEFAULT DATA
+const DEFAULT_PROGRAM = {
+  title: "Human Rights & Inclusive Development",
+  short_description: "The intersection of natural resource developments and human rights is a critical concern for host communities.",
+  content: `<p>Recognizing these issues, our program promotes human rights and inclusive development by empowering communities, working with key community groups and building a system to protect their rights in the Albertine development areas.</p>`,
+  objectives: [
+    "To empower and build community members' capacity: This is achived through providing training and building community's capcity on relevant laws and regulations to land rights, Free Prior and Informed Consent ( FPIC).",
+    "Create Platforms for Engagement: This is achived through provision of forum where communitys interact with duty bearers and stakehoders and foster dialogues among communitys with decision makers to address grievances while advocating for fair practices in resource developments.",
+    "Strengthen Community Movements: This is achived through strong community mobilization to form associations, groups and empowered with capacities to obverse and lead the cause for their own developments."
+  ]
+};
+
 export default function HumanRightsPage() {
+  const [program, setProgram] = useState<any>(DEFAULT_PROGRAM);
+  const [loading, setLoading] = useState(true);
+  const [useBackend, setUseBackend] = useState(false);
+
+  useEffect(() => {
+    // Fetch programs filtered by human-rights category
+    fetch('http://localhost:8000/api/v1/programs?category_slug=human-rights')
+      .then(res => res.json())
+      .then(response => {
+        console.log('Human Rights API Response:', response);
+
+        if (response.success && response.data && response.data.length > 0) {
+          const programData = response.data[0];
+          console.log('Using BACKEND data for human rights:', programData.title);
+          setProgram(programData);
+          setUseBackend(true);
+        } else {
+          console.log('No human rights programs found, using default data');
+          setProgram(DEFAULT_PROGRAM);
+          setUseBackend(false);
+        }
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('API Error:', error);
+        console.log('Using default data (backend error)');
+        setProgram(DEFAULT_PROGRAM);
+        setUseBackend(false);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  }
+
   const heroImage = getPlaceholderImage('program-human-rights');
 
   const goalIcons = [
@@ -34,11 +80,10 @@ export default function HumanRightsPage() {
     <Users2 key="3" className="w-6 h-6 text-white" />
   ];
 
-  const goals = [
-    "To empower and build community members’ capacity: This is achived through providing training and building community’s capcity on relevant laws and regulations to land rights, Free Prior and Informed Consent ( FPIC).",
-    "Create Platforms for Engagement: This is achived through provision of forum where communitys interact with duty bearers and stakehoders and foster dialogues among communitys with decision makers to address grievances while advocating for fair practices in resource developments.",
-    "Strengthen Community Movements: This is achived through strong community mobilization to form associations, groups and empowered with capacities to obverse and lead the cause for their own developments."
-  ];
+  // Parse objectives from backend
+  const goals = Array.isArray(program.objectives)
+    ? program.objectives
+    : DEFAULT_PROGRAM.objectives;
 
   const sidebarImages = [
     "/images/our-story/civic.png",
@@ -48,11 +93,9 @@ export default function HumanRightsPage() {
 
   return (
     <div className="bg-white min-h-screen font-sans text-foreground overflow-x-hidden">
-
-      {/* --- HERO SECTION --- */}
+      {/* HERO SECTION */}
       {heroImage && (
         <header className="relative h-[60vh] min-h-[400px] w-full overflow-hidden">
-          {/* Parallax-like Image Effect */}
           <motion.div
             initial={{ scale: 1.1 }}
             animate={{ scale: 1 }}
@@ -66,17 +109,12 @@ export default function HumanRightsPage() {
               className="object-cover object-center"
               priority
               data-ai-hint={heroImage.imageHint}
+              sizes="100vw"
             />
           </motion.div>
 
-          {/* Brand Overlay */}
           <div className="absolute inset-0 bg-brand-blue/80 mix-blend-multiply" />
 
-          {/* 
-             ALIGNMENT FIX:
-             Using 'container mx-auto px-4' ensures the content box matches the Header exactly.
-             h-full allows vertical centering within that box.
-          */}
           <div className="container mx-auto px-4 h-full relative z-10">
             <div className="flex h-full flex-col items-center justify-center text-center">
               <motion.div
@@ -90,8 +128,7 @@ export default function HumanRightsPage() {
                 </span>
 
                 <h1 className="font-bold text-3xl md:text-6xl text-white shadow-sm leading-tight">
-                  Human Rights & <br className="hidden md:block" />
-                  <span className="text-brand-orange">Inclusive Development</span>
+                  {program.title}
                 </h1>
 
                 <div className="mt-8 flex justify-center gap-3">
@@ -105,15 +142,11 @@ export default function HumanRightsPage() {
         </header>
       )}
 
-      {/* --- MAIN CONTENT --- */}
-
+      {/* MAIN CONTENT */}
       <div className="container mx-auto px-4 py-12 md:py-20">
-
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-
-          {/* --- LEFT COLUMN: CONTENT (7 Cols) --- */}
+          {/* LEFT COLUMN */}
           <div className="lg:col-span-7 space-y-16">
-
             {/* Introduction */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -121,14 +154,19 @@ export default function HumanRightsPage() {
               viewport={{ once: true }}
               className="prose prose-lg max-w-none text-gray-700"
             >
-              <p className="text-xl md:text-2xl leading-relaxed font-bold text-brand-blue mb-6">
-                The intersection of natural resource developments and human rights is a critical concern for host communities, particularly the native populations who often bear the burdens of large scale projects while facing violations of their rights.
-              </p>
-              <p className="text-base md:text-lg leading-relaxed">
-                Recognizing these issues, our program promotes human rights and inclusive development by empowering communities, working with key community groups and building a system to protect their rights in the Albertine development areas.
-              </p>
-            </motion.div>
+              {program.short_description && (
+                <p className="text-xl md:text-2xl leading-relaxed font-bold text-brand-blue mb-6">
+                  {program.short_description}
+                </p>
+              )}
 
+              {program.content && (
+                <div
+                  className="text-base md:text-lg leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: program.content }}
+                />
+              )}
+            </motion.div>
 
             {/* Strategic Goals Section */}
             <motion.div
@@ -144,7 +182,7 @@ export default function HumanRightsPage() {
               </div>
 
               <div className="grid gap-6">
-                {goals.map((goalString, index) => {
+                {goals.map((goalString: string, index: number) => {
                   const [title, description] = goalString.split(':');
                   return (
                     <motion.div
@@ -154,7 +192,7 @@ export default function HumanRightsPage() {
                     >
                       <div className="flex flex-col sm:flex-row items-start gap-4">
                         <div className="bg-brand-blue w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm group-hover:scale-110 group-hover:bg-brand-orange transition-all duration-300">
-                          {goalIcons[index]}
+                          {goalIcons[index % goalIcons.length]}
                         </div>
                         <div>
                           <h4 className="text-lg font-bold text-brand-blue mb-2 group-hover:text-brand-orange transition-colors">
@@ -170,10 +208,9 @@ export default function HumanRightsPage() {
                 })}
               </div>
             </motion.div>
-
           </div>
 
-          {/* --- RIGHT COLUMN: MEDIA SIDEBAR (5 Cols) --- */}
+          {/* RIGHT COLUMN */}
           <div className="lg:col-span-5 w-full">
             <div className="lg:sticky lg:top-24 space-y-8">
               <ProgramMediaSidebar
@@ -182,7 +219,6 @@ export default function HumanRightsPage() {
               />
             </div>
           </div>
-
         </div>
       </div>
     </div>
