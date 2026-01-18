@@ -493,18 +493,46 @@ export const api = {
     getGalleryAlbums: () => api.get<GalleryAlbum[]>('/gallery/albums'),
     getGalleryAlbum: (id: number) => api.get<GalleryAlbumDetail>(`/gallery/albums/${id}`),
     getRecentPhotos: () => api.get<GalleryPhoto[]>('/gallery/recent'),
+
+    // Programs (ADDED)
+    getPrograms: () => api.get<Program[]>('/programs'),
+    getProgramBySlug: (slug: string) => api.get<Program>(`/programs/${slug}`),
+    getProgramCategories: () => api.get<ProgramCategory[]>('/program-categories'),
+
+    // Team, Partners, etc
+    getTeam: () => api.get<any[]>('/team'),
+    getPartners: () => api.get<any[]>('/partners'),
+    getCompany: () => api.get<any>('/company'),
 };
 
 // Helper function to get full URL for media/images
-export function getMediaUrl(path: string | null | undefined): string {
-    if (!path) return '/placeholder-image.jpg';
+export function getMediaUrl(path: string | null | undefined, fallbackType: 'hero' | 'program' | 'team' | 'blog' | 'event' | 'gallery' = 'program'): string {
+    // If no path provided, return beautiful default images based on type
+    if (!path) {
+        const defaults = {
+            hero: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1920&h=1080&fit=crop', // Africa community
+            program: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800&h=600&fit=crop', // Community work
+            team: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop', // Professional
+            blog: 'https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=800&h=600&fit=crop', // Reading/writing
+            event: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600&fit=crop', // Events/meetings
+            gallery: 'https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=800&h=600&fit=crop', // Africa landscape
+        };
+        return defaults[fallbackType];
+    }
 
     // If it's already a full URL, return it
     if (path.startsWith('http')) return path;
 
-    // Otherwise, prepend the backend base URL
+    // Get backend base URL
     const baseUrl = process.env.NEXT_PUBLIC_API_URL?.replace('/api/v1', '') || 'http://localhost:8000';
-    return `${baseUrl}${path}`;
+
+    // If path starts with /, it's already absolute
+    if (path.startsWith('/')) {
+        return `${baseUrl}${path}`;
+    }
+
+    // Otherwise, it's a storage path - add /storage/ prefix
+    return `${baseUrl}/storage/${path}`;
 }
 
 export default api;
