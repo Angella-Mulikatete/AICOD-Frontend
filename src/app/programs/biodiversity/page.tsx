@@ -153,16 +153,16 @@ export default function BiodiversityPage() {
               viewport={{ once: true }}
               className="prose prose-lg max-w-none text-gray-700"
             >
-              {program.description && (
+              {program.short_description && (
                 <p className="text-xl md:text-2xl leading-relaxed font-bold text-brand-blue mb-8">
-                  {program.description}
+                  {program.short_description}
                 </p>
               )}
 
-              {program.long_description && (
+              {program.content && (
                 <div
-                  className="space-y-6 text-gray-600"
-                  dangerouslySetInnerHTML={{ __html: program.long_description }}
+                  className="text-base md:text-lg leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: program.content }}
                 />
               )}
             </motion.article>
