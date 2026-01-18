@@ -1,14 +1,22 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { partners } from '@/lib/data';
 import { Card, CardContent } from '@/components/ui/card';
 import { type Metadata } from 'next';
+import { api, getMediaUrl } from '@/lib/api';
 
 export const metadata: Metadata = {
   title: 'Our Partners',
 };
 
-export default function PartnersPage() {
+export default async function PartnersPage() {
+  let partners = [];
+
+  try {
+    const response = await api.getPartners();
+    partners = response.data || [];
+  } catch (error) {
+    console.error('Failed to load partners:', error);
+  }
   return (
     <div className="animate-enter">
       <header className="bg-accent py-16 text-accent-foreground md:py-24">
@@ -26,15 +34,23 @@ export default function PartnersPage() {
             <Link key={partner.name} href={partner.website} target="_blank" rel="noopener noreferrer" className="group">
               <Card className="h-full transform transition-transform duration-300 group-hover:scale-105 group-hover:shadow-xl">
                 <CardContent className="flex h-full flex-col items-center justify-center p-6">
-                  <div className="relative h-16 w-full">
-                    <Image
-                      src={partner.logo}
-                      alt={`${partner.name} logo`}
-                      fill
-                      className="object-contain"
-                      unoptimized
-                    />
-                  </div>
+                  {partner.logo ? (
+                    <div className="relative h-16 w-full">
+                      <Image
+                        src={getMediaUrl(partner.logo)}
+                        alt={`${partner.name} logo`}
+                        fill
+                        className="object-contain"
+                        unoptimized
+                      />
+                    </div>
+                  ) : (
+                    <div className="h-16 w-full flex items-center justify-center bg-gray-100 rounded">
+                      <span className="text-3xl font-bold text-gray-400">
+                        {partner.name.charAt(0)}
+                      </span>
+                    </div>
+                  )}
                   <p className="mt-4 text-center font-semibold text-primary opacity-0 transition-opacity duration-300 group-hover:opacity-100">{partner.name}</p>
                 </CardContent>
               </Card>

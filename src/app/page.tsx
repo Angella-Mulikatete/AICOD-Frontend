@@ -1,372 +1,225 @@
-'use client';
-
+import { api, getMediaUrl } from '@/lib/api';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, HeartHandshake, Leaf, Users, Target, Eye, ChevronRight, Mail, Globe, Building2, Handshake, Sprout } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { motion } from 'framer-motion';
 
-// --- CONFIGURATION ---
-// Replace this with your actual YouTube Video ID
-const YOUTUBE_VIDEO_ID = 'YOUR_YOUTUBE_VIDEO_ID';
+export default async function HomePage() {
+  let homepageData;
 
-// --- Animation Variants ---
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.33, 1, 0.68, 1] as const } }
-};
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.2 }
+  try {
+    const response = await api.getHomepage();
+    homepageData = response.data;
+  } catch (error) {
+    console.error('Failed to load homepage:', error);
+    return (
+      <div className="container mx-auto py-20 text-center">
+        <h1 className="text-4xl font-bold">Welcome to AICOD</h1>
+        <p className="mt-4">Empowering Communities, Transforming Lives</p>
+      </div>
+    );
   }
-};
 
-const partners = [
-  { name: "Land is Life", icon: Leaf },
-  { name: "SUNMAKERS", icon: Sprout },
-  { name: "Environmental Defenders", icon: Globe },
-  { name: "TERRA FM 95.0 FM", icon: Users },
-  { name: "ACCU", icon: Building2 },
-  { name: "MIRAC", icon: Handshake },
-];
+  const { hero, statistics, featured_programs, mission_section, vision_section, values_section, cta_section } = homepageData;
 
-export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen font-sans overflow-x-hidden">
-
-      {/* --- HERO SECTION --- */}
-      <section className="relative h-[85vh] min-h-[600px] w-full overflow-hidden">
-
-        {/* Background Layer */}
-        <motion.div
-          initial={{ scale: 1.1 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 2.5, ease: [0.33, 1, 0.68, 1] as const }}
-          className="absolute inset-0 -z-10 overflow-hidden"
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      {hero && (
+        <section
+          className="relative h-[80vh] flex items-center justify-center bg-cover bg-center"
+          style={{
+            backgroundImage: hero.background_image ? `url(${getMediaUrl(hero.background_image)})` : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            color: hero.text_color || '#ffffff'
+          }}
         >
-          {/* 
-             YOUTUBE BACKGROUND EMBED 
-             1. pointer-events-none: Prevents pausing on click
-             2. w-[300%] h-[300%]: Scales video up to simulate 'object-fit: cover' so no black bars appear
-             3. -translate-x/y-1/2: Centers the zoomed video
-          */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300%] h-[300%]">
-            <iframe
-              src="https://www.youtube.com/embed/P85JijiJl0c?autoplay=1&mute=1&loop=1&playlist=P85JijiJl0c&controls=0"
-              className="w-full h-full object-cover"
-              title="Hero Background Video"
-              allow="autoplay; encrypted-media"
-              allowFullScreen
-              style={{ pointerEvents: 'none' }}
-            />
-          </div>
-
-          {/* Optional Fallback Image (Shows while YouTube loads) */}
-          <Image
-            src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=2072&auto=format&fit=crop"
-            alt="Hero Background Fallback"
-            fill
-            className="object-cover -z-20"
-            priority
-          />
-        </motion.div>
-
-        {/* Gradient Overlays for Text Readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-blue/95 via-brand-blue/60 to-black/30 mix-blend-multiply pointer-events-none" />
-        <div className="absolute inset-0 bg-black/10 pointer-events-none" />
-
-        {/* --- CONTENT --- */}
-        <div className="relative z-10 flex h-full flex-col justify-center container mx-auto px-4">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={fadeInUp}
-            className="max-w-4xl mx-auto text-center"
-          >
-
-            <h1 className="font-bold text-5xl md:text-7xl lg:text-8xl text-white mb-6 leading-tight drop-shadow-xl">
-              Welcome To
-              {/* <span className="text-brand-green">AICOD</span> */}
-              <span className="text-brand-green "> A</span>
-              <span className="text-brand-orange">I</span>
-              <span className="text-brand-blue ">C</span>
-              <span className="text-brand-blue ">O</span>
-              <span className="text-brand-blue ">D</span>
+          <div className="absolute inset-0 bg-black" style={{ opacity: hero.overlay_opacity || 0.5 }} />
+          <div className="relative z-10 container mx-auto px-4 text-center">
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
+              {hero.title}
             </h1>
-
-            <p className="text-lg md:text-2xl font-light text-blue-50 leading-relaxed mb-10 max-w-2xl mx-auto drop-shadow-md ">
-              Inspired by wonders
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-5 justify-center">
-              <Button asChild size="lg" className="bg-brand-orange hover:bg-[#a04823] text-white text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent">
-                <Link href="/our-story">
-                  Our Story <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="border-2 border-white text-white bg-transparent hover:bg-white hover:text-brand-blue text-lg px-8 py-6 rounded-full transition-all duration-300">
-                <Link href="/programs/biodiversity">
-                  Explore Programmes
-                </Link>
-              </Button>
+            {hero.subtitle && (
+              <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+                {hero.subtitle}
+              </p>
+            )}
+            <div className="flex gap-4 justify-center flex-wrap">
+              {hero.cta_primary_text && (
+                <Button asChild size="lg" className="bg-brand-orange hover:bg-brand-orange/90">
+                  <Link href={hero.cta_primary_link || '/programs'}>
+                    {hero.cta_primary_text}
+                  </Link>
+                </Button>
+              )}
+              {hero.cta_secondary_text && (
+                <Button asChild size="lg" variant="outline" className="text-white border-white hover:bg-white/20">
+                  <Link href={hero.cta_secondary_link || '/donations'}>
+                    {hero.cta_secondary_text}
+                  </Link>
+                </Button>
+              )}
             </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* --- WHO WE ARE + VISION & MISSION --- */}
-      <section className="bg-white py-20 md:py-24">
-        <div className="container mx-auto px-4">
-          <div className="grid items-start gap-16 md:grid-cols-2">
-
-            {/* LEFT: Text Content */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="sticky top-24"
-            >
-              <h4 className="text-brand-green font-bold uppercase tracking-widest text-sm mb-3">Who We Are</h4>
-              <h2 className="text-3xl md:text-5xl font-bold text-brand-blue mb-6">
-                Restoring Dignity & <br />
-                <span className="text-brand-orange">Protecting Rights</span>
-              </h2>
-
-              <div className="prose prose-lg text-gray-600 mb-8 text-justify">
-                <p>
-                  Founded in 2013, the Albertine Institute for Community Development (AICOD) emerged as a response to the pressing challenges faced by host communities in Uganda’s oil-rich Albertine region.
-                </p>
-                <p>
-                  We are dedicated to ensuring that development does not come at the cost of human rights, engaging directly with those most affected to build a sustainable future.
-                </p>
-              </div>
-
-              <Button asChild variant="link" className="text-brand-blue font-bold text-lg p-0 hover:text-brand-orange transition-colors">
-                <Link href="/our-story" className="flex items-center gap-2">
-                  Read Our Full History <ChevronRight className="h-5 w-5" />
-                </Link>
-              </Button>
-            </motion.div>
-
-            {/* RIGHT: Vision & Mission Cards */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="flex flex-col gap-8 relative"
-            >
-              {/* Decorative Background Blob */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[110%] bg-brand-blue/5 rounded-full blur-3xl -z-10" />
-
-              {/* Vision Card */}
-              <Card className="border-l-8 border-l-brand-blue shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 bg-white">
-                <CardContent className="p-8">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="bg-brand-blue/10 p-3 rounded-full">
-                      <Eye className="w-8 h-8 text-brand-blue" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-brand-blue font-headline">Our Vision</h3>
-                  </div>
-                  <p className="text-xl text-gray-600 italic leading-relaxed pl-2 border-l-2 border-brand-yellow text-justify">
-                    "A community with respected rights, improved livelihoods, and a safe, clean environment."
-                  </p>
-                </CardContent>
-              </Card>
-
-              {/* Mission Card */}
-              <Card className="border-l-8 border-l-brand-green shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 bg-white ">
-                <CardContent className="p-8">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="bg-brand-green/10 p-3 rounded-full">
-                      <Target className="w-8 h-8 text-brand-green" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-brand-green font-headline">Our Mission</h3>
-                  </div>
-                  <p className="text-xl text-gray-600 italic leading-relaxed pl-2 border-l-2 border-brand-yellow text-justify">
-                    "To advocate for the promotion and protection of the rights of disadvantaged communities, thereby safeguarding their livelihoods."
-                  </p>
-                </CardContent>
-              </Card>
-            </motion.div>
-
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* --- CORE PROGRAMS --- */}
-      <section className="py-20 md:py-24 bg-slate-50">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-brand-blue mb-4">Our Core Programmes</h2>
-            <div className="w-16 h-1.5 bg-brand-orange mx-auto rounded-full mb-4" />
-            <p className="max-w-2xl mx-auto text-lg text-gray-500 text-justify">
-              We focus on key areas that are critical for sustainable development and community well-being.
-            </p>
-          </motion.div>
-
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid gap-8 md:grid-cols-3"
-          >
-            {/* Biodiversity */}
-            <motion.div variants={fadeInUp}>
-              <Card className="h-full border border-slate-100 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group bg-white rounded-2xl overflow-hidden">
-                <CardHeader>
-                  <div className="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-green group-hover:text-white transition-all duration-300">
-                    <Leaf className="h-8 w-8 text-brand-green group-hover:text-white transition-colors duration-300" />
-                  </div>
-                  <CardTitle className="text-2xl font-bold text-brand-blue">Biodiversity & Environment </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 mb-8 leading-relaxed">
-                    Protecting and conserving our natural heritage for future generations through research.
-                  </p>
-                  <Button asChild variant="ghost" className="p-0 text-brand-green hover:bg-transparent hover:text-brand-blue font-bold text-base">
-                    <Link href="/programs/biodiversity" className="flex items-center gap-2">
-                      Learn More <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            {/* Human Rights */}
-            <motion.div variants={fadeInUp}>
-              <Card className="h-full border border-slate-100 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group bg-white rounded-2xl overflow-hidden">
-                <CardHeader>
-                  <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-blue group-hover:text-white transition-all duration-300">
-                    <HeartHandshake className="h-8 w-8 text-brand-blue group-hover:text-white transition-colors duration-300" />
-                  </div>
-                  <CardTitle className="text-2xl font-bold text-brand-blue">Human Rights & Inclusive Development</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 mb-8 leading-relaxed">
-                    Advocating for justice, equality, and the protection of human rights for all.
-                  </p>
-                  <Button asChild variant="ghost" className="p-0 text-brand-blue hover:bg-transparent hover:text-brand-orange font-bold text-base">
-                    <Link href="/programs/human-rights" className="flex items-center gap-2">
-                      Learn More <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            {/* Livelihoods */}
-            <motion.div variants={fadeInUp}>
-              <Card className="h-full border border-slate-100 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group bg-white rounded-2xl overflow-hidden">
-                <CardHeader>
-                  <div className="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-orange group-hover:text-white transition-all duration-300">
-                    <Users className="h-8 w-8 text-brand-orange group-hover:text-white transition-colors duration-300" />
-                  </div>
-                  <CardTitle className="text-2xl font-bold text-brand-blue">Community & Livelihoods </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 mb-8 leading-relaxed">
-                    Empowering communities with skills and resources to build sustainable livelihoods.
-                  </p>
-                  <Button asChild variant="ghost" className="p-0 text-brand-orange hover:bg-transparent hover:text-brand-blue font-bold text-base">
-                    <Link href="/programs/community-livelihood" className="flex items-center gap-2">
-                      Learn More <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* --- PARTNERS CAROUSEL SECTION --- */}
-      <section className="py-20 bg-white border-y border-slate-100 overflow-hidden">
-        <div className="container mx-auto px-4 mb-12 text-center">
-          <p className="text-sm font-bold text-brand-green uppercase tracking-widest">Our Strategic Partners</p>
-          <h2 className="text-3xl font-bold text-brand-blue mt-2">Working Together for Change</h2>
-        </div>
-
-        {/* Infinite Slider */}
-        <div className="relative w-full flex">
-          {/* Gradient Masks */}
-          <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-white to-transparent z-10" />
-          <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-white to-transparent z-10" />
-
-          <motion.div
-            className="flex gap-16 md:gap-24 whitespace-nowrap pl-16"
-            animate={{ x: [0, -1000] }}
-            transition={{ repeat: Infinity, ease: "linear", duration: 30 }}
-          >
-            {[...partners, ...partners, ...partners].map((partner, index) => (
-              <div key={index} className="flex flex-col items-center gap-3 group cursor-default opacity-60 hover:opacity-100 transition-opacity duration-300">
-                <div className="p-4 bg-slate-50 rounded-full border border-slate-100 group-hover:border-brand-blue/30 group-hover:bg-brand-blue/5 transition-all">
-                  <partner.icon className="w-10 h-10 text-gray-400 group-hover:text-brand-blue transition-colors" />
+      {/* Statistics Section */}
+      {statistics && statistics.length > 0 && (
+        <section className="py-20 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+              {statistics.map((stat) => (
+                <div key={stat.id} className="text-center">
+                  <h3
+                    className="text-4xl md:text-5xl font-bold mb-2"
+                    style={{ color: stat.color || '#1e40af' }}
+                  >
+                    {stat.formatted_value}
+                  </h3>
+                  <p className="text-sm md:text-base text-gray-700">{stat.label}</p>
                 </div>
-                <span className="font-bold text-lg text-gray-400 group-hover:text-brand-blue transition-colors">{partner.name}</span>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
-      {/* --- CONTACT CTA --- */}
-      <section className="py-20 bg-slate-50">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="rounded-[2.5rem] p-10 md:p-16 text-center text-white relative overflow-hidden shadow-2xl"
-          >
-            {/* Background Image Layer */}
-            <div className="absolute inset-0 z-0">
-              <Image
-                src="/assets/images/cta-bg.png"
-                alt="Join us in making a difference"
-                fill
-                className="object-cover"
+      {/* Featured Programs Section */}
+      {featured_programs && featured_programs.length > 0 && (
+        <section className="py-20">
+          <div className="container mx-auto px-4">
+            <h2 className="text-4xl font-bold text-center mb-12">Our Programs</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {featured_programs.map((program) => (
+                <div key={program.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                  {program.featured_image && (
+                    <div className="relative h-48">
+                      <Image
+                        src={getMediaUrl(program.featured_image)}
+                        alt={program.title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="p-6">
+                    {program.category && (
+                      <span
+                        className="inline-block px-3 py-1 rounded-full text-xs font-semibold text-white mb-3"
+                        style={{ backgroundColor: program.category.color || '#3B82F6' }}
+                      >
+                        {program.category.name}
+                      </span>
+                    )}
+                    <h3 className="text-2xl font-semibold mb-3">{program.title}</h3>
+                    {program.description && (
+                      <p className="text-gray-600 mb-4 line-clamp-3">{program.description}</p>
+                    )}
+                    <Link
+                      href={`/programs/${program.slug}`}
+                      className="text-blue-600 hover:text-blue-800 font-semibold"
+                    >
+                      Learn More →
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="text-center mt-12">
+              <Button asChild size="lg">
+                <Link href="/programs">View All Programs</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Mission, Vision & Values Section */}
+      {(mission_section || vision_section || values_section) && (
+        <section className="py-20 bg-blue-50">
+          <div className="container mx-auto px-4">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
+              {mission_section && (
+                <div className="bg-white p-8 rounded-lg shadow-md">
+                  {mission_section.image && (
+                    <div className="relative h-48 mb-6 rounded-lg overflow-hidden">
+                      <Image
+                        src={getMediaUrl(mission_section.image)}
+                        alt={mission_section.title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+                  <h2 className="text-3xl font-bold mb-6 text-blue-600">{mission_section.title}</h2>
+                  <div
+                    className="prose prose-lg max-w-none"
+                    dangerouslySetInnerHTML={{ __html: mission_section.content }}
+                  />
+                </div>
+              )}
+              {vision_section && (
+                <div className="bg-white p-8 rounded-lg shadow-md">
+                  {vision_section.image && (
+                    <div className="relative h-48 mb-6 rounded-lg overflow-hidden">
+                      <Image
+                        src={getMediaUrl(vision_section.image)}
+                        alt={vision_section.title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+                  <h2 className="text-3xl font-bold mb-6 text-green-600">{vision_section.title}</h2>
+                  <div
+                    className="prose prose-lg max-w-none"
+                    dangerouslySetInnerHTML={{ __html: vision_section.content }}
+                  />
+                </div>
+              )}
+              {values_section && (
+                <div className="bg-white p-8 rounded-lg shadow-md md:col-span-2 lg:col-span-1">
+                  <h2 className="text-3xl font-bold mb-6 text-purple-600">{values_section.title}</h2>
+                  <div
+                    className="prose prose-lg max-w-none"
+                    dangerouslySetInnerHTML={{ __html: values_section.content }}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* CTA Section */}
+      {cta_section && (
+        <section
+          className="py-20 text-white text-center relative overflow-hidden"
+          style={{
+            backgroundColor: cta_section.background_color || '#2563eb'
+          }}
+        >
+          {cta_section.background_image && (
+            <>
+              <div
+                className="absolute inset-0 bg-cover bg-center"
+                style={{ backgroundImage: `url(${getMediaUrl(cta_section.background_image)})` }}
               />
-              {/* Dark overlay for better text contrast on mobile */}
-              <div className="absolute inset-0 bg-black/40 md:bg-black/30" />
-              {/* Gradient overlay for additional depth */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/40" />
-            </div>
-
-            {/* Decorative circles */}
-            <div className="absolute top-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 z-[1]"></div>
-            <div className="absolute bottom-0 right-0 w-64 h-64 bg-brand-yellow/20 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 z-[1]"></div>
-
-            <h2 className="text-3xl md:text-5xl font-bold mb-6 relative z-10">Ready to Make a Difference?</h2>
-            <p className="text-lg md:text-xl text-orange-50 mb-10 max-w-2xl mx-auto relative z-10 leading-relaxed">
-              Whether you want to partner with us, support our cause, or simply learn more about our work in the Albertine region, we would love to hear from you.
-            </p>
-
-            <div className="flex flex-col sm:flex-row justify-center gap-5 relative z-10">
-              <Button asChild size="lg" className="bg-white text-brand-orange hover:bg-brand-yellow hover:text-brand-blue font-bold text-lg px-8 py-6 rounded-full shadow-lg transition-colors">
-                <Link href="/contact" className="flex items-center gap-2">
-                  <Mail className="w-5 h-5" /> Contact Us
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white/10 text-lg px-8 py-6 rounded-full bg-transparent">
-                <Link href="/our-story" className="flex items-center gap-2">
-                  <ArrowRight className="w-5 h-5" /> Read Our Story
-                </Link>
-              </Button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
+              <div className="absolute inset-0 bg-black opacity-60" />
+            </>
+          )}
+          <div className="container mx-auto px-4 relative z-10">
+            <h2 className="text-4xl font-bold mb-6">{cta_section.title}</h2>
+            {cta_section.description && (
+              <p className="text-xl mb-8 max-w-2xl mx-auto">{cta_section.description}</p>
+            )}
+            <Button asChild size="lg" className="bg-brand-orange hover:bg-brand-orange/90">
+              <Link href={cta_section.button_link}>
+                {cta_section.button_text}
+              </Link>
+            </Button>
+          </div>
+        </section>
+      )}
     </div>
   );
 }
