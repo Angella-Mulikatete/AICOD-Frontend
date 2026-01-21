@@ -1,115 +1,135 @@
-import { api, getMediaUrl } from '@/lib/api';
-import Image from 'next/image';
-import { Card, CardContent } from '@/components/ui/card';
-import { Linkedin, Twitter, Mail } from 'lucide-react';
-import { type Metadata } from 'next';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Our Team',
-  description: 'Meet the passionate individuals behind AICOD',
+import { api } from '@/lib/api';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { Users, Mail } from 'lucide-react';
+
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6 }
+  }
 };
 
-export default async function TeamPage() {
-  let teamMembers = [];
+export default function TeamPage() {
+  const [team, setTeam] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  try {
-    const response = await api.getTeam();
-    teamMembers = response.data || [];
-  } catch (error) {
-    console.error('Failed to load team:', error);
+  useEffect(() => {
+    api.getTeam()
+      .then(response => {
+        setTeam(response.data || []);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  const defaultAvatars = [
+    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1573497620053-ea5300f94f21?w=400&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop',
+  ];
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brand-blue to-brand-green">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          className="w-16 h-16 border-4 border-white border-t-transparent rounded-full"
+        />
+      </div>
+    );
   }
 
   return (
-    <div className="animate-enter">
-      <header className="bg-primary py-16 text-primary-foreground md:py-24">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="font-headline text-4xl font-bold md:text-5xl">Our Team</h1>
-          <p className="mt-4 max-w-2xl mx-auto text-lg text-primary-foreground/80">
-            Meet the passionate individuals behind AICOD.
-          </p>
+    <div className="min-h-screen bg-gradient-to-b from-white via-gray-50 to-white">
+      {/* Hero */}
+      <motion.section
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="relative bg-gradient-to-r from-brand-blue via-brand-green to-brand-blue py-24 text-white overflow-hidden"
+      >
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="flex justify-center mb-6">
+              <Users className="w-20 h-20 text-brand-yellow" />
+            </div>
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 drop-shadow-lg">
+              Our Team
+            </h1>
+            <p className="text-xl max-w-2xl mx-auto text-blue-50">
+              Dedicated professionals driving positive change
+            </p>
+          </motion.div>
         </div>
-      </header>
+      </motion.section>
 
-      <div className="container mx-auto px-4 py-16">
-        {teamMembers.length > 0 ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {teamMembers.map((member) => (
-              <Card key={member.id} className="overflow-hidden hover:shadow-xl transition-shadow">
-                {member.photo ? (
-                  <div className="relative h-64">
+      {/* Team Grid */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          {team.length > 0 ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {team.map((member, index) => (
+                <motion.div
+                  key={member.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ y: -10 }}
+                  className="bg-white rounded-2xl shadow-xl overflow-hidden"
+                >
+                  <div className="relative h-80">
                     <Image
-                      src={getMediaUrl(member.photo)}
+                      src={defaultAvatars[index % defaultAvatars.length]}
                       alt={member.name}
                       fill
                       className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
                   </div>
-                ) : (
-                  <div className="h-64 bg-gray-200 flex items-center justify-center">
-                    <div className="text-6xl font-bold text-gray-400">
-                      {member.name.charAt(0)}
-                    </div>
-                  </div>
-                )}
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-bold mb-1">{member.name}</h3>
-                  <p className="text-blue-600 font-semibold mb-2">{member.position}</p>
-                  {member.department && (
-                    <p className="text-gray-600 text-sm mb-3">{member.department}</p>
-                  )}
-                  {member.bio && (
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">{member.bio}</p>
-                  )}
-
-                  {/* Social Links */}
-                  <div className="flex gap-3">
+                  <div className="p-6 -mt-20 relative z-10">
+                    <h3 className="text-white font-bold text-xl mb-1">{member.name}</h3>
+                    <p className="text-brand-yellow font-semibold mb-4">{member.position}</p>
+                    {member.bio && (
+                      <p className="text-gray-600 text-sm mb-4 line-clamp-3">{member.bio}</p>
+                    )}
                     {member.email && (
-                      <a
-                        href={`mailto:${member.email}`}
-                        className="text-gray-600 hover:text-blue-600"
-                        title="Email"
-                      >
-                        <Mail className="w-5 h-5" />
-                      </a>
-                    )}
-                    {member.linkedin_url && (
-                      <a
-                        href={member.linkedin_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-gray-600 hover:text-blue-600"
-                        title="LinkedIn"
-                      >
-                        <Linkedin className="w-5 h-5" />
-                      </a>
-                    )}
-                    {member.twitter_url && (
-                      <a
-                        href={member.twitter_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-gray-600 hover:text-blue-600"
-                        title="Twitter"
-                      >
-                        <Twitter className="w-5 h-5" />
+                      <a href={`mailto:${member.email}`} className="text-brand-blue hover:text-brand-green flex items-center gap-2">
+                        <Mail className="w-4 h-4" />
+                        <span className="text-sm">Contact</span>
                       </a>
                     )}
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-20">
-            <h2 className="font-headline text-3xl font-bold text-primary mb-4">
-              Our Amazing Team
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-xl mx-auto">
-              Team information will be available soon. Check back later!
-            </p>
-          </div>
-        )}
-      </div>
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="text-center py-20"
+            >
+              <Users className="w-24 h-24 text-gray-300 mx-auto mb-6" />
+              <h3 className="text-2xl font-bold text-gray-700 mb-2">Team Coming Soon</h3>
+              <p className="text-gray-500">We're updating our team. Check back soon!</p>
+            </motion.div>
+          )}
+        </div>
+      </section>
     </div>
   );
 }
