@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { TrendingUp, Users, Award, Heart, ArrowRight, Sparkles } from 'lucide-react';
-import { HomepageContent } from '@/lib/api';
+import { HomepageContent, getMediaUrl } from '@/lib/api';
 
 // Animation variants
 const fadeInUp = {
@@ -53,7 +53,7 @@ export function HomeClient({ data }: HomeClientProps) {
             {hero && (
                 <section className="relative h-screen flex items-center justify-center bg-cover bg-center overflow-hidden">
                     <Image
-                        src={hero.background_image || "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1920&h=1080&fit=crop&q=80"}
+                        src={getMediaUrl(hero.background_image, 'hero')}
                         alt={hero.title}
                         fill
                         className="object-cover"
@@ -231,7 +231,7 @@ export function HomeClient({ data }: HomeClientProps) {
                                 >
                                     <div className="relative h-56 overflow-hidden group">
                                         <Image
-                                            src={program.featured_image || defaultImages[index % defaultImages.length]}
+                                            src={program.featured_image ? getMediaUrl(program.featured_image, 'program') : defaultImages[index % defaultImages.length]}
                                             alt={program.title}
                                             fill
                                             className="object-cover group-hover:scale-110 transition-transform duration-500"
@@ -358,7 +358,7 @@ export function HomeClient({ data }: HomeClientProps) {
                     viewport={{ once: true }}
                 >
                     {cta_section.background_image && (
-                        <Image src={cta_section.background_image} alt="CTA Background" fill className="object-cover absolute inset-0 z-0" />
+                        <Image src={getMediaUrl(cta_section.background_image, 'hero')} alt="CTA Background" fill className="object-cover absolute inset-0 z-0" />
                     )}
                     <div className={`absolute inset-0 ${cta_section.background_image ? 'bg-black/60' : 'bg-transparent'}`} />
 

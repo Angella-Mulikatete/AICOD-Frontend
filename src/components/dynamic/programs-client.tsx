@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { Sparkles, MapPin, Users, Calendar } from 'lucide-react';
-import { Program, ProgramCategory } from '@/lib/api';
+import { Program, ProgramCategory, getMediaUrl } from '@/lib/api';
 
 // Animation variants
 const containerVariants = {
@@ -217,7 +217,7 @@ export function ProgramsClient({ initialPrograms, initialCategories }: ProgramsC
                                     {/* Image with Overlay */}
                                     <div className="relative h-56 bg-gradient-to-br from-brand-blue to-brand-green overflow-hidden group">
                                         <Image
-                                            src={program.featured_image || defaultImages[index % defaultImages.length]}
+                                            src={program.featured_image ? getMediaUrl(program.featured_image, 'program') : defaultImages[index % defaultImages.length]}
                                             alt={program.title}
                                             fill
                                             className="object-cover group-hover:scale-110 transition-transform duration-500"

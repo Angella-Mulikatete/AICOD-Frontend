@@ -2,7 +2,7 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   /* config options here */
-  output: 'standalone', // For Node.js deployment
+  output: 'export', // Static export for shared hosting
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -10,10 +10,17 @@ const nextConfig: NextConfig = {
   //   ignoreDuringBuilds: true,
   // },
   images: {
+    unoptimized: true, // Required for static export (no Node.js Image Optimization)
     remotePatterns: [
       {
         protocol: 'http',
         hostname: 'localhost',
+        port: '8000',
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: '127.0.0.1',
         port: '8000',
         pathname: '/**',
       },

@@ -8,13 +8,14 @@ import { ChatProvider } from '@/contexts/chat-context';
 import { AICODChatbot } from '@/components/chat/chatbot';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('http://localhost:3000'),
   title: {
     default: 'AICOD Connect',
     template: '%s | AICOD Connect',
   },
   description: 'Albertine Institute For Community Development - Driving positive change in biodiversity, human rights, and community livelihoods.',
   icons: {
-    icon: '/assets/images/AICOD log.svg',
+    icon: '/assets/images/aicod-log.svg',
   },
 };
 
