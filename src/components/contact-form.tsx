@@ -10,15 +10,13 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { useToast } from '@/hooks/use-toast';
 import { LoaderCircle } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { api } from '@/lib/api';
 
 const contactFormSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.string().email('Please enter a valid email address'),
   message: z.string().min(10, 'Message must be at least 10 characters'),
-  access_key: z.string(),
   subject: z.string(),
-  from_name: z.string(),
-  botcheck: z.boolean().optional(),
 });
 
 type ContactFormValues = z.infer<typeof contactFormSchema>;
@@ -33,14 +31,10 @@ export function ContactForm() {
       name: '',
       email: '',
       message: '',
-      access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || '',
-      subject: 'Someone sent a message from AICOD Website',
-      from_name: 'AICOD Website Contact Form',
-      botcheck: false,
+      subject: 'Message from AICOD Website',
     },
   });
 
-  // Watch the name field and update subject dynamically
   const userName = useWatch({
     control: form.control,
     name: 'name',
@@ -55,26 +49,13 @@ export function ContactForm() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify(data),
+      await api.submitContact(data);
+
+      toast({
+        title: 'Success!',
+        description: 'Your message has been sent successfully. We\'ll get back to you soon!',
       });
-
-      const result = await response.json();
-
-      if (result.success) {
-        toast({
-          title: 'Success!',
-          description: 'Your message has been sent successfully. We\'ll get back to you soon!',
-        });
-        form.reset();
-      } else {
-        throw new Error(result.message || 'Failed to send message');
-      }
+      form.reset();
     } catch (error) {
       toast({
         title: 'Error',
@@ -89,16 +70,7 @@ export function ContactForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        {/* Hidden fields */}
-        <input type="hidden" {...form.register('access_key')} />
         <input type="hidden" {...form.register('subject')} />
-        <input type="hidden" {...form.register('from_name')} />
-        <input
-          type="checkbox"
-          className="hidden"
-          style={{ display: 'none' }}
-          {...form.register('botcheck')}
-        />
 
         <FormField
           control={form.control}
@@ -142,10 +114,9 @@ export function ContactForm() {
           )}
         />
 
-        <Button 
-          type="submit" 
-          // ADDED: bg-brand-orange text-white hover:bg-brand-orange/90
-          className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 transition-colors" 
+        <Button
+          type="submit"
+          className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 transition-colors"
           disabled={isSubmitting}
         >
           {isSubmitting && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}

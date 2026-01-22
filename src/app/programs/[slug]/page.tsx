@@ -8,7 +8,7 @@ export default async function ProgramDetailPage({ params }: { params: { slug: st
     let program;
 
     try {
-        const response = await api.getProgramBySlug(params.slug);
+        const response = await api.getProgram(params.slug);
         program = response.data;
     } catch (error) {
         console.error('Failed to load program:', error);

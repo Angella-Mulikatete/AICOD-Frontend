@@ -23,6 +23,25 @@ interface ApiError {
     errors?: Record<string, string[]>;
 }
 
+// Settings Types
+export interface SiteSettings {
+    site_name: string;
+    logo?: string;
+    favicon?: string;
+    primary_color?: string;
+    secondary_color?: string;
+    description?: string;
+}
+
+// SEO Types
+export interface SEOMetadata {
+    title: string;
+    description: string;
+    keywords?: string;
+    og_image?: string;
+    twitter_card?: string;
+}
+
 // Program Types
 export interface Program {
     id: number;
@@ -468,6 +487,11 @@ export const api = {
     // Footer
     getFooter: () => api.get<FooterData>('/footer'),
 
+    // Settings & SEO
+    getSettings: () => api.get<SiteSettings>('/settings'),
+    getSeo: (page: string) => api.get<SEOMetadata>(`/seo/${page}`),
+
+
     // Social Media
     getSocialMedia: () => api.get<SocialMedia[]>('/social-media'),
 
@@ -493,16 +517,6 @@ export const api = {
     getGalleryAlbums: () => api.get<GalleryAlbum[]>('/gallery/albums'),
     getGalleryAlbum: (id: number) => api.get<GalleryAlbumDetail>(`/gallery/albums/${id}`),
     getRecentPhotos: () => api.get<GalleryPhoto[]>('/gallery/recent'),
-
-    // Programs (ADDED)
-    getPrograms: () => api.get<Program[]>('/programs'),
-    getProgramBySlug: (slug: string) => api.get<Program>(`/programs/${slug}`),
-    getProgramCategories: () => api.get<ProgramCategory[]>('/program-categories'),
-
-    // Team, Partners, etc
-    getTeam: () => api.get<any[]>('/team'),
-    getPartners: () => api.get<any[]>('/partners'),
-    getCompany: () => api.get<any>('/company'),
 };
 
 // Helper function to get full URL for media/images
