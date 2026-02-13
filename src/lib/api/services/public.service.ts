@@ -59,10 +59,6 @@ export const publicService = {
         return apiClient<any>('/api/v1/dashboard/charts/programs');
     },
 
-    async getStaff(): Promise<any> {
-        return apiClient<any>('/api/v1/auth/profile');
-    },
-
     async getFooter(): Promise<any> {
         return apiClient<any>('/api/v1/footer');
     }

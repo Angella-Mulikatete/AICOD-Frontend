@@ -8,13 +8,8 @@ export const metadata: Metadata = {
 };
 
 export default async function TeamPage() {
-  let team: any[] = [];
-  try {
-    const response = await publicService.getStaff();
-    team = Array.isArray(response) ? response : (response?.data || []);
-  } catch (error) {
-    console.warn('Staff API not fully available yet');
-  }
+  const team: any[] = [];
+  // Team API is currently unsupported/broken, showing placeholder by default
 
   return (
     <div className="animate-enter">
