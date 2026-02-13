@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   },
   description: 'Albertine Institute For Community Development - Driving positive change in biodiversity, human rights, and community livelihoods.',
   icons: {
-    icon: '/assets/images/AICOD log.svg',
+    icon: '/icon.png',
   },
 };
 
