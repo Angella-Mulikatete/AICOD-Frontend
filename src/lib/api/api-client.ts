@@ -1,5 +1,5 @@
 const IS_SERVER = typeof window === 'undefined';
-const API_URL = process.env.NEXT_PUBLIC_API_URL || (IS_SERVER ? 'http://admin.albertinecommunity.org' : '');
+const API_URL = process.env.NEXT_PUBLIC_API_URL || (IS_SERVER ? 'https://admin.albertinecommunity.org' : '');
 
 export type FetchOptions = RequestInit & {
     params?: Record<string, string | number>;

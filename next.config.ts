@@ -58,7 +58,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: 'http://admin.albertinecommunity.org/api/:path*',
+        destination: `${process.env.NEXT_PUBLIC_API_URL || 'https://admin.albertinecommunity.org'}/api/:path*`,
       },
     ];
   },
