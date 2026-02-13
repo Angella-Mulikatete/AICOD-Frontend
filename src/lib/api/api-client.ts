@@ -1,5 +1,10 @@
 const IS_SERVER = typeof window === 'undefined';
-const API_URL = process.env.NEXT_PUBLIC_API_URL || (IS_SERVER ? 'https://admin.albertinecommunity.org' : '');
+let API_URL = process.env.NEXT_PUBLIC_API_URL || (IS_SERVER ? 'https://admin.albertinecommunity.org' : '');
+
+// Ensure we use HTTPS to avoid Mixed Content errors on deployment
+if (API_URL.startsWith('http://')) {
+    API_URL = API_URL.replace('http://', 'https://');
+}
 
 export type FetchOptions = RequestInit & {
     params?: Record<string, string | number>;
