@@ -1,0 +1,65 @@
+import { apiClient } from '../api-client';
+import { ContentSection, Program, ApiResponse } from '../models';
+
+export const contentService = {
+    async getHomepageData(): Promise<any> {
+        return apiClient<any>('/api/v1/homepage');
+    },
+
+    async getContentSections(): Promise<{ success: boolean; data: ContentSection[] }> {
+        return apiClient<{ success: boolean; data: ContentSection[] }>('/api/v1/content-sections');
+    },
+
+    async getContentSectionByKey(key: string): Promise<{ success: boolean; data: ContentSection }> {
+        return apiClient<{ success: boolean; data: ContentSection }>(`/api/v1/content-sections/${key}`);
+    },
+
+    async getHeroByPage(page: string): Promise<any> {
+        return apiClient<any>(`/api/v1/heroes/${page}`);
+    },
+
+    async getMenuByLocation(location: string): Promise<any> {
+        return apiClient<any>(`/api/v1/menu/${location}`);
+    }
+};
+
+export const publicService = {
+    async getNews(params?: { search?: string }): Promise<any> {
+        return apiClient<any>('/api/v1/news', { params });
+    },
+
+    async getNewsBySlug(slug: string): Promise<any> {
+        return apiClient<any>(`/api/v1/news/${slug}`);
+    },
+
+    async getDocuments(params?: { year?: number; category?: string }): Promise<any> {
+        return apiClient<any>('/api/v1/documents', { params });
+    },
+
+    async submitContactForm(data: any): Promise<ApiResponse> {
+        return apiClient<ApiResponse>('/api/v1/contact', {
+            method: 'POST',
+            body: JSON.stringify(data),
+        });
+    },
+
+    async getDonationRequests(): Promise<any> {
+        return apiClient<any>('/api/v1/donation-requests');
+    },
+
+    async getCompanies(): Promise<any> {
+        return apiClient<any>('/api/v1/companies');
+    },
+
+    async getPrograms(): Promise<any> {
+        return apiClient<any>('/api/v1/dashboard/charts/programs');
+    },
+
+    async getStaff(): Promise<any> {
+        return apiClient<any>('/api/v1/auth/profile');
+    },
+
+    async getFooter(): Promise<any> {
+        return apiClient<any>('/api/v1/footer');
+    }
+};

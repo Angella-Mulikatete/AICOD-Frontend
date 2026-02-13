@@ -5,7 +5,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Menu } from 'lucide-react';
 import AICODLogo from "../../../public/assets/images/AICOD logo.jpg";
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from '@/components/ui/sheet';
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Button } from '@/components/ui/button';
 import {
   Accordion,
@@ -26,6 +27,10 @@ export function MobileNav() {
         </Button>
       </SheetTrigger>
       <SheetContent side="left">
+        <VisuallyHidden.Root>
+          <SheetTitle>Navigation Menu</SheetTitle>
+          <SheetDescription>Access site navigation links and donation page.</SheetDescription>
+        </VisuallyHidden.Root>
         <div className="flex h-full flex-col py-6">
           <Link href="/" className="px-4 flex items-center" onClick={() => setIsOpen(false)}>
             <Image

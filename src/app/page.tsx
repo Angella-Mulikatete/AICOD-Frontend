@@ -2,14 +2,13 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, HeartHandshake, Leaf, Users, Target, Eye, ChevronRight, Mail, Globe, Building2, Handshake, Sprout } from 'lucide-react';
+import { ArrowRight, HeartHandshake, Leaf, Users, Target, Eye, ChevronRight, Mail, Globe, Building2, Handshake, Sprout, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { motion } from 'framer-motion';
-
-// --- CONFIGURATION ---
-// Replace this with your actual YouTube Video ID
-const YOUTUBE_VIDEO_ID = 'YOUR_YOUTUBE_VIDEO_ID';
+import { useState, useEffect } from 'react';
+import { contentService, publicService } from '@/lib/api/services/public.service';
+import { resolveImageUrl } from '@/lib/utils';
 
 // --- Animation Variants ---
 const fadeInUp = {
@@ -25,16 +24,70 @@ const staggerContainer = {
   }
 };
 
-const partners = [
-  { name: "Land is Life", icon: Leaf },
-  { name: "SUNMAKERS", icon: Sprout },
-  { name: "Environmental Defenders", icon: Globe },
-  { name: "TERRA FM 95.0 FM", icon: Users },
-  { name: "ACCU", icon: Building2 },
-  { name: "MIRAC", icon: Handshake },
-];
+const iconMap: Record<string, any> = {
+  Leaf,
+  Sprout,
+  Globe,
+  Users,
+  Building2,
+  Handshake,
+};
 
 export default function Home() {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchHomeData() {
+      try {
+        const [homeResponse, partnersResponse, sectionsResponse] = await Promise.all([
+          contentService.getHomepageData(),
+          publicService.getCompanies(),
+          contentService.getContentSections()
+        ]);
+
+        // Defensive normalization of partners data
+        let partners = [];
+        if (Array.isArray(partnersResponse)) {
+          partners = partnersResponse;
+        } else if (partnersResponse?.data && Array.isArray(partnersResponse.data)) {
+          partners = partnersResponse.data;
+        } else if (partnersResponse?.data?.companies && Array.isArray(partnersResponse.data.companies)) {
+          partners = partnersResponse.data.companies;
+        } else if (homeResponse?.data?.partners && Array.isArray(homeResponse.data.partners)) {
+          partners = homeResponse.data.partners;
+        }
+
+        setData({
+          ...(homeResponse?.data || {}),
+          partners,
+          sections: sectionsResponse?.data || []
+        });
+      } catch (error) {
+        console.error('Failed to fetch homepage data:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchHomeData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="w-12 h-12 animate-spin text-brand-blue" />
+      </div>
+    );
+  }
+
+  const hero = data?.hero || {};
+  const partners = Array.isArray(data?.partners) ? data.partners : [];
+  const mission = data?.sections?.find((s: any) => s.section_key === 'mission') || data?.mission_section || {};
+  const vision = data?.sections?.find((s: any) => s.section_key === 'vision') || data?.vision_section || {};
+  const about = data?.sections?.find((s: any) => s.section_key === 'who-we-are' || s.section_key === 'about') || {};
+  const featuredPrograms = Array.isArray(data?.featured_programs) ? data.featured_programs : [];
+  const cta = data?.cta_section || {};
+
   return (
     <div className="flex flex-col min-h-screen font-sans overflow-x-hidden">
 
@@ -48,36 +101,34 @@ export default function Home() {
           transition={{ duration: 2.5, ease: [0.33, 1, 0.68, 1] as const }}
           className="absolute inset-0 -z-10 overflow-hidden"
         >
-          {/* 
-             YOUTUBE BACKGROUND EMBED 
-             1. pointer-events-none: Prevents pausing on click
-             2. w-[300%] h-[300%]: Scales video up to simulate 'object-fit: cover' so no black bars appear
-             3. -translate-x/y-1/2: Centers the zoomed video
-          */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300%] h-[300%]">
-            <iframe
-              src="https://www.youtube.com/embed/P85JijiJl0c?autoplay=1&mute=1&loop=1&playlist=P85JijiJl0c&controls=0"
-              className="w-full h-full object-cover"
-              title="Hero Background Video"
-              allow="autoplay; encrypted-media"
-              allowFullScreen
-              style={{ pointerEvents: 'none' }}
+          {hero.background_video ? (
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300%] h-[300%]">
+              <iframe
+                src={`https://www.youtube.com/embed/${hero.background_video.split('v=')[1] || 'P85JijiJl0c'}?autoplay=1&mute=1&loop=1&playlist=${hero.background_video.split('v=')[1] || 'P85JijiJl0c'}&controls=0`}
+                className="w-full h-full object-cover"
+                title="Hero Background Video"
+                allow="autoplay; encrypted-media"
+                allowFullScreen
+                style={{ pointerEvents: 'none' }}
+              />
+            </div>
+          ) : (
+            <Image
+              src={resolveImageUrl(hero.background_image, "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=2072&auto=format&fit=crop")}
+              alt="Hero Background"
+              fill
+              className="object-cover"
+              priority
             />
-          </div>
-
-          {/* Optional Fallback Image (Shows while YouTube loads) */}
-          <Image
-            src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=2072&auto=format&fit=crop"
-            alt="Hero Background Fallback"
-            fill
-            className="object-cover -z-20"
-            priority
-          />
+          )}
         </motion.div>
 
-        {/* Gradient Overlays for Text Readability */}
+        {/* Gradient Overlays */}
         <div className="absolute inset-0 bg-gradient-to-r from-brand-blue/95 via-brand-blue/60 to-black/30 mix-blend-multiply pointer-events-none" />
-        <div className="absolute inset-0 bg-black/10 pointer-events-none" />
+        <div
+          className="absolute inset-0 bg-black/10 pointer-events-none"
+          style={{ opacity: hero.overlay_opacity || 0.1 }}
+        />
 
         {/* --- CONTENT --- */}
         <div className="relative z-10 flex h-full flex-col justify-center container mx-auto px-4">
@@ -87,30 +138,23 @@ export default function Home() {
             variants={fadeInUp}
             className="max-w-4xl mx-auto text-center"
           >
-
             <h1 className="font-bold text-5xl md:text-7xl lg:text-8xl text-white mb-6 leading-tight drop-shadow-xl">
-              Welcome To
-              {/* <span className="text-brand-green">AICOD</span> */}
-              <span className="text-brand-green "> A</span>
-              <span className="text-brand-orange">I</span>
-              <span className="text-brand-blue ">C</span>
-              <span className="text-brand-blue ">O</span>
-              <span className="text-brand-blue ">D</span>
+              {hero.title || 'Welcome To AICOD'}
             </h1>
 
             <p className="text-lg md:text-2xl font-light text-blue-50 leading-relaxed mb-10 max-w-2xl mx-auto drop-shadow-md ">
-              Inspired by wonders
+              {hero.subtitle || 'Inspired by wonders'}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-5 justify-center">
               <Button asChild size="lg" className="bg-brand-orange hover:bg-[#a04823] text-white text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent">
-                <Link href="/our-story">
-                  Our Story <ArrowRight className="ml-2 h-5 w-5" />
+                <Link href={hero.cta_primary_link || "/our-story"}>
+                  {hero.cta_primary_text || 'Our Story'} <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="border-2 border-white text-white bg-transparent hover:bg-white hover:text-brand-blue text-lg px-8 py-6 rounded-full transition-all duration-300">
-                <Link href="/programs/biodiversity">
-                  Explore Programmes
+                <Link href={hero.cta_secondary_link || "/programs"}>
+                  {hero.cta_secondary_text || 'Explore Programmes'}
                 </Link>
               </Button>
             </div>
@@ -130,19 +174,29 @@ export default function Home() {
               viewport={{ once: true }}
               className="sticky top-24"
             >
-              <h4 className="text-brand-green font-bold uppercase tracking-widest text-sm mb-3">Who We Are</h4>
+              <h4 className="text-brand-green font-bold uppercase tracking-widest text-sm mb-3">{about.subtitle || 'Who We Are'}</h4>
               <h2 className="text-3xl md:text-5xl font-bold text-brand-blue mb-6">
-                Restoring Dignity & <br />
-                <span className="text-brand-orange">Protecting Rights</span>
+                {about.title || (
+                  <>
+                    Restoring Dignity & <br />
+                    <span className="text-brand-orange">Protecting Rights</span>
+                  </>
+                )}
               </h2>
 
               <div className="prose prose-lg text-gray-600 mb-8 text-justify">
-                <p>
-                  Founded in 2013, the Albertine Institute for Community Development (AICOD) emerged as a response to the pressing challenges faced by host communities in Uganda’s oil-rich Albertine region.
-                </p>
-                <p>
-                  We are dedicated to ensuring that development does not come at the cost of human rights, engaging directly with those most affected to build a sustainable future.
-                </p>
+                {about.content ? (
+                  <div dangerouslySetInnerHTML={{ __html: about.content }} />
+                ) : (
+                  <>
+                    <p>
+                      Founded in 2013, the Albertine Institute for Community Development (AICOD) emerged as a response to the pressing challenges faced by host communities in Uganda’s oil-rich Albertine region.
+                    </p>
+                    <p>
+                      We are dedicated to ensuring that development does not come at the cost of human rights, engaging directly with those most affected to build a sustainable future.
+                    </p>
+                  </>
+                )}
               </div>
 
               <Button asChild variant="link" className="text-brand-blue font-bold text-lg p-0 hover:text-brand-orange transition-colors">
@@ -159,7 +213,6 @@ export default function Home() {
               viewport={{ once: true }}
               className="flex flex-col gap-8 relative"
             >
-              {/* Decorative Background Blob */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[110%] bg-brand-blue/5 rounded-full blur-3xl -z-10" />
 
               {/* Vision Card */}
@@ -169,11 +222,12 @@ export default function Home() {
                     <div className="bg-brand-blue/10 p-3 rounded-full">
                       <Eye className="w-8 h-8 text-brand-blue" />
                     </div>
-                    <h3 className="text-2xl font-bold text-brand-blue font-headline">Our Vision</h3>
+                    <h3 className="text-2xl font-bold text-brand-blue font-headline">{vision.title || 'Our Vision'}</h3>
                   </div>
-                  <p className="text-xl text-gray-600 italic leading-relaxed pl-2 border-l-2 border-brand-yellow text-justify">
-                    "A community with respected rights, improved livelihoods, and a safe, clean environment."
-                  </p>
+                  <div
+                    className="text-xl text-gray-600 italic leading-relaxed pl-2 border-l-2 border-brand-yellow text-justify prose prose-sm max-w-none"
+                    dangerouslySetInnerHTML={{ __html: vision.content || 'A community with respected rights, improved livelihoods, and a safe, clean environment.' }}
+                  />
                 </CardContent>
               </Card>
 
@@ -184,11 +238,12 @@ export default function Home() {
                     <div className="bg-brand-green/10 p-3 rounded-full">
                       <Target className="w-8 h-8 text-brand-green" />
                     </div>
-                    <h3 className="text-2xl font-bold text-brand-green font-headline">Our Mission</h3>
+                    <h3 className="text-2xl font-bold text-brand-green font-headline">{mission.title || 'Our Mission'}</h3>
                   </div>
-                  <p className="text-xl text-gray-600 italic leading-relaxed pl-2 border-l-2 border-brand-yellow text-justify">
-                    "To advocate for the promotion and protection of the rights of disadvantaged communities, thereby safeguarding their livelihoods."
-                  </p>
+                  <div
+                    className="text-xl text-gray-600 italic leading-relaxed pl-2 border-l-2 border-brand-yellow text-justify prose prose-sm max-w-none"
+                    dangerouslySetInnerHTML={{ __html: mission.content || 'To advocate for the promotion and protection of the rights of disadvantaged communities, thereby safeguarding their livelihoods.' }}
+                  />
                 </CardContent>
               </Card>
             </motion.div>
@@ -220,71 +275,96 @@ export default function Home() {
             viewport={{ once: true }}
             className="grid gap-8 md:grid-cols-3"
           >
-            {/* Biodiversity */}
-            <motion.div variants={fadeInUp}>
-              <Card className="h-full border border-slate-100 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group bg-white rounded-2xl overflow-hidden">
-                <CardHeader>
-                  <div className="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-green group-hover:text-white transition-all duration-300">
-                    <Leaf className="h-8 w-8 text-brand-green group-hover:text-white transition-colors duration-300" />
-                  </div>
-                  <CardTitle className="text-2xl font-bold text-brand-blue">Biodiversity & Environment </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 mb-8 leading-relaxed">
-                    Protecting and conserving our natural heritage for future generations through research.
-                  </p>
-                  <Button asChild variant="ghost" className="p-0 text-brand-green hover:bg-transparent hover:text-brand-blue font-bold text-base">
-                    <Link href="/programs/biodiversity" className="flex items-center gap-2">
-                      Learn More <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
+            {featuredPrograms.length > 0 ? featuredPrograms.map((program: any) => (
+              <motion.div key={program.id} variants={fadeInUp}>
+                <Card className="h-full border border-slate-100 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group bg-white rounded-2xl overflow-hidden">
+                  <CardHeader>
+                    <div className="w-16 h-16 bg-brand-blue/5 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-blue group-hover:text-white transition-all duration-300">
+                      <Target className="h-8 w-8 text-brand-blue group-hover:text-white transition-colors duration-300" />
+                    </div>
+                    <CardTitle className="text-2xl font-bold text-brand-blue">{program.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-600 mb-8 leading-relaxed line-clamp-3">
+                      {program.description}
+                    </p>
+                    <Button asChild variant="ghost" className="p-0 text-brand-blue hover:bg-transparent hover:text-brand-orange font-bold text-base">
+                      <Link href={`/programs/${program.slug || program.id}`} className="flex items-center gap-2">
+                        Learn More <ArrowRight className="h-4 w-4" />
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )) : (
+              <>
+                {/* Biodiversity */}
+                <motion.div variants={fadeInUp}>
+                  <Card className="h-full border border-slate-100 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group bg-white rounded-2xl overflow-hidden">
+                    <CardHeader>
+                      <div className="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-green group-hover:text-white transition-all duration-300">
+                        <Leaf className="h-8 w-8 text-brand-green group-hover:text-white transition-colors duration-300" />
+                      </div>
+                      <CardTitle className="text-2xl font-bold text-brand-blue">Biodiversity & Environment </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-gray-600 mb-8 leading-relaxed">
+                        Protecting and conserving our natural heritage for future generations through research.
+                      </p>
+                      <Button asChild variant="ghost" className="p-0 text-brand-green hover:bg-transparent hover:text-brand-blue font-bold text-base">
+                        <Link href="/programs/biodiversity" className="flex items-center gap-2">
+                          Learn More <ArrowRight className="h-4 w-4" />
+                        </Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </motion.div>
 
-            {/* Human Rights */}
-            <motion.div variants={fadeInUp}>
-              <Card className="h-full border border-slate-100 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group bg-white rounded-2xl overflow-hidden">
-                <CardHeader>
-                  <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-blue group-hover:text-white transition-all duration-300">
-                    <HeartHandshake className="h-8 w-8 text-brand-blue group-hover:text-white transition-colors duration-300" />
-                  </div>
-                  <CardTitle className="text-2xl font-bold text-brand-blue">Human Rights & Inclusive Development</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 mb-8 leading-relaxed">
-                    Advocating for justice, equality, and the protection of human rights for all.
-                  </p>
-                  <Button asChild variant="ghost" className="p-0 text-brand-blue hover:bg-transparent hover:text-brand-orange font-bold text-base">
-                    <Link href="/programs/human-rights" className="flex items-center gap-2">
-                      Learn More <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
+                {/* Human Rights */}
+                <motion.div variants={fadeInUp}>
+                  <Card className="h-full border border-slate-100 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group bg-white rounded-2xl overflow-hidden">
+                    <CardHeader>
+                      <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-blue group-hover:text-white transition-all duration-300">
+                        <HeartHandshake className="h-8 w-8 text-brand-blue group-hover:text-white transition-colors duration-300" />
+                      </div>
+                      <CardTitle className="text-2xl font-bold text-brand-blue">Human Rights & Inclusive Development</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-gray-600 mb-8 leading-relaxed">
+                        Advocating for justice, equality, and the protection of human rights for all.
+                      </p>
+                      <Button asChild variant="ghost" className="p-0 text-brand-blue hover:bg-transparent hover:text-brand-orange font-bold text-base">
+                        <Link href="/programs/human-rights" className="flex items-center gap-2">
+                          Learn More <ArrowRight className="h-4 w-4" />
+                        </Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </motion.div>
 
-            {/* Livelihoods */}
-            <motion.div variants={fadeInUp}>
-              <Card className="h-full border border-slate-100 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group bg-white rounded-2xl overflow-hidden">
-                <CardHeader>
-                  <div className="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-orange group-hover:text-white transition-all duration-300">
-                    <Users className="h-8 w-8 text-brand-orange group-hover:text-white transition-colors duration-300" />
-                  </div>
-                  <CardTitle className="text-2xl font-bold text-brand-blue">Community & Livelihoods </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 mb-8 leading-relaxed">
-                    Empowering communities with skills and resources to build sustainable livelihoods.
-                  </p>
-                  <Button asChild variant="ghost" className="p-0 text-brand-orange hover:bg-transparent hover:text-brand-blue font-bold text-base">
-                    <Link href="/programs/community-livelihood" className="flex items-center gap-2">
-                      Learn More <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
+                {/* Livelihoods */}
+                <motion.div variants={fadeInUp}>
+                  <Card className="h-full border border-slate-100 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group bg-white rounded-2xl overflow-hidden">
+                    <CardHeader>
+                      <div className="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-orange group-hover:text-white transition-all duration-300">
+                        <Users className="h-8 w-8 text-brand-orange group-hover:text-white transition-colors duration-300" />
+                      </div>
+                      <CardTitle className="text-2xl font-bold text-brand-blue">Community & Livelihoods </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-gray-600 mb-8 leading-relaxed">
+                        Empowering communities with skills and resources to build sustainable livelihoods.
+                      </p>
+                      <Button asChild variant="ghost" className="p-0 text-brand-orange hover:bg-transparent hover:text-brand-blue font-bold text-base">
+                        <Link href="/programs/community-livelihood" className="flex items-center gap-2">
+                          Learn More <ArrowRight className="h-4 w-4" />
+                        </Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              </>
+            )}
           </motion.div>
         </div>
       </section>
@@ -298,7 +378,6 @@ export default function Home() {
 
         {/* Infinite Slider */}
         <div className="relative w-full flex">
-          {/* Gradient Masks */}
           <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-white to-transparent z-10" />
           <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-white to-transparent z-10" />
 
@@ -309,8 +388,17 @@ export default function Home() {
           >
             {[...partners, ...partners, ...partners].map((partner, index) => (
               <div key={index} className="flex flex-col items-center gap-3 group cursor-default opacity-60 hover:opacity-100 transition-opacity duration-300">
-                <div className="p-4 bg-slate-50 rounded-full border border-slate-100 group-hover:border-brand-blue/30 group-hover:bg-brand-blue/5 transition-all">
-                  <partner.icon className="w-10 h-10 text-gray-400 group-hover:text-brand-blue transition-colors" />
+                <div className="p-4 bg-slate-50 rounded-full border border-slate-100 group-hover:border-brand-blue/30 group-hover:bg-brand-blue/5 transition-all w-24 h-24 relative flex items-center justify-center">
+                  {partner.logo ? (
+                    <Image
+                      src={resolveImageUrl(partner.logo, '')}
+                      alt={partner.name || "Partner"}
+                      fill
+                      className="object-contain p-2"
+                    />
+                  ) : (
+                    <Building2 className="w-10 h-10 text-gray-400 group-hover:text-brand-blue transition-colors" />
+                  )}
                 </div>
                 <span className="font-bold text-lg text-gray-400 group-hover:text-brand-blue transition-colors">{partner.name}</span>
               </div>
@@ -331,35 +419,29 @@ export default function Home() {
             {/* Background Image Layer */}
             <div className="absolute inset-0 z-0">
               <Image
-                src="/assets/images/cta-bg.png"
+                src={resolveImageUrl(cta.background_image, "/assets/images/cta-bg.png")}
                 alt="Join us in making a difference"
                 fill
                 className="object-cover"
               />
-              {/* Dark overlay for better text contrast on mobile */}
               <div className="absolute inset-0 bg-black/40 md:bg-black/30" />
-              {/* Gradient overlay for additional depth */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/40" />
             </div>
 
-            {/* Decorative circles */}
-            <div className="absolute top-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 z-[1]"></div>
-            <div className="absolute bottom-0 right-0 w-64 h-64 bg-brand-yellow/20 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 z-[1]"></div>
-
-            <h2 className="text-3xl md:text-5xl font-bold mb-6 relative z-10">Ready to Make a Difference?</h2>
+            <h2 className="text-3xl md:text-5xl font-bold mb-6 relative z-10">{cta.title || 'Ready to Make a Difference?'}</h2>
             <p className="text-lg md:text-xl text-orange-50 mb-10 max-w-2xl mx-auto relative z-10 leading-relaxed">
-              Whether you want to partner with us, support our cause, or simply learn more about our work in the Albertine region, we would love to hear from you.
+              {cta.description || 'Whether you want to partner with us, support our cause, or simply learn more about our work in the Albertine region, we would love to hear from you.'}
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center gap-5 relative z-10">
               <Button asChild size="lg" className="bg-white text-brand-orange hover:bg-brand-yellow hover:text-brand-blue font-bold text-lg px-8 py-6 rounded-full shadow-lg transition-colors">
                 <Link href="/contact" className="flex items-center gap-2">
-                  <Mail className="w-5 h-5" /> Contact Us
+                  <Mail className="w-5 h-5" /> {cta.button_text || 'Contact Us'}
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white/10 text-lg px-8 py-6 rounded-full bg-transparent">
-                <Link href="/our-story" className="flex items-center gap-2">
-                  <ArrowRight className="w-5 h-5" /> Read Our Story
+                <Link href={cta.button_link || "/our-story"} className="flex items-center gap-2">
+                  <ArrowRight className="w-5 h-5" /> Learn More
                 </Link>
               </Button>
             </div>
