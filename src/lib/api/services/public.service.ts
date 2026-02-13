@@ -24,12 +24,16 @@ export const contentService = {
 };
 
 export const publicService = {
-    async getNews(params?: { search?: string }): Promise<any> {
+    async getNews(params?: { search?: string; page?: number }): Promise<any> {
         return apiClient<any>('/api/v1/news', { params });
     },
 
     async getNewsBySlug(slug: string): Promise<any> {
         return apiClient<any>(`/api/v1/news/${slug}`);
+    },
+
+    async getRecentNews(count: number = 5): Promise<any> {
+        return apiClient<any>(`/api/v1/news/recent/${count}`);
     },
 
     async getDocuments(params?: { year?: number; category?: string }): Promise<any> {

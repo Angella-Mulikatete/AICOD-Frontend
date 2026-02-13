@@ -96,3 +96,42 @@ export interface FooterData {
     newsletter_enabled: boolean;
     copyright_text: string;
 }
+// --- News & Documents ---
+export interface NewsAuthor {
+    id: number;
+    name: string;
+}
+
+export interface NewsItem {
+    id: number;
+    title: string;
+    slug: string;
+    summary: string;
+    content?: string;
+    featured_image: string;
+    author_id: number;
+    published_at: string;
+    created_at: string;
+    updated_at?: string;
+    author: NewsAuthor;
+}
+
+export interface DocumentItem {
+    id: number;
+    title: string;
+    file_url: string;
+    category: string;
+    year: number;
+    description?: string;
+    created_at: string;
+}
+
+export interface PaginatedNews {
+    items: NewsItem[];
+    pagination: {
+        current_page: number;
+        last_page: number;
+        per_page: number;
+        total: number;
+    };
+}

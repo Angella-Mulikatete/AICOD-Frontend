@@ -40,6 +40,18 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'www.albertinecommunity.org',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'albertinecommunity.org',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
   async rewrites() {
