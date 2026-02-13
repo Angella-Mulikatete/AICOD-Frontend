@@ -161,39 +161,11 @@ export default function CommunityLivelihoodPage() {
                   ))}
                 </motion.div>
               </div>
-
-              {/* Conclusion Section */}
-              {/* <motion.div
-                initial={{ opacity: 0, scale: 0.98 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-                className="bg-brand-blue text-white p-8 md:p-10 rounded-2xl relative overflow-hidden shadow-xl"
-              >
-             
-                <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-brand-orange rounded-full opacity-20 blur-2xl" />
-                <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-brand-green rounded-full opacity-20 blur-2xl" />
-                
-                <div className="relative z-10">
-                  <h3 className="text-xl font-bold mb-6 flex items-center gap-3 border-b border-white/20 pb-4">
-                    <ArrowRight className="w-5 h-5 text-brand-yellow" /> 
-                    Our Commitment
-                  </h3>
-                  <p className="text-blue-50 leading-relaxed italic text-lg font-light">
-                    "By integrating human rights advocacy with community development initiatives, this comprehensive program seeks to ensure that host communities are not only aware of their rights but actively engaged in the sustainable development processes that affect their lives. Through empowerment, advocacy, and supports for sustainable livelihoods, we aim to foster a just and equitable environment where all community members can thrive."
-                  </p>
-                </div>
-              </motion.div> */}
-
             </div>
 
             {/* === RIGHT COLUMN: Sidebar (Span 5) === */}
             <div className="lg:col-span-5">
               <div className="lg:sticky lg:top-24 space-y-8">
-                {/* 
-                   If you have a YouTube ID from the transcript you provided, 
-                   you can add it here. e.g., videoId="xyz123" 
-                */}
                 <ProgramMediaSidebar
                   images={sidebarImages}
                   youtubeUrl="https://www.youtube.com/watch?v=8Hc2iKu1nko"
@@ -208,85 +180,3 @@ export default function CommunityLivelihoodPage() {
   );
 }
 
-
-
-// <div className="lg:col-span-7 space-y-12">
-
-//   {/* Initiative 1: Innovative Skills */}
-//   <motion.div
-//     initial={{ opacity: 0, x: -20 }}
-//     whileInView={{ opacity: 1, x: 0 }}
-//     viewport={{ once: true }}
-//   >
-//     <div className="flex items-center gap-4 mb-6">
-//       <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-brand-blue font-bold text-xl">1</div>
-//       <h2 className="text-2xl md:text-3xl font-bold text-brand-blue">Innovative Livelihood Skills</h2>
-//     </div>
-
-//     <div className="bg-white rounded-2xl p-6 md:p-8 border border-gray-200 shadow-sm">
-//       <p className="text-gray-600 mb-6 leading-relaxed">
-//         Empowering communities devastated by natural resource developments to restore and enrich their livelihoods. We support native-based approaches and movements capable of defending rights and building an entrepreneurship culture.
-//       </p>
-//       <div className="grid gap-4 bg-slate-50 p-6 rounded-xl">
-//         <div>
-//           <span className="text-sm font-bold uppercase tracking-wider text-brand-orange block mb-1">The Challenge</span>
-//           <p className="text-sm text-gray-700">Mismanagement of land compensation monies leading to increased poverty vulnerability.</p>
-//         </div>
-//         <div className="w-full h-px bg-gray-200"></div>
-//         <div>
-//           <span className="text-sm font-bold uppercase tracking-wider text-brand-green block mb-1">Our Solution</span>
-//           <p className="text-sm text-gray-700">Training on financial literacy, business planning, bookkeeping, and technology integration.</p>
-//         </div>
-//       </div>
-//     </div>
-//   </motion.div>
-
-//   {/* Initiative 2: One Team (Visual Break) */}
-//   <motion.div
-//     initial={{ opacity: 0, y: 20 }}
-//     whileInView={{ opacity: 1, y: 0 }}
-//     viewport={{ once: true }}
-//     className="bg-brand-blue rounded-3xl p-8 md:p-10 text-white relative overflow-hidden shadow-2xl"
-//   >
-//     <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl translate-x-1/3 -translate-y-1/3"></div>
-
-//     <div className="relative z-10">
-//       <div className="flex items-center gap-3 mb-6">
-//         <span className="px-3 py-1 bg-brand-yellow text-brand-blue text-xs font-bold uppercase rounded-full">Flagship Program</span>
-//       </div>
-
-//       <h2 className="text-2xl md:text-4xl font-bold text-white mb-6">One Team Initiative</h2>
-
-//       <div className="space-y-6 text-blue-50 leading-relaxed text-base md:text-lg">
-//         <p>
-//           An economic program designed to empower community members to generate their own economic resources, tackling the lack of access to affordable financing.
-//         </p>
-
-//         <div className="flex flex-col sm:flex-row gap-6 mt-8 pt-8 border-t border-white/10">
-//           <div>
-//             <p className="text-3xl font-bold text-brand-yellow mb-1">100+</p>
-//             <p className="text-xs uppercase tracking-wide opacity-70">Households Joined</p>
-//           </div>
-//           <div>
-//             <p className="text-3xl font-bold text-brand-green mb-1">Economic</p>
-//             <p className="text-xs uppercase tracking-wide opacity-70">Projects Launched</p>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   </motion.div>
-
-// </div>
-
-
-
-
-{/* <div className="bg-brand-orange/5 border border-brand-orange/10 rounded-xl p-6 mb-8">
-                <h4 className="font-bold text-brand-orange mb-2 flex items-center gap-2">
-                  <Users className="w-5 h-5" />
-                  Program Gallery
-                </h4>
-                <p className="text-sm text-gray-600">
-                  Witness the transformation in the Albertine region through our media archive.
-                </p>
-              </div> */}

@@ -137,7 +137,6 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
                     console.warn('Chat Context: Received empty response from assistant');
                 }
 
-                // Parse UI data if present
                 let parsedContent: string | ChatMessageData = assistantContent;
                 const uiDataMatch = assistantContent.match(/__UI_DATA__(.+?)__UI_DATA__/);
 

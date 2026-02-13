@@ -57,7 +57,6 @@ export default function BiodiversityPage() {
             />
           </motion.div>
 
-          {/* Brand Overlay: Blue with multiply blend for depth */}
           <div className="absolute inset-0 bg-brand-blue/80 mix-blend-multiply" />
           <div className="container mx-auto px-4 h-full">
             <div className="relative z-10 flex h-full flex-col items-center justify-center text-center">
@@ -67,7 +66,6 @@ export default function BiodiversityPage() {
                 variants={fadeInUp}
                 className="max-w-4xl"
               >
-                {/* Monotype Corsiva Accent */}
                 <span className="block text-brand-yellow text-2xl md:text-3xl mb-2" style={{ fontFamily: 'Monotype Corsiva' }}>
                   Preserving our Heritage
                 </span>
@@ -90,10 +88,8 @@ export default function BiodiversityPage() {
       <div className="container mx-auto px-4 py-16">
         <div className="grid lg:grid-cols-12 gap-12">
 
-          {/* --- LEFT COLUMN: CONTENT --- */}
           <div className="lg:col-span-7 space-y-12">
 
-            {/* Main Article */}
             <motion.article
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -109,7 +105,6 @@ export default function BiodiversityPage() {
                   A compelling example of this conflict is the rapid growth of oil and gas projects within the sensitive Albertine Rift region. These developments pose serious threats to fragile ecosystems, fundamentally altering the environment and increasing the region’s climate vulnerability. The resulting environmental changes have severe consequences for local grassroots communities whose survival depends entirely on ecological stability and biodiversity.
                 </p>
 
-                {/* Decorative Quote using Brand Styles */}
                 <div className="my-8 pl-6 border-l-4 border-brand-orange bg-orange-50/50 p-6 rounded-r-lg">
                   <p className="text-2xl text-brand-blue" style={{ fontFamily: 'Monotype Corsiva' }}>
                     "Therefore, this programme aims to empower local grassroots communities by increasing their capacity, awareness, and ability to be resilient and informed about efforts to prevent, mitigate, and restore their environment."
@@ -122,7 +117,6 @@ export default function BiodiversityPage() {
               </div>
             </motion.article>
 
-            {/* Strategic Goals Section */}
             <motion.div
               variants={staggerContainer}
               initial="hidden"
@@ -156,48 +150,6 @@ export default function BiodiversityPage() {
                 ))}
               </div>
             </motion.div>
-
-            {/* MEP Movement Section */}
-            {/* <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="bg-brand-blue rounded-2xl p-8 text-white shadow-xl relative overflow-hidden"
-            >
-              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue/10 rounded-full blur-3xl -mr-32 -mt-32" />
-
-              <div className="relative z-10">
-                <div className="flex items-center gap-2 text-brand-blue font-bold uppercase tracking-widest text-sm mb-4">
-                  <Globe className="w-4 h-4" />
-                  Global Movement
-                </div>
-
-                <h2 className="text-2xl md:text-3xl font-bold mb-6 text-white leading-tight">
-                  The Mother Earth Protection <br />
-                  <span className="text-brand-blue" style={{ fontFamily: 'Monotype Corsiva', fontWeight: 'normal' }}>
-                    (MEP) Movement
-                  </span>
-                </h2>
-
-                <div className="space-y-6 text-orange-50 leading-relaxed">
-                  <p>
-                    Founded to empower communities to fulfill their role as the <span className="font-bold text-white">"original caretakers of Mother Earth,"</span> the MEP movement bridges the gap between ancient wisdom and modern action.
-                  </p>
-                  <p>
-                    Our strategy is built on four pillars: Elder to Youth Knowledge Transfer, Protection of Reserve Areas, Innovative Solutions, and Community Training.
-                  </p>
-                </div>
-
-                <div className="mt-8 pt-8 border-t border-white/20">
-                  <div className="flex items-center gap-4">
-                    <div className="h-10 w-1 bg-brand-blue rounded-full"></div>
-                    <p className="text-sm italic text-orange-100">
-                      "Integrating traditional knowledge with western technologies to create a powerful Earth management system."
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div> */}
 
           </div>
 

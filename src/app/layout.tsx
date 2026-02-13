@@ -13,9 +13,6 @@ export const metadata: Metadata = {
     template: '%s | AICOD Connect',
   },
   description: 'Albertine Institute For Community Development - Driving positive change in biodiversity, human rights, and community livelihoods.',
-  icons: {
-    icon: '/icon.png',
-  },
 };
 
 export default function RootLayout({

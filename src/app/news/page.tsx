@@ -27,7 +27,6 @@ function NewsContent() {
     const [detailsLoading, setDetailsLoading] = useState(false);
     const [searchInput, setSearchInput] = useState(searchQuery);
 
-    // Fetch initial data (recent news and either detail or search results)
     useEffect(() => {
         async function initFetch() {
             setLoading(true);
@@ -106,7 +105,6 @@ function NewsContent() {
         <div className="container mx-auto px-4 py-12 max-w-7xl">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
 
-                {/* MAIN AREA (Left) */}
                 <main className="lg:col-span-8">
                     {currentSlug && newsDetails ? (
                         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -145,7 +143,6 @@ function NewsContent() {
                                         dangerouslySetInnerHTML={{ __html: newsDetails.content || '' }}
                                     />
 
-                                    {/* Related / Back Link */}
                                     <div className="mt-12 pt-8 border-t border-slate-100">
                                         <Button
                                             variant="outline"
@@ -244,7 +241,7 @@ function NewsContent() {
                         </form>
                     </div>
 
-                    {/* Shortcuts / Recent News */}
+                    {/* Recent News */}
                     <div className="space-y-6">
                         <h3 className="font-bold text-brand-blue text-xl flex items-center gap-2">
                             <div className="w-1.5 h-6 bg-brand-orange rounded-full" />
@@ -278,9 +275,6 @@ function NewsContent() {
                         </div>
                     </div>
 
-                    {/* Categories Placeholder if needed? 
-              Benchmarks usually have categories.
-          */}
                 </aside>
 
             </div>

@@ -52,7 +52,6 @@ export default function HumanRightsPage() {
       {/* --- HERO SECTION --- */}
       {heroImage && (
         <header className="relative h-[60vh] min-h-[400px] w-full overflow-hidden">
-          {/* Parallax-like Image Effect */}
           <motion.div
             initial={{ scale: 1.1 }}
             animate={{ scale: 1 }}
@@ -72,11 +71,6 @@ export default function HumanRightsPage() {
           {/* Brand Overlay */}
           <div className="absolute inset-0 bg-brand-blue/80 mix-blend-multiply" />
 
-          {/* 
-             ALIGNMENT FIX:
-             Using 'container mx-auto px-4' ensures the content box matches the Header exactly.
-             h-full allows vertical centering within that box.
-          */}
           <div className="container mx-auto px-4 h-full relative z-10">
             <div className="flex h-full flex-col items-center justify-center text-center">
               <motion.div

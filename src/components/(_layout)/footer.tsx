@@ -4,14 +4,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Facebook, Mail, MapPin, Phone, Send, Linkedin } from 'lucide-react';
 import { navLinks } from '@/lib/nav-links';
-import { motion } from 'framer-motion';
-import AICODLogo from "../../../public/assets/images/AICOD logo.jpg";
 import { toast } from 'sonner';
 import { useEffect, useState } from 'react';
 import { publicService } from '@/lib/api/services/public.service';
 import { FooterData } from '@/lib/api/models';
-import { resolveImageUrl } from '@/lib/utils';
-import { Loader2 } from 'lucide-react';
+
 
 const XIcon = () => (
   <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 fill-current">
@@ -73,7 +70,6 @@ export function Footer() {
         toast.success(data.message || 'Thank you for subscribing!');
         setEmail('');
       } else {
-        // Handle duplicate subscriber gracefully
         if (data.alreadySubscribed) {
           toast.info(data.error);
         } else {
@@ -274,7 +270,6 @@ export function Footer() {
               </div>
             </div>
 
-            {/* Right Column: Newsletter */}
             <div className="lg:col-span-3">
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
                 <h3 className="font-bold text-white mb-2 text-lg">Stay Updated</h3>
