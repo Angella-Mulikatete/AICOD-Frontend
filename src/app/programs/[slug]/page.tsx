@@ -6,9 +6,10 @@ import { useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { publicService } from '@/lib/api/services/public.service';
 import { Program } from '@/lib/api/models';
-import { CheckCircle, Leaf, Loader2 } from 'lucide-react';
+import { CheckCircle, Leaf, Loader2, Shield, Users, Sprout, Goal } from 'lucide-react';
 import { ProgramMediaSidebar } from '@/components/program-media-sidebar';
 import { resolveImageUrl } from '@/lib/utils';
+import { Card, CardContent } from '@/components/ui/card';
 
 // --- Animation Variants ---
 const fadeInUp = {
@@ -27,6 +28,52 @@ const staggerContainer = {
 const cardVariant = {
     hidden: { opacity: 0, scale: 0.9 },
     visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
+};
+
+// --- Program Specific Style Mapping ---
+interface ProgramStyle {
+    heroSubtitle: string;
+    themeColor: string;
+    goalsTitle: string;
+    goalsIcon: any;
+    layoutType: 'list' | 'cards';
+    accentColor: string;
+}
+
+const styleMap: Record<string, ProgramStyle> = {
+    'biodiversity': {
+        heroSubtitle: 'Preserving our Heritage',
+        themeColor: 'text-brand-green',
+        goalsTitle: 'Program Goals',
+        goalsIcon: Leaf,
+        layoutType: 'list',
+        accentColor: 'text-brand-orange'
+    },
+    'human-rights': {
+        heroSubtitle: 'Equality & Justice',
+        themeColor: 'text-white', // In the original HR page, the title was white/green mix
+        goalsTitle: 'Strategic Goals',
+        goalsIcon: Shield,
+        layoutType: 'cards',
+        accentColor: 'text-brand-blue'
+    },
+    'community-livelihood': {
+        heroSubtitle: 'Empowering People',
+        themeColor: 'text-brand-orange',
+        goalsTitle: 'Strategic Goals',
+        goalsIcon: Users,
+        layoutType: 'cards',
+        accentColor: 'text-brand-orange'
+    }
+};
+
+const defaultStyle: ProgramStyle = {
+    heroSubtitle: 'Holistic Development',
+    themeColor: 'text-white',
+    goalsTitle: 'Program Objectives',
+    goalsIcon: Goal,
+    layoutType: 'list',
+    accentColor: 'text-brand-blue'
 };
 
 export default function ProgramDetailPage() {
@@ -71,6 +118,9 @@ export default function ProgramDetailPage() {
         );
     }
 
+    const styles = styleMap[program.slug] || defaultStyle;
+    const GoalsIcon = styles.goalsIcon;
+
     return (
         <div className="bg-white min-h-screen font-sans text-foreground">
             {/* --- HERO SECTION --- */}
@@ -99,12 +149,19 @@ export default function ProgramDetailPage() {
                             variants={fadeInUp}
                             className="max-w-4xl"
                         >
-                            <span className="block text-brand-yellow text-2xl md:text-3xl mb-2" style={{ fontFamily: 'Monotype Corsiva' }}>
-                                {program.category.name}
+                            <span className="block text-brand-yellow text-2xl md:text-3xl mb-2" style={{ fontFamily: "'Monotype Corsiva', cursive" }}>
+                                {styles.heroSubtitle}
                             </span>
 
                             <h1 className="font-bold text-4xl md:text-6xl text-white shadow-sm leading-tight">
-                                {program.title}
+                                {program.title.split('&').map((part, i) => (
+                                    <span key={i}>
+                                        {i > 0 && <span className="text-brand-yellow"> & </span>}
+                                        <span className={i > 0 && program.slug !== 'human-rights' ? styles.themeColor : 'text-white'}>
+                                            {i > 0 && program.slug === 'human-rights' ? <span className="text-brand-green">{part.trim()}</span> : part.trim()}
+                                        </span>
+                                    </span>
+                                ))}
                             </h1>
 
                             <div className="mt-8 flex justify-center gap-2">
@@ -120,15 +177,22 @@ export default function ProgramDetailPage() {
             <div className="container mx-auto px-4 py-16">
                 <div className="grid lg:grid-cols-12 gap-12">
                     <div className="lg:col-span-7 space-y-12">
+                        <div className="text-center mb-12">
+                            <h2 className="text-3xl font-bold text-brand-blue mb-4">Program Overview</h2>
+                            <div className="w-24 h-1.5 bg-brand-orange mx-auto rounded-full" />
+                        </div>
+
                         <motion.article
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            className="prose prose-lg max-w-none text-gray-700"
+                            className="prose prose-lg max-w-none text-gray-700 prose-headings:text-brand-blue prose-h2:text-3xl prose-h3:text-2xl"
                         >
                             <div
                                 className="text-gray-600 space-y-6"
-                                dangerouslySetInnerHTML={{ __html: program.content }}
+                                dangerouslySetInnerHTML={{
+                                    __html: program.content.replace(/<h2[^>]*>Program Overview<\/h2>/i, '')
+                                }}
                             />
                         </motion.article>
 
@@ -138,32 +202,51 @@ export default function ProgramDetailPage() {
                                 initial="hidden"
                                 whileInView="visible"
                                 viewport={{ once: true }}
-                                className="pt-4 border-t border-gray-100"
+                                className="pt-4"
                             >
-                                <div className="flex flex-col gap-4 mb-8">
-                                    <div className="flex items-center gap-3">
-                                        <div className="bg-brand-green/10 p-2 rounded-full">
-                                            <Leaf className="text-brand-green w-6 h-6" />
-                                        </div>
-                                        <h3 className="text-2xl font-bold text-brand-blue">Program Goals</h3>
-                                    </div>
-                                    <p className="text-gray-500">Our commitment to a sustainable future</p>
-                                </div>
-
                                 <div className="space-y-4">
-                                    {program.objectives.map((goal, index) => (
-                                        <motion.div
-                                            key={index}
-                                            variants={cardVariant}
-                                            whileHover={{ x: 5 }}
-                                            className="flex gap-4 p-4 rounded-lg hover:bg-gray-50 transition-colors"
-                                        >
-                                            <CheckCircle className="w-6 h-6 text-brand-orange flex-shrink-0 mt-1" />
-                                            <p className="text-gray-700 font-medium leading-relaxed">
-                                                {goal}
-                                            </p>
-                                        </motion.div>
-                                    ))}
+
+                                    {styles.layoutType === 'cards' ? (
+                                        <div className="space-y-4">
+                                            {program.objectives.map((goal, index) => {
+                                                const parts = goal.split(' - ');
+                                                const title = parts.length > 1 ? parts[0] : '';
+                                                const description = parts.length > 1 ? parts[1] : goal;
+
+                                                return (
+                                                    <motion.div key={index} variants={cardVariant}>
+                                                        <Card className="border-l-4 border-l-brand-orange shadow-sm hover:shadow-md transition-shadow">
+                                                            <CardContent className="p-4 flex gap-4 items-start">
+                                                                <div className="bg-brand-blue/5 p-2 rounded-full mt-1">
+                                                                    <GoalsIcon className="w-5 h-5 text-brand-blue" />
+                                                                </div>
+                                                                <div>
+                                                                    {title && <h4 className="font-bold text-brand-blue">{title}</h4>}
+                                                                    <p className="text-sm text-gray-600 leading-relaxed">{description}</p>
+                                                                </div>
+                                                            </CardContent>
+                                                        </Card>
+                                                    </motion.div>
+                                                );
+                                            })}
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-4">
+                                            {program.objectives.map((goal, index) => (
+                                                <motion.div
+                                                    key={index}
+                                                    variants={cardVariant}
+                                                    whileHover={{ x: 5 }}
+                                                    className="flex gap-4 p-4 rounded-lg hover:bg-gray-50 transition-colors"
+                                                >
+                                                    <CheckCircle className={`w-6 h-6 ${styles.accentColor} flex-shrink-0 mt-1`} />
+                                                    <p className="text-gray-700 font-medium leading-relaxed">
+                                                        {goal}
+                                                    </p>
+                                                </motion.div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             </motion.div>
                         )}
@@ -171,7 +254,7 @@ export default function ProgramDetailPage() {
 
                     <div className="lg:col-span-5">
                         <ProgramMediaSidebar
-                            youtubeUrl="" // Could be added to API if needed
+                            youtubeUrl="https://www.youtube.com/watch?v=4oAtw0U3DJw"
                             images={program.gallery && program.gallery.length > 0 ? program.gallery : [program.featured_image]}
                         />
                     </div>
