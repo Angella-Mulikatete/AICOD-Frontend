@@ -2,11 +2,13 @@
 
 import Image from 'next/image';
 import { getPlaceholderImagesByPrefix } from '@/lib/image-assets';
-import { CheckCircle, TrendingUp, Users, Sprout, School, Play, ChevronLeft, ChevronRight } from 'lucide-react';
+import { CheckCircle, TrendingUp, Users, Sprout, School, Play, ChevronLeft, ChevronRight, GraduationCap, Globe, Trees, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { publicService } from '@/lib/api/services/public.service';
+import { Statistic } from '@/lib/api/models';
 
 // --- Data ---
 const causesData = [
@@ -91,21 +93,40 @@ const scaleIn = {
   visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
 };
 
+// --- Icon Mapping ---
+const iconMap: Record<string, any> = {
+  'tree': Trees,
+  'users': Users,
+  'globe': Globe,
+  'academic-cap': GraduationCap,
+};
+
 export default function ImpactPage() {
   const impactImages = getPlaceholderImagesByPrefix('impact-');
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [activePage, setActivePage] = useState(0);
+  const [stats, setStats] = useState<Statistic[]>([]);
+  const [loadingStats, setLoadingStats] = useState(true);
+
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        const response = await publicService.getStatistics();
+        if (response.success) {
+          setStats(response.data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch statistics:', error);
+      } finally {
+        setLoadingStats(false);
+      }
+    }
+    fetchStats();
+  }, []);
 
   // Example YouTube URL (Placeholder for now as specific videos weren't provided URLs yet)
   const youtubeVideoUrl = 'https://www.youtube.com/watch?v=4oAtw0U3DJw';
   const embedUrl = getYouTubeEmbedUrl(youtubeVideoUrl);
-
-  const stats = [
-    { value: '10,000+', label: 'Trees Planted', color: 'text-brand-green', icon: Sprout },
-    { value: '500+', label: 'Families Supported', color: 'text-brand-orange', icon: Users },
-    { value: '25+', label: 'Communities Engaged', color: 'text-brand-blue', icon: TrendingUp },
-    { value: '1,200+', label: 'People Trained', color: 'text-brand-yellow', icon: School },
-  ];
 
   const currentCause = causesData[activePage];
 
@@ -150,36 +171,49 @@ export default function ImpactPage() {
       </header>
 
       {/* --- STATS SECTION --- */}
-      {/* Reduced bottom margin from mb-16 to mb-8. Reduced internal padding. */}
       <section className="relative -mt-10 mb-8 z-20">
         <div className="container mx-auto px-4">
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-4"
-          // Corrected grid col definition for tighter layout
-          >
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                variants={scaleIn}
-                whileHover={{ y: -5 }}
-                className="bg-white rounded-xl shadow-xl p-4 text-center border-b-4 border-transparent hover:border-brand-orange transition-all duration-300"
-              >
-                <div className={`mx-auto w-10 h-10 mb-3 rounded-full bg-gray-50 flex items-center justify-center ${stat.color}`}>
-                  <stat.icon className="w-5 h-5" />
-                </div>
-                <p className={`text-2xl md:text-3xl font-bold mb-1 ${stat.color}`}>
-                  {stat.value}
-                </p>
-                <p className="text-xs font-bold uppercase tracking-wider text-gray-500">
-                  {stat.label}
-                </p>
-              </motion.div>
-            ))}
-          </motion.div>
+          {loadingStats ? (
+            <div className="flex justify-center items-center py-10">
+              <Loader2 className="w-10 h-10 animate-spin text-brand-blue" />
+            </div>
+          ) : (
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="grid grid-cols-2 md:grid-cols-4 gap-4"
+            >
+              {stats.map((stat) => {
+                const IconComponent = iconMap[stat.icon] || TrendingUp;
+                return (
+                  <motion.div
+                    key={stat.id}
+                    variants={scaleIn}
+                    whileHover={{ y: -5 }}
+                    className="bg-white rounded-xl shadow-xl p-4 text-center border-b-4 border-transparent hover:border-brand-orange transition-all duration-300"
+                  >
+                    <div
+                      className="mx-auto w-10 h-10 mb-3 rounded-full flex items-center justify-center"
+                      style={{ backgroundColor: `${stat.color}10`, color: stat.color }}
+                    >
+                      <IconComponent className="w-5 h-5" />
+                    </div>
+                    <p
+                      className="text-2xl md:text-3xl font-bold mb-1"
+                      style={{ color: stat.color }}
+                    >
+                      {stat.prefix}{stat.value.toLocaleString()}{stat.suffix}
+                    </p>
+                    <p className="text-xs font-bold uppercase tracking-wider text-gray-500">
+                      {stat.label}
+                    </p>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
+          )}
         </div>
       </section>
 

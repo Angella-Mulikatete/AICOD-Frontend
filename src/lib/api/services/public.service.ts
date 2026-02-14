@@ -65,5 +65,9 @@ export const publicService = {
 
     async getFooter(): Promise<any> {
         return apiClient<any>('/api/v1/footer');
+    },
+
+    async getStatistics(): Promise<{ success: boolean; data: any[] }> {
+        return apiClient<{ success: boolean; data: any[] }>('/api/v1/statistics');
     }
 };

@@ -187,3 +187,17 @@ export interface PaginatedNews {
         total: number;
     };
 }
+
+export interface Statistic {
+    id: number;
+    label: string;
+    value: number;
+    icon: string;
+    suffix: string | null;
+    prefix: string | null;
+    color: string;
+    order: number;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string;
+}
