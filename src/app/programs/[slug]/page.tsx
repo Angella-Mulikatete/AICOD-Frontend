@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { publicService } from '@/lib/api/services/public.service';
 import { Program } from '@/lib/api/models';
-import { CheckCircle, Leaf, Loader2, Shield, Users, Sprout, Goal } from 'lucide-react';
+import { CheckCircle, Leaf, Loader2, Shield, Users, Goal, Check, Gavel, Megaphone, Scale } from 'lucide-react';
 import { ProgramMediaSidebar } from '@/components/program-media-sidebar';
 import { resolveImageUrl } from '@/lib/utils';
 import { Card, CardContent } from '@/components/ui/card';
@@ -35,9 +35,15 @@ interface ProgramStyle {
     heroSubtitle: string;
     themeColor: string;
     goalsTitle: string;
+    goalsSubtext?: string;
     goalsIcon: any;
     layoutType: 'list' | 'cards';
     accentColor: string;
+    showCenteredOverview: boolean;
+    objectiveIcons?: any[];
+    objectiveIconColors?: string[];
+    goalsHeaderLayout?: 'top' | 'side';
+    showGoalHeaderBar?: boolean;
 }
 
 const styleMap: Record<string, ProgramStyle> = {
@@ -45,25 +51,39 @@ const styleMap: Record<string, ProgramStyle> = {
         heroSubtitle: 'Preserving our Heritage',
         themeColor: 'text-brand-green',
         goalsTitle: 'Program Goals',
+        goalsSubtext: 'Our commitment to a sustainable future',
         goalsIcon: Leaf,
         layoutType: 'list',
-        accentColor: 'text-brand-orange'
+        accentColor: 'text-brand-orange',
+        showCenteredOverview: false,
+        goalsHeaderLayout: 'top'
     },
     'human-rights': {
         heroSubtitle: 'Equality & Justice',
-        themeColor: 'text-white', // In the original HR page, the title was white/green mix
+        themeColor: 'text-brand-orange',
         goalsTitle: 'Strategic Goals',
         goalsIcon: Shield,
         layoutType: 'cards',
-        accentColor: 'text-brand-blue'
+        accentColor: 'text-brand-blue',
+        showCenteredOverview: false,
+        objectiveIcons: [Gavel, Megaphone, Users],
+        objectiveIconColors: ['bg-brand-blue/10 text-brand-blue', 'bg-brand-blue/10 text-brand-blue', 'bg-brand-blue/10 text-brand-blue'],
+        goalsHeaderLayout: 'top',
+        showGoalHeaderBar: true,
     },
     'community-livelihood': {
         heroSubtitle: 'Empowering People',
         themeColor: 'text-brand-orange',
         goalsTitle: 'Strategic Goals',
+        goalsSubtext: 'Our key objectives for community development',
         goalsIcon: Users,
         layoutType: 'cards',
-        accentColor: 'text-brand-orange'
+        accentColor: 'text-brand-orange',
+        showCenteredOverview: true,
+        objectiveIcons: [Leaf, Users, Scale],
+        objectiveIconColors: ['bg-[#99CA3C] text-white', 'bg-[#F47920] text-white', 'bg-[#FFCD33] text-white'],
+        goalsHeaderLayout: 'top',
+        showGoalHeaderBar: true
     }
 };
 
@@ -73,7 +93,9 @@ const defaultStyle: ProgramStyle = {
     goalsTitle: 'Program Objectives',
     goalsIcon: Goal,
     layoutType: 'list',
-    accentColor: 'text-brand-blue'
+    accentColor: 'text-brand-blue',
+    showCenteredOverview: false,
+    goalsHeaderLayout: 'top'
 };
 
 export default function ProgramDetailPage() {
@@ -121,10 +143,20 @@ export default function ProgramDetailPage() {
     const styles = styleMap[program.slug] || defaultStyle;
     const GoalsIcon = styles.goalsIcon;
 
+    // Function to clean content of titles we render manually
+    const cleanContent = (html: string) => {
+        return html
+            .replace(/<h2[^>]*>Program Overview<\/h2>/i, '')
+            .replace(/<h3[^>]*>Program Goals<\/h3>/i, '')
+            .replace(/<h3[^>]*>Strategic Goals<\/h3>/i, '')
+            .replace(/<p>Our commitment to a sustainable future<\/p>/i, '')
+            .replace(/<p>Our key objectives for community development<\/p>/i, '');
+    };
+
     return (
         <div className="bg-white min-h-screen font-sans text-foreground">
             {/* --- HERO SECTION --- */}
-            <header className="relative h-[55vh] min-h-[400px] w-full overflow-hidden">
+            <header className="relative h-[65vh] min-h-[500px] w-full overflow-hidden">
                 <motion.div
                     initial={{ scale: 1.1 }}
                     animate={{ scale: 1 }}
@@ -149,36 +181,37 @@ export default function ProgramDetailPage() {
                             variants={fadeInUp}
                             className="max-w-4xl"
                         >
-                            <span className="block text-brand-yellow text-2xl md:text-3xl mb-2" style={{ fontFamily: "'Monotype Corsiva', cursive" }}>
+                            <span className="block text-brand-yellow text-2xl md:text-3xl mb-4" style={{ fontFamily: "'Monotype Corsiva', cursive" }}>
                                 {styles.heroSubtitle}
                             </span>
 
-                            <h1 className="font-bold text-4xl md:text-6xl text-white shadow-sm leading-tight">
+                            <h1 className="font-bold text-5xl md:text-7xl text-white shadow-sm leading-tight">
                                 {program.title.split('&').map((part, i) => (
                                     <span key={i}>
-                                        {i > 0 && <span className="text-brand-yellow"> & </span>}
-                                        <span className={i > 0 && program.slug !== 'human-rights' ? styles.themeColor : 'text-white'}>
-                                            {i > 0 && program.slug === 'human-rights' ? <span className="text-brand-green">{part.trim()}</span> : part.trim()}
+                                        {i > 0 && <span className="text-white"> & </span>}
+                                        <span className={i > 0 ? styles.themeColor : 'text-white'}>
+                                            {part.trim()}
                                         </span>
                                     </span>
                                 ))}
                             </h1>
 
                             <div className="mt-8 flex justify-center gap-2">
-                                <div className="w-3 h-3 rounded-full bg-brand-green"></div>
-                                <div className="w-3 h-3 rounded-full bg-brand-yellow"></div>
-                                <div className="w-3 h-3 rounded-full bg-brand-orange"></div>
+                                <div className="w-3.5 h-3.5 rounded-full bg-brand-green"></div>
+                                <div className="w-3.5 h-3.5 rounded-full bg-brand-yellow"></div>
+                                <div className="w-3.5 h-3.5 rounded-full bg-brand-orange"></div>
                             </div>
                         </motion.div>
                     </div>
                 </div>
             </header>
 
-            <div className="container mx-auto px-4 py-16">
-                <div className="grid lg:grid-cols-12 gap-12">
-                    <div className="lg:col-span-7 space-y-12">
-                        <div className="text-center mb-12">
-                            <h2 className="text-3xl font-bold text-brand-blue mb-4">Program Overview</h2>
+            <div className="container mx-auto px-4 py-12">
+                {/* --- CENTERED OVERVIEW (For Community & Livelihood) --- */}
+                {styles.showCenteredOverview && (
+                    <div className="max-w-4xl mx-auto mb-8 text-center space-y-8">
+                        <div>
+                            <h2 className="text-4xl font-bold text-brand-blue mb-4">Program Overview</h2>
                             <div className="w-24 h-1.5 bg-brand-orange mx-auto rounded-full" />
                         </div>
 
@@ -186,16 +219,40 @@ export default function ProgramDetailPage() {
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            className="prose prose-lg max-w-none text-gray-700 prose-headings:text-brand-blue prose-h2:text-3xl prose-h3:text-2xl"
+                            className="prose prose-xl max-w-none text-gray-700 prose-headings:text-brand-blue prose-p:text-xl prose-p:leading-relaxed prose-blockquote:border-l-4 prose-blockquote:border-brand-orange prose-blockquote:bg-brand-orange/5 prose-blockquote:py-4 prose-blockquote:px-8 prose-blockquote:rounded-r-2xl prose-blockquote:not-italic prose-blockquote:font-medium prose-blockquote:text-brand-blue"
                         >
                             <div
-                                className="text-gray-600 space-y-6"
+                                className="text-gray-600 space-y-10"
                                 dangerouslySetInnerHTML={{
-                                    __html: program.content.replace(/<h2[^>]*>Program Overview<\/h2>/i, '')
+                                    __html: cleanContent(program.content).replace(/"([^"]*)"/g, '<blockquote>"$1"</blockquote>')
                                 }}
                             />
                         </motion.article>
+                    </div>
+                )}
 
+                {/* --- MAIN CONTENT GRID --- */}
+                <div className="grid lg:grid-cols-12 gap-12">
+                    <div className="lg:col-span-7 space-y-10">
+
+                        {/* Standard Overview (For Biodiversity & Human Rights) */}
+                        {!styles.showCenteredOverview && (
+                            <motion.article
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                className="prose prose-xl max-w-none text-gray-700 prose-headings:text-brand-blue prose-p:text-lg prose-p:leading-relaxed prose-blockquote:border-l-4 prose-blockquote:border-brand-orange prose-blockquote:bg-brand-orange/5 prose-blockquote:py-4 prose-blockquote:px-8 prose-blockquote:rounded-r-2xl prose-blockquote:not-italic prose-blockquote:font-medium prose-blockquote:text-brand-blue"
+                            >
+                                <div
+                                    className="text-gray-600 space-y-8"
+                                    dangerouslySetInnerHTML={{
+                                        __html: cleanContent(program.content).replace(/"([^"]*)"/g, '<blockquote>"$1"</blockquote>')
+                                    }}
+                                />
+                            </motion.article>
+                        )}
+
+                        {/* --- OBJECTIVES SECION --- */}
                         {program.objectives && program.objectives.length > 0 && (
                             <motion.div
                                 variants={staggerContainer}
@@ -204,59 +261,99 @@ export default function ProgramDetailPage() {
                                 viewport={{ once: true }}
                                 className="pt-4"
                             >
-                                <div className="space-y-4">
-
-                                    {styles.layoutType === 'cards' ? (
-                                        <div className="space-y-4">
-                                            {program.objectives.map((goal, index) => {
-                                                const parts = goal.split(' - ');
-                                                const title = parts.length > 1 ? parts[0] : '';
-                                                const description = parts.length > 1 ? parts[1] : goal;
-
-                                                return (
-                                                    <motion.div key={index} variants={cardVariant}>
-                                                        <Card className="border-l-4 border-l-brand-orange shadow-sm hover:shadow-md transition-shadow">
-                                                            <CardContent className="p-4 flex gap-4 items-start">
-                                                                <div className="bg-brand-blue/5 p-2 rounded-full mt-1">
-                                                                    <GoalsIcon className="w-5 h-5 text-brand-blue" />
-                                                                </div>
-                                                                <div>
-                                                                    {title && <h4 className="font-bold text-brand-blue">{title}</h4>}
-                                                                    <p className="text-sm text-gray-600 leading-relaxed">{description}</p>
-                                                                </div>
-                                                            </CardContent>
-                                                        </Card>
-                                                    </motion.div>
-                                                );
-                                            })}
+                                {/* Header for Top Layout */}
+                                {styles.goalsHeaderLayout === 'top' && (
+                                    <div className="flex flex-col gap-4 mb-12">
+                                        <div className="flex items-center gap-4">
+                                            {styles.showGoalHeaderBar ? (
+                                                <div className="w-1.5 h-10 bg-brand-green rounded-full"></div>
+                                            ) : (
+                                                <div className="bg-brand-green/10 p-2.5 rounded-full">
+                                                    <GoalsIcon className="text-brand-green w-7 h-7" />
+                                                </div>
+                                            )}
+                                            <h3 className="text-3xl font-bold text-brand-blue leading-tight uppercase tracking-tight">{styles.goalsTitle}</h3>
                                         </div>
-                                    ) : (
-                                        <div className="space-y-4">
-                                            {program.objectives.map((goal, index) => (
-                                                <motion.div
-                                                    key={index}
-                                                    variants={cardVariant}
-                                                    whileHover={{ x: 5 }}
-                                                    className="flex gap-4 p-4 rounded-lg hover:bg-gray-50 transition-colors"
-                                                >
-                                                    <CheckCircle className={`w-6 h-6 ${styles.accentColor} flex-shrink-0 mt-1`} />
-                                                    <p className="text-gray-700 font-medium leading-relaxed">
-                                                        {goal}
-                                                    </p>
-                                                </motion.div>
-                                            ))}
+                                        {styles.goalsSubtext && (
+                                            <p className="text-base text-gray-500 font-medium leading-relaxed">{styles.goalsSubtext}</p>
+                                        )}
+                                    </div>
+                                )}
+
+                                {/* Grid for Objectives */}
+                                <div className={`grid ${styles.goalsHeaderLayout === 'side' ? 'grid-cols-1 md:grid-cols-12 gap-10' : 'grid-cols-1'}`}>
+                                    {/* Side Header */}
+                                    {styles.goalsHeaderLayout === 'side' && (
+                                        <div className="md:col-span-4 lg:col-span-3 space-y-4 pt-2">
+                                            <div className="flex items-center gap-3">
+                                                {styles.showGoalHeaderBar && <div className="w-1.5 h-10 bg-brand-green rounded-full"></div>}
+                                                <h3 className="text-3xl font-bold text-brand-blue leading-tight uppercase tracking-tight">{styles.goalsTitle}</h3>
+                                            </div>
+                                            {styles.goalsSubtext && (
+                                                <p className="text-base text-gray-500 font-medium leading-relaxed max-w-[200px]">{styles.goalsSubtext}</p>
+                                            )}
                                         </div>
                                     )}
+
+                                    {/* Objective Items */}
+                                    <div className={`${styles.goalsHeaderLayout === 'side' ? 'md:col-span-8 lg:col-span-9' : ''} space-y-6`}>
+                                        {styles.layoutType === 'cards' ? (
+                                            <div className="space-y-6">
+                                                {program.objectives.map((goal, index) => {
+                                                    const parts = goal.split(' - ');
+                                                    const title = parts.length > 1 ? parts[0] : '';
+                                                    const description = parts.length > 1 ? parts[1] : goal;
+
+                                                    const ItemIcon = styles.objectiveIcons?.[index] || GoalsIcon;
+                                                    const iconBgClass = styles.objectiveIconColors?.[index] || 'bg-brand-blue/10 text-brand-blue';
+
+                                                    return (
+                                                        <motion.div key={index} variants={cardVariant}>
+                                                            <Card className="shadow-sm hover:shadow-lg transition-all group bg-white rounded-2xl overflow-hidden border-none border-gray-100">
+                                                                <CardContent className="p-8 flex gap-8 items-start">
+                                                                    <div className={`${iconBgClass} p-4 rounded-xl mt-1 shrink-0 transition-transform group-hover:scale-105`}>
+                                                                        <ItemIcon className="w-7 h-7" />
+                                                                    </div>
+                                                                    <div className="space-y-3">
+                                                                        {title && <h4 className="font-bold text-2xl text-brand-blue leading-tight">{title}</h4>}
+                                                                        <p className="text-gray-600 leading-relaxed text-lg">{description}</p>
+                                                                    </div>
+                                                                </CardContent>
+                                                            </Card>
+                                                        </motion.div>
+                                                    );
+                                                })}
+                                            </div>
+                                        ) : (
+                                            <div className="space-y-6">
+                                                {program.objectives.map((goal, index) => (
+                                                    <motion.div
+                                                        key={index}
+                                                        variants={cardVariant}
+                                                        whileHover={{ x: 8 }}
+                                                        className="flex gap-6 p-6 rounded-2xl hover:bg-gray-50 transition-all border border-transparent hover:border-gray-100"
+                                                    >
+                                                        <CheckCircle className={`w-8 h-8 ${styles.accentColor} flex-shrink-0 mt-0.5`} />
+                                                        <p className="text-gray-700 text-lg font-medium leading-relaxed">
+                                                            {goal}
+                                                        </p>
+                                                    </motion.div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             </motion.div>
                         )}
                     </div>
 
                     <div className="lg:col-span-5">
-                        <ProgramMediaSidebar
-                            youtubeUrl="https://www.youtube.com/watch?v=4oAtw0U3DJw"
-                            images={program.gallery && program.gallery.length > 0 ? program.gallery : [program.featured_image]}
-                        />
+                        <div className={`sticky ${styles.showCenteredOverview ? 'top-24' : 'top-32'}`}>
+                            <ProgramMediaSidebar
+                                youtubeUrl="https://www.youtube.com/watch?v=4oAtw0U3DJw"
+                                images={program.gallery && program.gallery.length > 0 ? program.gallery : [program.featured_image]}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

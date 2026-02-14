@@ -52,7 +52,7 @@ export default function ProgrammesPage() {
 
   return (
     <div className="bg-white min-h-screen font-sans">
-      <div className="bg-brand-blue py-16 text-center text-white relative overflow-hidden">
+      <div className="bg-brand-blue py-12 text-center text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-brand-green/10 mix-blend-multiply" />
         <h1 className="text-4xl md:text-5xl font-bold relative z-10">Our Programmes</h1>
         <p className="max-w-xl mx-auto mt-4 text-blue-100 relative z-10">
@@ -60,8 +60,8 @@ export default function ProgrammesPage() {
         </p>
       </div>
 
-      <div className="container mx-auto px-4 py-16">
-        <div className="grid md:grid-cols-2 gap-12 items-start">
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid md:grid-cols-2 gap-10 items-start">
 
           <motion.div
             initial="hidden"
