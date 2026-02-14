@@ -6,7 +6,9 @@ import { Goal, Sprout, Shield, Users, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { contentService } from '@/lib/api/services/public.service';
+
+import { publicService } from '@/lib/api/services/public.service';
+import { Program } from '@/lib/api/models';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -16,18 +18,21 @@ const fadeInUp = {
 const iconMap: Record<string, any> = {
   'Biodiversity': Sprout,
   'Human Rights': Shield,
-  'Community Livelihoods': Users,
+  'Community Livelihood': Users,
+  'Community & Livelihoods': Users,
 };
 
 export default function ProgrammesPage() {
-  const [data, setData] = useState<any>(null);
+  const [programs, setPrograms] = useState<Program[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchPrograms() {
       try {
-        const response = await contentService.getHomepageData();
-        setData(response.data);
+        const response = await publicService.getPrograms({ per_page: 15 });
+        if (response.success && Array.isArray(response.data)) {
+          setPrograms(response.data);
+        }
       } catch (error) {
         console.error('Failed to fetch programs:', error);
       } finally {
@@ -44,8 +49,6 @@ export default function ProgrammesPage() {
       </div>
     );
   }
-
-  const programs = data?.featured_programs || [];
 
   return (
     <div className="bg-white min-h-screen font-sans">
@@ -80,19 +83,19 @@ export default function ProgrammesPage() {
                 <Goal className="w-6 h-6" /> Key Goals
               </h3>
               <ul className="space-y-4">
-                {programs.map((prog: any, idx: number) => (
-                  <Link key={idx} href={`/programs/${prog.slug || prog.id}`}>
+                {programs.map((prog: Program) => (
+                  <Link key={prog.id} href={`/programs/${prog.slug}`}>
                     <Card className="border-l-4 border-l-brand-orange shadow-sm hover:shadow-md transition-shadow mb-4">
                       <CardContent className="p-4 flex gap-4 items-start">
                         <div className="bg-brand-blue/5 p-2 rounded-full mt-1">
-                          {iconMap[prog.title] ?
-                            iconMap[prog.title]({ className: "w-5 h-5 text-brand-blue" }) :
+                          {iconMap[prog.title] || iconMap[prog.category.name] ?
+                            (iconMap[prog.title] || iconMap[prog.category.name])({ className: "w-5 h-5 text-brand-blue" }) :
                             <Goal className="w-5 h-5 text-brand-blue" />
                           }
                         </div>
                         <div>
                           <h4 className="font-bold text-brand-blue">{prog.title}</h4>
-                          <p className="text-sm text-gray-600 line-clamp-2">{prog.description}</p>
+                          <p className="text-sm text-gray-600 line-clamp-2">{prog.short_description}</p>
                         </div>
                       </CardContent>
                     </Card>

@@ -46,16 +46,68 @@ export const ContentSectionSchema = z.object({
 export type ContentSection = z.infer<typeof ContentSectionSchema>;
 
 // --- Programs ---
-export const ProgramSchema = z.object({
-    id: z.number(),
-    title: z.string(),
-    description: z.string(),
-    image: z.string().nullable(),
-    category: z.string().optional(),
-    status: z.string().optional(),
-});
+export interface ProgramCategory {
+    id: number;
+    name: string;
+    slug: string;
+    description: string;
+    icon: string;
+    color: string;
+    order: number;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string;
+}
 
-export type Program = z.infer<typeof ProgramSchema>;
+export interface ProgramCreator {
+    id: number;
+    name: string;
+    email: string;
+    phone: string;
+    profile_photo: string | null;
+    gender: string;
+    status: string;
+    created_at: string;
+}
+
+export interface Program {
+    id: number;
+    category_id: number;
+    title: string;
+    slug: string;
+    short_description: string;
+    content: string;
+    featured_image: string;
+    objectives: string[];
+    impact_stats: any | null;
+    location: string;
+    start_date: string;
+    end_date: string | null;
+    status: string;
+    order: number;
+    meta_title: string;
+    meta_description: string;
+    meta_keywords: string | null;
+    created_at: string;
+    updated_at: string;
+    is_active: boolean;
+    is_completed: boolean;
+    category: ProgramCategory;
+    gallery: string[];
+    creator: ProgramCreator;
+}
+
+export interface PaginatedPrograms {
+    data: Program[];
+    pagination: {
+        current_page: number;
+        per_page: number;
+        total: number;
+        last_page: number;
+        from: number;
+        to: number;
+    };
+}
 
 // --- Generic Paginated Response ---
 export function createPaginatedSchema<T extends z.ZodTypeAny>(itemSchema: T) {

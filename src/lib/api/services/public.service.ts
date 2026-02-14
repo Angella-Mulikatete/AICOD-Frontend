@@ -55,8 +55,12 @@ export const publicService = {
         return apiClient<any>('/api/v1/companies');
     },
 
-    async getPrograms(): Promise<any> {
-        return apiClient<any>('/api/v1/dashboard/charts/programs');
+    async getPrograms(params?: { per_page?: number; page?: number }): Promise<any> {
+        return apiClient<any>('/api/v1/programs', { params });
+    },
+
+    async getProgramBySlug(slug: string): Promise<any> {
+        return apiClient<any>(`/api/v1/programs/${slug}`);
     },
 
     async getFooter(): Promise<any> {
