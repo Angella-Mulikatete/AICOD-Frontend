@@ -201,3 +201,15 @@ export interface Statistic {
     created_at: string;
     updated_at: string;
 }
+
+export interface FAQ {
+    id: number;
+    question: string;
+    answer: string;
+    category: string;
+    order: number;
+    is_active: boolean;
+    views_count: number;
+    created_at: string;
+    updated_at: string;
+}

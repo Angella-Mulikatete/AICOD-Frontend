@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react';
 import { contentService, publicService } from '@/lib/api/services/public.service';
 import { resolveImageUrl } from '@/lib/utils';
 
+
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.33, 1, 0.68, 1] as const } }
@@ -447,6 +448,9 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+  
+
 
     </div>
   );

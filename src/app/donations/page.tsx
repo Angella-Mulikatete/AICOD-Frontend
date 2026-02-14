@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import { contentService } from '@/lib/api/services/public.service';
 
 import { resolveImageUrl } from '@/lib/utils';
+import { FAQSection } from '@/components/faq-section';
 
 export default function DonationsPage() {
   const [data, setData] = useState<any>(null);
@@ -92,6 +93,9 @@ export default function DonationsPage() {
           </div>
 
         </div>
+
+      {/* --- FAQ SECTION --- */}
+      <FAQSection />
       </div>
     </div>
   );

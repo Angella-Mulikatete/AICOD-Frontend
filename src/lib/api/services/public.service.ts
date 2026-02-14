@@ -69,5 +69,9 @@ export const publicService = {
 
     async getStatistics(): Promise<{ success: boolean; data: any[] }> {
         return apiClient<{ success: boolean; data: any[] }>('/api/v1/statistics');
+    },
+
+    async getFAQs(): Promise<{ success: boolean; data: any[] }> {
+        return apiClient<{ success: boolean; data: any[] }>('/api/v1/faqs');
     }
 };
