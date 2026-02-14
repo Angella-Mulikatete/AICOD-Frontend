@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { useEffect, useState } from 'react';
 import { publicService } from '@/lib/api/services/public.service';
 import { FooterData } from '@/lib/api/models';
+import { useSettings } from '@/context/settings-context';
 
 
 const XIcon = () => (
@@ -18,6 +19,7 @@ const XIcon = () => (
 );
 
 export function Footer() {
+  const { settings } = useSettings();
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [data, setData] = useState<FooterData | null>(null);
@@ -100,9 +102,9 @@ export function Footer() {
               <Link href="/" className="inline-block group">
                 <div className="mb-4">
                   <h1 className="text-4xl font-extrabold tracking-tight">
-                    <span className="text-brand-green">A</span>
-                    <span className="text-brand-orange">I</span>
-                    <span className="text-white">COD</span>
+                    <span className="text-brand-green">{settings?.site_name?.[0] || 'A'}</span>
+                    <span className="text-brand-orange">{settings?.site_name?.[1] || 'I'}</span>
+                    <span className="text-white">{settings?.site_name?.slice(2) || 'COD'}</span>
                   </h1>
                 </div>
               </Link>
@@ -161,7 +163,7 @@ export function Footer() {
                 ) : (
                   [
                     { icon: MapPin, text: 'P.O Box 331 Hoima-Uganda' },
-                    { icon: Mail, text: 'info@albertinecommunity.org', href: 'mailto:info@albertinecommunity.org' },
+                    { icon: Mail, text: settings?.contact_email || 'info@albertinecommunity.org', href: `mailto:${settings?.contact_email || 'info@albertinecommunity.org'}` },
                     { icon: Phone, text: '+256 123 456 789', href: 'tel:+256123456789' },
                   ].map((item, index) => (
                     <div key={index} className="flex items-start gap-3 text-sm text-orange-50">
@@ -317,7 +319,7 @@ export function Footer() {
         <div className="border-t border-white/20 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-orange-100">
             <p>
-              {data?.copyright_text || `© ${new Date().getFullYear()} AICOD. All Rights Reserved.`}
+              {data?.copyright_text || `© ${new Date().getFullYear()} ${settings?.site_name || 'AICOD'}. All Rights Reserved.`}
             </p>
             <div className="flex gap-6">
               <Link href="/privacy" className="hover:text-white transition-colors">

@@ -213,3 +213,9 @@ export interface FAQ {
     created_at: string;
     updated_at: string;
 }
+
+export interface SiteSettings {
+    site_name: string;
+    site_tagline: string;
+    contact_email: string;
+}

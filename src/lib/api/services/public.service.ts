@@ -1,5 +1,5 @@
 import { apiClient } from '../api-client';
-import { ContentSection, Program, ApiResponse } from '../models';
+import { ContentSection, Program, ApiResponse, SiteSettings } from '../models';
 
 export const contentService = {
     async getHomepageData(): Promise<any> {
@@ -73,5 +73,9 @@ export const publicService = {
 
     async getFAQs(): Promise<{ success: boolean; data: any[] }> {
         return apiClient<{ success: boolean; data: any[] }>('/api/v1/faqs');
+    },
+
+    async getSettings(): Promise<{ success: boolean; data: SiteSettings }> {
+        return apiClient<{ success: boolean; data: SiteSettings }>('/api/v1/settings');
     }
 };
