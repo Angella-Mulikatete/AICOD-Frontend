@@ -202,6 +202,10 @@ export interface Statistic {
     updated_at: string;
 }
 
+export interface StatisticsResponse extends ApiResponse {
+    data: Statistic[];
+}
+
 export interface FAQ {
     id: number;
     question: string;

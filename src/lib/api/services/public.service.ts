@@ -1,5 +1,5 @@
 import { apiClient } from '../api-client';
-import { ContentSection, Program, ApiResponse, SiteSettings, PageResponse } from '../models';
+import { ContentSection, Program, ApiResponse, SiteSettings, PageResponse, Statistic, StatisticsResponse } from '../models';
 
 export const contentService = {
     async getHomepageData(): Promise<any> {
@@ -82,8 +82,8 @@ export const publicService = {
         return apiClient<any>('/api/v1/footer');
     },
 
-    async getStatistics(): Promise<{ success: boolean; data: any[] }> {
-        return apiClient<{ success: boolean; data: any[] }>('/api/v1/statistics');
+    async getStatistics(): Promise<StatisticsResponse> {
+        return apiClient<StatisticsResponse>('/api/v1/statistics');
     },
 
     async getFAQs(): Promise<{ success: boolean; data: any[] }> {
