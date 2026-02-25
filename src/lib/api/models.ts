@@ -178,6 +178,37 @@ export interface DocumentItem {
     created_at: string;
 }
 
+export interface BackendDocument {
+    id: number;
+    title: string;
+    file_path: string;
+    year: number;
+    category: string;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface DocumentListResponse extends ApiResponse {
+    data: {
+        documents: BackendDocument[];
+        available_years: number[];
+        available_categories: string[];
+    };
+}
+
+export interface DocumentSingleResponse extends ApiResponse {
+    data: BackendDocument;
+}
+
+export interface DocumentCategoriesResponse extends ApiResponse {
+    data: string[];
+}
+
+export interface DocumentYearsResponse extends ApiResponse {
+    data: number[];
+}
+
 export interface PaginatedNews {
     items: NewsItem[];
     pagination: {
