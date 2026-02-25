@@ -60,27 +60,18 @@ export function Footer() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/newsletter', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      });
+      const response = await publicService.subscribeNewsletter(email);
 
-      const data = await response.json();
-
-      if (response.ok) {
-        toast.success(data.message || 'Thank you for subscribing!');
+      if (response.success) {
+        toast.success(response.message || 'Thank you for subscribing!');
         setEmail('');
       } else {
-        if (data.alreadySubscribed) {
-          toast.info(data.error);
-        } else {
-          toast.error(data.error || 'Failed to subscribe. Please try again.');
-        }
+        toast.error(response.message || 'Failed to subscribe. Please try again.');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Newsletter error:', error);
-      toast.error('Something went wrong. Please try again later.');
+      const errorMessage = error.data?.message || 'Something went wrong. Please try again later.';
+      toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);
     }

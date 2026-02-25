@@ -67,6 +67,17 @@ export const publicService = {
         return apiClient<PageResponse>(`/api/v1/pages/${slug}`);
     },
 
+    async subscribeNewsletter(email: string, full_name?: string): Promise<ApiResponse> {
+        return apiClient<ApiResponse>('/api/v1/newsletter/subscribe', {
+            method: 'POST',
+            body: JSON.stringify({ email, full_name }),
+        });
+    },
+
+    async unsubscribeNewsletter(email: string): Promise<ApiResponse> {
+        return apiClient<ApiResponse>(`/api/v1/newsletter/unsubscribe/${email}`);
+    },
+
     async getFooter(): Promise<any> {
         return apiClient<any>('/api/v1/footer');
     },
