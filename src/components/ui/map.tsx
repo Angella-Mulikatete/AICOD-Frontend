@@ -20,8 +20,8 @@ const icon = L.icon({
 // Actually, a better way in Next.js is to just set the icon manually on the Marker.
 
 export default function Map() {
-    // Coordinates for Hoima/Kikuube region (approximate)
-    const position: [number, number] = [1.43, 31.35];
+    // Coordinates for Kisaru (AICOD)
+    const position: [number, number] = [1.400449, 30.998194];
 
     useEffect(() => {
         // Fix leaflet icon issue
@@ -35,14 +35,14 @@ export default function Map() {
     }, []);
 
     return (
-        <MapContainer center={position} zoom={13} scrollWheelZoom={false} className="h-full w-full rounded-lg z-0">
+        <MapContainer center={position} zoom={15} scrollWheelZoom={false} className="h-full w-full rounded-lg z-0">
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             <Marker position={position}>
                 <Popup>
-                    AICOD Headquarters <br /> Kikuube District
+                    AICOD Headquarters <br /> Kisaru, Hoima
                 </Popup>
             </Marker>
         </MapContainer>
