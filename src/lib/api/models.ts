@@ -219,3 +219,42 @@ export interface SiteSettings {
     site_tagline: string;
     contact_email: string;
 }
+
+// --- CMS Pages ---
+export interface PageSection {
+    id: number;
+    title: string;
+    content: string;
+    section_type: string;
+    background_image: string | null;
+    background_color: string | null;
+    order: number;
+}
+
+export interface PublicPage {
+    id: number;
+    title: string;
+    slug: string;
+    content: string;
+    excerpt: string | null;
+    featured_image: string | null;
+    meta_title: string | null;
+    meta_description: string | null;
+    custom_css: string | null;
+    custom_js: string | null;
+    sections: PageSection[];
+    parent?: {
+        id: number;
+        title: string;
+        slug: string;
+    } | null;
+    children?: {
+        id: number;
+        title: string;
+        slug: string;
+    }[] | null;
+}
+
+export interface PageResponse extends ApiResponse {
+    data: PublicPage;
+}

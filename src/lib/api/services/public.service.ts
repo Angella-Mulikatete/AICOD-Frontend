@@ -1,5 +1,5 @@
 import { apiClient } from '../api-client';
-import { ContentSection, Program, ApiResponse, SiteSettings } from '../models';
+import { ContentSection, Program, ApiResponse, SiteSettings, PageResponse } from '../models';
 
 export const contentService = {
     async getHomepageData(): Promise<any> {
@@ -61,6 +61,10 @@ export const publicService = {
 
     async getProgramBySlug(slug: string): Promise<any> {
         return apiClient<any>(`/api/v1/programs/${slug}`);
+    },
+
+    async getPageBySlug(slug: string): Promise<PageResponse> {
+        return apiClient<PageResponse>(`/api/v1/pages/${slug}`);
     },
 
     async getFooter(): Promise<any> {

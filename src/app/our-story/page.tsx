@@ -4,9 +4,10 @@ import Image from 'next/image';
 import { Target, Eye, Quote, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { contentService } from '@/lib/api/services/public.service';
+import { contentService, publicService } from '@/lib/api/services/public.service';
 import { resolveImageUrl } from '@/lib/utils';
 import { storyContent } from './data';
+import { PublicPage } from '@/lib/api/models';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -15,14 +16,16 @@ const fadeInUp = {
 
 export default function OurStoryPage() {
   const [data, setData] = useState<any>(null);
+  const [pageContent, setPageContent] = useState<PublicPage | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const [heroRes, contentRes] = await Promise.all([
+        const [heroRes, contentRes, pageRes] = await Promise.all([
           contentService.getHeroByPage('our-story').catch(() => ({ data: null })),
-          contentService.getContentSections().catch(() => ({ data: [] }))
+          contentService.getContentSections().catch(() => ({ data: [] })),
+          publicService.getPageBySlug('our-story').catch(() => ({ data: null }))
         ]);
 
         const missionSection = contentRes.data?.find((s: any) => s.section_key === 'mission');
@@ -35,6 +38,10 @@ export default function OurStoryPage() {
           mission: missionSection,
           vision: visionSection
         });
+
+        if (pageRes.data) {
+          setPageContent(pageRes.data);
+        }
       } catch (error) {
         console.error('Failed to fetch story data:', error);
       } finally {
@@ -53,18 +60,25 @@ export default function OurStoryPage() {
   }
 
   const hero = data?.hero || {};
-  const history = data?.history || {
-    title: "Our Story",
-    content: "Building a sustainable future for the Albertine region since 2013."
+
+  // Content Prioritization: 
+  // 1. Page Specific API content (pageContent.content)
+  // 2. Generic Content Sections API (data.history/mission/vision)
+  // 3. Fallback to local static data (storyContent)
+
+  const history = {
+    title: pageContent?.title || data?.history?.title || "Our Story",
+    content: pageContent?.content || data?.history?.content || null
   };
 
-  const mission = data?.mission || {
-    title: "Our Mission",
-    content: "To advocate for the promotion and protection of the rights of disadvantaged communities, thereby safeguarding their livelihoods and environments."
+  const mission = {
+    title: data?.mission?.title || "Our Mission",
+    content: data?.mission?.content || storyContent.mission
   };
-  const vision = data?.vision || {
-    title: "Our Vision",
-    content: "A community with respected rights, improved livelihoods, and a safe, clean environment."
+
+  const vision = {
+    title: data?.vision?.title || "Our Vision",
+    content: data?.vision?.content || storyContent.vision
   };
 
   return (
