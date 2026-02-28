@@ -55,6 +55,10 @@ export const publicService = {
         return apiClient<any>('/api/v1/companies');
     },
 
+    async getCompany(id: number | string): Promise<any> {
+        return apiClient<any>(`/api/v1/companies/${id}`);
+    },
+
     async getPrograms(params?: { per_page?: number; page?: number }): Promise<any> {
         return apiClient<any>('/api/v1/programs', { params });
     },
@@ -88,6 +92,10 @@ export const publicService = {
 
     async getFAQs(): Promise<{ success: boolean; data: any[] }> {
         return apiClient<{ success: boolean; data: any[] }>('/api/v1/faqs');
+    },
+
+    async getMenuByLocation(location: string): Promise<any> {
+        return contentService.getMenuByLocation(location);
     },
 
     async getSettings(): Promise<{ success: boolean; data: SiteSettings }> {

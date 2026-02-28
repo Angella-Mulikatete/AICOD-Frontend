@@ -4,8 +4,8 @@ import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Search, Loader2, Calendar, User, ArrowRight, Video, FileText, ChevronLeft, ChevronRight } from 'lucide-react';
-import { publicService } from '@/lib/api/services/public.service';
-import { NewsItem, PaginatedNews } from '@/lib/api/models';
+import { publicService, contentService } from '@/lib/api/services/public.service';
+import { NewsItem, PaginatedNews, HeroSection, PublicPage } from '@/lib/api/models';
 import { resolveImageUrl } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,6 +13,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { format } from 'date-fns';
 
 function NewsContent() {
+    // ... (rest of the NewsContent component remains the same)
     const searchParams = useSearchParams();
     const router = useRouter();
 
@@ -102,7 +103,7 @@ function NewsContent() {
     }
 
     return (
-        <div className="container mx-auto px-4 py-12 max-w-7xl">
+        <div className="container mx-auto px-4 py-12 max-w-7xl relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
 
                 <main className="lg:col-span-8">
@@ -134,7 +135,7 @@ function NewsContent() {
                                         </span>
                                     </div>
 
-                                    <h1 className="text-4xl font-extrabold text-brand-blue mb-6 leading-tight">
+                                    <h1 className="text-4xl font-extrabold text-brand-blue mb-6 leading-tight font-sans">
                                         {newsDetails.title}
                                     </h1>
 
@@ -283,14 +284,52 @@ function NewsContent() {
 }
 
 export default function NewsPage() {
+    const [hero, setHero] = useState<HeroSection | null>(null);
+    const [page, setPage] = useState<PublicPage | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        async function fetchHeaderData() {
+            try {
+                const [heroRes, pageRes] = await Promise.all([
+                    contentService.getHeroByPage('news').catch(() => ({ success: false, data: null })),
+                    publicService.getPageBySlug('news').catch(() => ({ success: false, data: null }))
+                ]);
+                if (heroRes.success) setHero(heroRes.data);
+                if (pageRes.success) setPage(pageRes.data);
+            } catch (err) {
+                console.error("Header fetch error", err);
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchHeaderData();
+    }, []);
+
     return (
         <div className="bg-white min-h-screen">
-            <header className="bg-brand-blue py-16 text-white text-center">
-                <h1 className="text-4xl md:text-5xl font-bold mb-4">News & Updates</h1>
-                <p className="text-blue-100 max-w-2xl mx-auto px-4">
-                    Stay informed about our latest campaigns, community impacts, and environmental initiatives in the Albertine region.
-                </p>
+            <header className="relative py-24 text-white text-center overflow-hidden">
+                <div className="absolute inset-0 z-0">
+                    <Image
+                        src={resolveImageUrl(hero?.background_image, "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080")}
+                        alt={hero?.title || "News & Updates"}
+                        fill
+                        className="object-cover"
+                        priority
+                    />
+                    <div className="absolute inset-0 bg-brand-blue/70 mix-blend-multiply" />
+                </div>
+
+                <div className="relative z-10 container mx-auto px-4">
+                    <h1 className="text-4xl md:text-5xl font-extrabold mb-4 shadow-sm italic">
+                        {hero?.title || 'News & Updates'}
+                    </h1>
+                    <p className="text-blue-50 max-w-2xl mx-auto px-4 text-lg">
+                        {hero?.subtitle || 'Stay informed about our latest campaigns, community impacts, and environmental initiatives in the Albertine region.'}
+                    </p>
+                </div>
             </header>
+
             <Suspense fallback={<div className="flex items-center justify-center min-h-[60vh]"><Loader2 className="w-12 h-12 animate-spin text-brand-blue" /></div>}>
                 <NewsContent />
             </Suspense>

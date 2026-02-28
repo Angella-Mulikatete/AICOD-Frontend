@@ -1,0 +1,490 @@
+diff --git a/src/app/cause/page.tsx b/src/app/cause/page.tsx
+index 6988fe5..be49f09 100644
+--- a/src/app/cause/page.tsx
++++ b/src/app/cause/page.tsx
+@@ -106,50 +106,66 @@ export default function ImpactPage() {
+   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+   const [activePage, setActivePage] = useState(0);
+   const [stats, setStats] = useState<Statistic[]>([]);
++  const [pageData, setPageData] = useState<any>(null);
++  const [loading, setLoading] = useState(true);
+   const [loadingStats, setLoadingStats] = useState(true);
+ 
+   useEffect(() => {
+-    async function fetchStats() {
++    async function fetchData() {
+       try {
+-        const response = await publicService.getStatistics();
+-        if (response.success) {
+-          setStats(response.data);
+-        }
++        const [statsRes, pageRes] = await Promise.all([
++          publicService.getStatistics(),
++          publicService.getPageBySlug('cause')
++        ]);
++
++        if (statsRes.success) setStats(statsRes.data);
++        if (pageRes.success) setPageData(pageRes.data);
+       } catch (error) {
+-        console.error('Failed to fetch statistics:', error);
++        console.error('Failed to fetch cause page data:', error);
+       } finally {
++        setLoading(false);
+         setLoadingStats(false);
+       }
+     }
+-    fetchStats();
++    fetchData();
+   }, []);
+ 
+-  // Example YouTube URL (Placeholder for now as specific videos weren't provided URLs yet)
++  // Use dynamic sections if available, otherwise fallback to empty
++  const sections = pageData?.sections || [];
++  const currentSection = sections[activePage];
++
++  // Hero background from CMS or fallback
++  const heroImage = pageData?.featured_image || "/assets/images/cause_hero.png";
++
++  // Example YouTube URL
+   const youtubeVideoUrl = 'https://www.youtube.com/watch?v=4oAtw0U3DJw';
+   const embedUrl = getYouTubeEmbedUrl(youtubeVideoUrl);
+ 
+-  const currentCause = causesData[activePage];
++  if (loading && !pageData) {
++    return (
++      <div className="flex justify-center items-center min-h-screen">
++        <Loader2 className="w-12 h-12 animate-spin text-brand-blue" />
++      </div>
++    );
++  }
+ 
+   return (
+     <div className="bg-white min-h-screen font-sans text-foreground">
+ 
+       {/* --- HERO SECTION --- */}
+       <header className="relative py-20 md:py-32 overflow-hidden text-white">
+-        {/* 1. Background Image Layer */}
+         <div className="absolute inset-0 z-0">
+           <Image
+-            src="/assets/images/cause_hero.png"
+-            alt="Impact Background"
++            src={heroImage}
++            alt={pageData?.title || "Our Cause"}
+             fill
+             className="object-cover"
+             priority
+           />
+-          {/* Overlays */}
+           <div className="absolute inset-0 bg-brand-orange/80 mix-blend-multiply" />
+           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+         </div>
+ 
+-        {/* 2. Content Layer */}
+         <div className="container mx-auto px-4 relative z-10 text-center">
+           <motion.div
+             initial="hidden"
+@@ -161,10 +177,10 @@ export default function ImpactPage() {
+               Driving Change
+             </span>
+             <h1 className="font-bold text-4xl md:text-6xl mb-6 shadow-sm drop-shadow-md">
+-              Our <span className="text-white border-b-4 border-brand-blue">Cause</span>
++              {pageData?.title || "Our Cause"}
+             </h1>
+             <p className="text-lg md:text-xl text-orange-50 leading-relaxed drop-shadow-sm">
+-              We define our success not just by numbers, but by the tangible, positive changes we create together with our communities.
++              {pageData?.excerpt || "We define our success not just by numbers, but by the tangible, positive changes we create together with our communities."}
+             </p>
+           </motion.div>
+         </div>
+@@ -217,10 +233,10 @@ export default function ImpactPage() {
+         </div>
+       </section>
+ 
+-      {/* --- MAIN CONTENT (Pagination + Split Layout) --- */}
++      {/* --- MAIN CONTENT (Sections) --- */}
+       <div className="container mx-auto px-4 py-8 md:py-12">
+-        {/* Dynamic Content Area */}
+         <AnimatePresence mode="wait">
++          {sections.length > 0 ? (
+             <motion.div
+               key={activePage}
+               initial={{ opacity: 0, x: 20 }}
+@@ -229,15 +245,13 @@ export default function ImpactPage() {
+               transition={{ duration: 0.4 }}
+               className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start min-h-[500px]"
+             >
+-            {/* LEFT COLUMN: Media (Video + Carousel) */}
+               <div className="w-full flex flex-col gap-8 order-1 lg:sticky lg:top-24">
+-              {/* 1. YouTube Video Container */}
+                 <div className="relative w-full aspect-video rounded-xl md:rounded-2xl overflow-hidden shadow-xl bg-black">
+                   {!isVideoPlaying ? (
+                     <>
+                       <Image
+-                      src="https://images.unsplash.com/photo-1542601906990-24ccd08d7455?q=80&w=2000&auto=format&fit=crop"
+-                      alt="Impact Stories Video"
++                        src={currentSection?.background_image || "https://images.unsplash.com/photo-1542601906990-24ccd08d7455?q=80&w=2000&auto=format&fit=crop"}
++                        alt={currentSection?.title || "Impact Story"}
+                         fill
+                         className="object-cover"
+                       />
+@@ -250,9 +264,6 @@ export default function ImpactPage() {
+                           <Play className="w-8 h-8 md:w-10 md:h-10 text-white ml-1" fill="white" />
+                         </div>
+                       </button>
+-                    <div className="absolute bottom-3 left-3 md:bottom-4 md:left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-white text-xs md:text-sm font-medium border border-white/10 z-10">
+-                      See Impact
+-                    </div>
+                     </>
+                   ) : (
+                     <iframe
+@@ -266,23 +277,15 @@ export default function ImpactPage() {
+                 </div>
+ 
+                 <div className="w-full overflow-hidden rounded-xl md:rounded-2xl shadow-lg border border-gray-100 bg-slate-50 relative h-48 md:h-64">
+-                <div className="absolute left-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-r from-slate-50 to-transparent pointer-events-none" />
+-                <div className="absolute right-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-l from-slate-50 to-transparent pointer-events-none" />
+-
+                   <div className="flex h-full items-center">
+                     <motion.div
+                       className="flex gap-4 pr-4"
+                       animate={{ x: [0, -600] }}
+-                    transition={{ repeat: Infinity, ease: "linear", duration: 15 }} // Reduced duration from 25 to 15 for faster scroll
++                      transition={{ repeat: Infinity, ease: "linear", duration: 15 }}
+                     >
+-                    {[...impactImages, ...impactImages, ...impactImages, ...impactImages].map((img, i) => (
++                      {[...impactImages, ...impactImages].map((img, i) => (
+                         <div key={i} className="relative w-48 h-36 md:w-64 md:h-48 flex-shrink-0 rounded-lg md:rounded-xl overflow-hidden bg-gray-200">
+-                        <Image
+-                          src={img.imageUrl}
+-                          alt={img.description}
+-                          fill
+-                          className="object-cover"
+-                        />
++                          <Image src={img.imageUrl} alt={img.description} fill className="object-cover" />
+                         </div>
+                       ))}
+                     </motion.div>
+@@ -290,36 +293,36 @@ export default function ImpactPage() {
+                 </div>
+               </div>
+ 
+-            {/* RIGHT COLUMN: Text Content */}
+               <div className="w-full order-2">
+                 <div className="flex items-center gap-3 mb-6">
+                   <div className="w-1.5 h-8 md:h-10 bg-brand-orange rounded-full"></div>
+-                <h2 className="text-2xl md:text-3xl font-bold text-brand-blue">{currentCause.title}</h2>
+-              </div>
+-
+-              <div className="space-y-6 text-gray-600 text-lg leading-relaxed text-justify">
+-                {currentCause.content.map((paragraph, idx) => (
+-                  <p key={idx}>{paragraph}</p>
+-                ))}
++                  <h2 className="text-2xl md:text-3xl font-bold text-brand-blue">{currentSection?.title}</h2>
+                 </div>
+ 
+-
++                <div
++                  className="prose prose-lg max-w-none text-gray-600 leading-relaxed text-justify"
++                  dangerouslySetInnerHTML={{ __html: currentSection?.content || '' }}
++                />
+               </div>
+-
+             </motion.div>
++          ) : (
++            <div className="text-center py-20">
++              <p className="text-xl text-gray-500">No impact stories found.</p>
++            </div>
++          )}
+ 
+-          {/* Pagination Controls */}
++          {sections.length > 1 && (
+             <div className="flex justify-center items-center gap-2 flex-wrap p-10">
+               <Button
+                 variant="outline"
+                 size="sm"
+-              onClick={() => setActivePage(prev => Math.max(0, prev - 1))}
++                onClick={() => { setActivePage(prev => Math.max(0, prev - 1)); setIsVideoPlaying(false); }}
+                 disabled={activePage === 0}
+                 className="rounded-full w-10 h-10 p-0"
+               >
+                 <ChevronLeft className="h-4 w-4" />
+               </Button>
+-            {causesData.map((_, idx) => (
++              {sections.map((_, idx) => (
+                 <Button
+                   key={idx}
+                   variant={activePage === idx ? "default" : "outline"}
+@@ -327,7 +330,7 @@ export default function ImpactPage() {
+                     "rounded-full w-10 h-10 p-0 transition-all font-bold",
+                     activePage === idx ? "bg-brand-blue text-white hover:bg-brand-orange" : "text-gray-500 hover:text-brand-orange"
+                   )}
+-                onClick={() => setActivePage(idx)}
++                  onClick={() => { setActivePage(idx); setIsVideoPlaying(false); }}
+                 >
+                   {idx + 1}
+                 </Button>
+@@ -335,13 +338,14 @@ export default function ImpactPage() {
+               <Button
+                 variant="outline"
+                 size="sm"
+-              onClick={() => setActivePage(prev => Math.min(causesData.length - 1, prev + 1))}
+-              disabled={activePage === causesData.length - 1}
++                onClick={() => { setActivePage(prev => Math.min(sections.length - 1, prev + 1)); setIsVideoPlaying(false); }}
++                disabled={activePage === sections.length - 1}
+                 className="rounded-full w-10 h-10 p-0"
+               >
+                 <ChevronRight className="h-4 w-4" />
+               </Button>
+             </div>
++          )}
+         </AnimatePresence>
+       </div>
+     </div>
+diff --git a/src/app/team/page.tsx b/src/app/team/page.tsx
+index 66e5425..9b53ebb 100644
+--- a/src/app/team/page.tsx
++++ b/src/app/team/page.tsx
+@@ -8,8 +8,7 @@ export const metadata: Metadata = {
+ };
+ 
+ export default async function TeamPage() {
+-  const team: any[] = [];
+-  // Team API is currently unsupported/broken, showing placeholder by default
++  const team = await publicService.getTeam().catch(() => []);
+ 
+   return (
+     <div className="animate-enter">
+diff --git a/src/components/(_layout)/header.tsx b/src/components/(_layout)/header.tsx
+index 19ab305..0ff78b9 100644
+--- a/src/components/(_layout)/header.tsx
++++ b/src/components/(_layout)/header.tsx
+@@ -2,19 +2,19 @@
+ 
+ import Link from 'next/link';
+ import Image from 'next/image';
+-import React, { useState } from 'react';
+-import { navLinks } from '@/lib/nav-links';
++import React, { useState, useEffect } from 'react';
+ import { MobileNav } from './mobile-nav';
+ import { Button } from '../ui/button';
+-import { ChevronDown } from 'lucide-react';
++import { ChevronDown, Loader2 } from 'lucide-react';
+ import AICODLogo from "../../../public/assets/images/AICOD logo.jpg";
++import { publicService } from '@/lib/api/services/public.service';
+ 
+ const Dropdown = ({ link }: { link: any }) => {
+   const [isOpen, setIsOpen] = useState(false);
+ 
+   return (
+     <div
+-      className="relative group h-full flex items-center" // Added flex items-center to center nav text vertically
++      className="relative group h-full flex items-center"
+       onMouseEnter={() => setIsOpen(true)}
+       onMouseLeave={() => setIsOpen(false)}
+     >
+@@ -22,22 +22,21 @@ const Dropdown = ({ link }: { link: any }) => {
+         className="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-foreground hover:text-primary transition-colors"
+         type="button"
+       >
+-        {link.title}
++        {link.label}
+         <ChevronDown className={`w-4 h-4 ml-1 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+       </button>
+ 
+-  
+       {isOpen && (
+         <div className="absolute top-full left-0 z-50 pt-2 w-48">
+           <div className="bg-background border border-border rounded-md shadow-lg p-1">
+             <ul className="text-sm font-medium">
+-              {link.subLinks?.map((subLink: any) => (
+-                <li key={subLink.title}>
++              {link.children?.map((subLink: any) => (
++                <li key={subLink.label}>
+                   <Link
+-                    href={subLink.href}
++                    href={subLink.url}
+                     className="block w-full p-2 text-foreground hover:bg-brand-orange hover:text-accent-foreground rounded transition-colors"
+                   >
+-                    {subLink.title}
++                    {subLink.label}
+                   </Link>
+                 </li>
+               ))}
+@@ -50,13 +49,44 @@ const Dropdown = ({ link }: { link: any }) => {
+ };
+ 
+ export function Header() {
++  const [navLinks, setNavLinks] = useState<any[]>([]);
++  const [logoUrl, setLogoUrl] = useState<string | null>(null);
++  const [loading, setLoading] = useState(true);
++
++  useEffect(() => {
++    async function fetchData() {
++      try {
++        const [menuRes, companyRes] = await Promise.all([
++          publicService.getMenuByLocation('header'),
++          publicService.getCompany(1)
++        ]);
++
++        if (menuRes.success) {
++          setNavLinks(menuRes.data);
++        }
++
++        if (companyRes.success && companyRes.data.logo) {
++          // Check if logo is a full URL or relative
++          const logoPath = companyRes.data.logo;
++          const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
++          setLogoUrl(logoPath.startsWith('http') ? logoPath : `${backendUrl}/${logoPath}`);
++        }
++      } catch (error) {
++        console.error('Failed to fetch header data:', error);
++      } finally {
++        setLoading(false);
++      }
++    }
++    fetchData();
++  }, []);
++
+   return (
+     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+       <div className="container mx-auto flex h-24 items-center justify-between px-4">
+ 
+         <Link href="/" className="flex items-center h-full py-2">
+           <Image
+-            src={AICODLogo}
++            src={logoUrl || AICODLogo}
+             alt="AICOD Connect"
+             width={250}
+             height={200}
+@@ -66,28 +96,34 @@ export function Header() {
+         </Link>
+ 
+         <div className="hidden md:flex md:items-center md:gap-2 h-full">
++          {loading ? (
++            <div className="flex items-center px-4">
++              <Loader2 className="w-5 h-5 animate-spin text-brand-blue" />
++            </div>
++          ) : (
+             <nav className="flex items-center gap-1 h-full">
+               {navLinks.map((link) =>
+-              link.subLinks ? (
+-                <Dropdown key={link.title} link={link} />
++                link.children && link.children.length > 0 ? (
++                  <Dropdown key={link.label} link={link} />
+                 ) : (
+                   <Link
+-                  key={link.title}
+-                  href={link.href}
++                    key={link.label}
++                    href={link.url}
+                     className="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-foreground hover:text-primary transition-colors"
+                   >
+-                  {link.title}
++                    {link.label}
+                   </Link>
+                 )
+               )}
+             </nav>
++          )}
+           <Button asChild className="ml-2 bg-brand-orange text-accent-foreground hover:bg-accent/90">
+             <Link href="/donations">Donate Now</Link>
+           </Button>
+         </div>
+ 
+         <div className="md:hidden">
+-          <MobileNav />
++          <MobileNav items={navLinks} />
+         </div>
+       </div>
+     </header>
+diff --git a/src/components/(_layout)/mobile-nav.tsx b/src/components/(_layout)/mobile-nav.tsx
+index b062d0a..7696fac 100644
+--- a/src/components/(_layout)/mobile-nav.tsx
++++ b/src/components/(_layout)/mobile-nav.tsx
+@@ -14,9 +14,11 @@ import {
+   AccordionItem,
+   AccordionTrigger,
+ } from '@/components/ui/accordion';
+-import { navLinks } from '@/lib/nav-links';
++interface MobileNavProps {
++  items: any[];
++}
+ 
+-export function MobileNav() {
++export function MobileNav({ items }: MobileNavProps) {
+   const [isOpen, setIsOpen] = useState(false);
+ 
+   return (
+@@ -43,22 +45,22 @@ export function MobileNav() {
+           </Link>
+           <div className="mt-8 flex flex-col gap-2">
+             <Accordion type="single" collapsible className="w-full">
+-              {navLinks.map((link) =>
+-                link.subLinks ? (
+-                  <AccordionItem value={link.title} key={link.title}>
++              {items.map((link) =>
++                link.children && link.children.length > 0 ? (
++                  <AccordionItem value={link.label} key={link.label}>
+                     <AccordionTrigger className="px-4 text-lg font-semibold hover:no-underline">
+-                      {link.title}
++                      {link.label}
+                     </AccordionTrigger>
+                     <AccordionContent>
+                       <div className="flex flex-col gap-1 pl-8">
+-                        {link.subLinks.map((subLink) => (
++                        {link.children.map((subLink: any) => (
+                           <Link
+-                            key={subLink.title}
+-                            href={subLink.href}
++                            key={subLink.label}
++                            href={subLink.url}
+                             className="block rounded-md p-2 text-base text-muted-foreground hover:bg-brand-orange hover:text-white"
+                             onClick={() => setIsOpen(false)}
+                           >
+-                            {subLink.title}
++                            {subLink.label}
+                           </Link>
+                         ))}
+                       </div>
+@@ -66,12 +68,12 @@ export function MobileNav() {
+                   </AccordionItem>
+                 ) : (
+                   <Link
+-                    key={link.title}
+-                    href={link.href}
++                    key={link.label}
++                    href={link.url}
+                     className="block rounded-md p-4 text-lg font-semibold hover:bg-brand-orange hover:text-white"
+                     onClick={() => setIsOpen(false)}
+                   >
+-                    {link.title}
++                    {link.label}
+                   </Link>
+                 )
+               )}
+diff --git a/src/lib/api/services/public.service.ts b/src/lib/api/services/public.service.ts
+index f921eee..c9d6240 100644
+--- a/src/lib/api/services/public.service.ts
++++ b/src/lib/api/services/public.service.ts
+@@ -55,6 +55,10 @@ export const publicService = {
+         return apiClient<any>('/api/v1/companies');
+     },
+ 
++    async getCompany(id: number | string): Promise<any> {
++        return apiClient<any>(`/api/v1/companies/${id}`);
++    },
++
+     async getPrograms(params?: { per_page?: number; page?: number }): Promise<any> {
+         return apiClient<any>('/api/v1/programs', { params });
+     },
+@@ -90,6 +94,10 @@ export const publicService = {
+         return apiClient<{ success: boolean; data: any[] }>('/api/v1/faqs');
+     },
+ 
++    async getMenuByLocation(location: string): Promise<any> {
++        return contentService.getMenuByLocation(location);
++    },
++
+     async getSettings(): Promise<{ success: boolean; data: SiteSettings }> {
+         return apiClient<{ success: boolean; data: SiteSettings }>('/api/v1/settings');
+     }

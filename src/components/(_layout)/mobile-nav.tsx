@@ -14,9 +14,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { navLinks } from '@/lib/nav-links';
+interface MobileNavProps {
+  items: any[];
+}
 
-export function MobileNav() {
+export function MobileNav({ items }: MobileNavProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -43,22 +45,22 @@ export function MobileNav() {
           </Link>
           <div className="mt-8 flex flex-col gap-2">
             <Accordion type="single" collapsible className="w-full">
-              {navLinks.map((link) =>
-                link.subLinks ? (
-                  <AccordionItem value={link.title} key={link.title}>
+              {items.map((link) =>
+                link.children && link.children.length > 0 ? (
+                  <AccordionItem value={link.label} key={link.label}>
                     <AccordionTrigger className="px-4 text-lg font-semibold hover:no-underline">
-                      {link.title}
+                      {link.label}
                     </AccordionTrigger>
                     <AccordionContent>
                       <div className="flex flex-col gap-1 pl-8">
-                        {link.subLinks.map((subLink) => (
+                        {link.children.map((subLink: any) => (
                           <Link
-                            key={subLink.title}
-                            href={subLink.href}
+                            key={subLink.label}
+                            href={subLink.url}
                             className="block rounded-md p-2 text-base text-muted-foreground hover:bg-brand-orange hover:text-white"
                             onClick={() => setIsOpen(false)}
                           >
-                            {subLink.title}
+                            {subLink.label}
                           </Link>
                         ))}
                       </div>
@@ -66,12 +68,12 @@ export function MobileNav() {
                   </AccordionItem>
                 ) : (
                   <Link
-                    key={link.title}
-                    href={link.href}
+                    key={link.label}
+                    href={link.url}
                     className="block rounded-md p-4 text-lg font-semibold hover:bg-brand-orange hover:text-white"
                     onClick={() => setIsOpen(false)}
                   >
-                    {link.title}
+                    {link.label}
                   </Link>
                 )
               )}

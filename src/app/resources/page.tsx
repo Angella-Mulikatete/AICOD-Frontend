@@ -3,32 +3,40 @@
 import { useState, useEffect } from 'react';
 import { FileText, Download, Calendar, ArrowRight, Loader2, Search, Filter } from 'lucide-react';
 import Image from 'next/image';
-import { publicService } from '@/lib/api/services/public.service';
-import { DocumentItem } from '@/lib/api/models';
+import { publicService, contentService } from '@/lib/api/services/public.service';
+import { DocumentItem, HeroSection, PublicPage } from '@/lib/api/models';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { resolveImageUrl } from '@/lib/utils';
 
 export default function ResourcesPage() {
     const [documents, setDocuments] = useState<DocumentItem[]>([]);
+    const [hero, setHero] = useState<HeroSection | null>(null);
+    const [page, setPage] = useState<PublicPage | null>(null);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedYear, setSelectedYear] = useState<string>('all');
 
     useEffect(() => {
-        async function fetchDocs() {
+        async function fetchData() {
             try {
-                const response = await publicService.getDocuments();
-                if (response.success) {
-                    setDocuments(response.data);
-                }
+                const [docsRes, heroRes, pageRes] = await Promise.all([
+                    publicService.getDocuments().catch(() => ({ success: false, data: [] })),
+                    contentService.getHeroByPage('resources').catch(() => ({ success: false, data: null })),
+                    publicService.getPageBySlug('resources').catch(() => ({ success: false, data: null }))
+                ]);
+
+                if (docsRes.success) setDocuments(docsRes.data);
+                if (heroRes.success) setHero(heroRes.data);
+                if (pageRes.success) setPage(pageRes.data);
             } catch (error) {
-                console.error('Failed to fetch documents:', error);
+                console.error('Failed to fetch resources data:', error);
             } finally {
                 setLoading(false);
             }
         }
-        fetchDocs();
+        fetchData();
     }, []);
 
     const filteredDocs = documents.filter(doc => {
@@ -49,11 +57,22 @@ export default function ResourcesPage() {
 
     return (
         <div className="bg-slate-50 min-h-screen">
-            <header className="bg-brand-green py-20 text-white text-center">
-                <div className="container mx-auto px-4">
-                    <h1 className="text-4xl md:text-5xl font-extrabold mb-4">Resources & Reports</h1>
+            <header className="relative py-24 text-white text-center overflow-hidden">
+                <div className="absolute inset-0 z-0">
+                    <Image
+                        src={resolveImageUrl(hero?.background_image, "https://images.unsplash.com/photo-1544377193-33dcf4d68fb5?q=80&w=2000&auto=format&fit=crop")}
+                        alt={hero?.title || "Resources & Reports"}
+                        fill
+                        className="object-cover"
+                        priority
+                    />
+                    <div className="absolute inset-0 bg-brand-green/80 mix-blend-multiply" />
+                </div>
+
+                <div className="relative z-10 container mx-auto px-4">
+                    <h1 className="text-4xl md:text-5xl font-extrabold mb-4">{hero?.title || 'Resources & Reports'}</h1>
                     <p className="text-green-50 max-w-2xl mx-auto text-lg">
-                        Access our annual reports, research findings, and strategic documents to stay informed about our impact and operations.
+                        {hero?.subtitle || 'Access our annual reports, research findings, and strategic documents to stay informed about our impact and operations.'}
                     </p>
                 </div>
             </header>

@@ -293,3 +293,46 @@ export interface PublicPage {
 export interface PageResponse extends ApiResponse {
     data: PublicPage;
 }
+
+export interface HeroSection {
+    id: number;
+    page: string;
+    title: string;
+    subtitle: string | null;
+    background_image: string | null;
+    background_video: string | null;
+    cta_primary_text: string | null;
+    cta_primary_link: string | null;
+    cta_secondary_text: string | null;
+    cta_secondary_link: string | null;
+    overlay_opacity: number;
+    text_color: string;
+    order: number;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface Company {
+    id: number;
+    name: string;
+    registration_no: string | null;
+    tax_id: string | null;
+    address: string;
+    logo: string | null;
+    slogan: string | null;
+    brand_color: string | null;
+    theme: string | null;
+    contact_email: string;
+    contact_phone: string;
+    website: string | null;
+    facebook: string | null;
+    twitter: string | null;
+    instagram: string | null;
+    linkedin: string | null;
+    google_maps_url: string | null;
+    status: string;
+    created_at: string;
+    updated_at: string;
+    logo_url: string;
+}

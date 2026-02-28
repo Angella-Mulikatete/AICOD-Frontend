@@ -1,10 +1,14 @@
 'use client';
 
 import { ContactForm } from '@/components/contact-form';
-import { Mail, MapPin, Phone, Clock, ArrowRight } from 'lucide-react';
+import { Mail, MapPin, Phone, Clock, ArrowRight, Loader2 } from 'lucide-react';
 import MapWrapper from '@/components/ui/map-wrapper';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { publicService, contentService } from '@/lib/api/services/public.service';
+import { resolveImageUrl } from '@/lib/utils';
+import { PublicPage, HeroSection, Company } from '@/lib/api/models';
 
 // Animation Variants
 const fadeInUp = {
@@ -12,36 +16,62 @@ const fadeInUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
 };
 
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 }
-  }
-};
-
 export default function ContactPage() {
+  const [loading, setLoading] = useState(true);
+  const [company, setCompany] = useState<Company | null>(null);
+  const [hero, setHero] = useState<HeroSection | null>(null);
+  const [page, setPage] = useState<PublicPage | null>(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [compRes, heroRes, pageRes] = await Promise.all([
+          publicService.getCompany(1).catch(() => ({ success: false, data: null })),
+          contentService.getHeroByPage('contact').catch(() => ({ success: false, data: null })),
+          publicService.getPageBySlug('contact').catch(() => ({ success: false, data: null }))
+        ]);
+
+        if (compRes.success) setCompany(compRes.data);
+        if (heroRes.success) setHero(heroRes.data);
+        if (pageRes.success) setPage(pageRes.data);
+      } catch (error) {
+        console.error('Failed to fetch contact data:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="w-12 h-12 animate-spin text-brand-blue" />
+      </div>
+    );
+  }
+
   const contactDetails = [
     {
       icon: MapPin,
       label: "Visit Us",
-      text: "Hoima, Kikube",
+      text: company?.address || "Hoima, Kikube",
       subtext: "Hoima district, Uganda",
-      href: "#"
+      href: company?.google_maps_url || "#"
     },
     {
       icon: Mail,
       label: "Email Us",
-      text: "info@albertinecommunity.org",
+      text: company?.contact_email || "info@albertinecommunity.org",
       subtext: "We reply within 24 hours",
-      href: "mailto:info@albertinecommunity.org"
+      href: `mailto:${company?.contact_email || 'info@albertinecommunity.org'}`
     },
     {
       icon: Phone,
       label: "Call Us",
-      text: "+256 123 456 789",
+      text: company?.contact_phone || "+256 123 456 789",
       subtext: "Mon-Fri from 8am to 5pm",
-      href: "tel:+256123456789"
+      href: `tel:${company?.contact_phone}`
     },
   ];
 
@@ -58,8 +88,8 @@ export default function ContactPage() {
           className="absolute inset-0 z-0"
         >
           <Image
-            src="/assets/images/contact-hero.png"
-            alt="Get in touch with AICOD"
+            src={resolveImageUrl(hero?.background_image, "/assets/images/contact-hero.png")}
+            alt={hero?.title || "Get in touch with AICOD"}
             fill
             className="object-cover"
             priority
@@ -81,10 +111,10 @@ export default function ContactPage() {
               Connect with Us
             </span>
             <h1 className="font-bold text-4xl md:text-6xl text-white drop-shadow-lg mb-6">
-              Get in <span className="text-brand-orange">Touch</span>
+              {hero?.title || 'Get in Touch'}
             </h1>
             <p className="mx-auto max-w-2xl text-lg md:text-xl text-green-50 leading-relaxed">
-              We'd love to hear from you. Whether you have a question, feedback, or want to collaborate, please reach out.
+              {hero?.subtitle || "We'd love to hear from you. Whether you have a question, feedback, or want to collaborate, please reach out."}
             </p>
           </motion.div>
         </div>
@@ -102,11 +132,14 @@ export default function ContactPage() {
           {/* LEFT COLUMN: Contact Form */}
           <div className="flex-1 p-8 md:p-12 lg:p-16">
             <div className="mb-10">
-              <h2 className="text-3xl font-bold text-brand-blue mb-2">Send us a Message</h2>
+              <h2 className="text-3xl font-bold text-brand-blue mb-2">
+                {page?.title || 'Send us a Message'}
+              </h2>
               <div className="h-1.5 w-16 bg-brand-yellow rounded-full mb-4" />
-              <p className="text-gray-600">
-                Fill out the form below and our team will get back to you shortly.
-              </p>
+              <div
+                className="text-gray-600 prose prose-sm max-w-none"
+                dangerouslySetInnerHTML={{ __html: page?.content || 'Fill out the form below and our team will get back to you shortly.' }}
+              />
             </div>
 
             <ContactForm />
@@ -122,8 +155,6 @@ export default function ContactPage() {
                 fill
                 className="object-cover opacity-30"
               />
-              {/* Brand Color Overlay */}
-              {/* <div className="absolute inset-0 bg-brand-blue/60 mix-blend-multiply" /> */}
             </div>
 
             {/* Background Decor */}
@@ -178,7 +209,7 @@ export default function ContactPage() {
 
                 {/* Map Overlay Button */}
                 <a
-                  href="https://maps.google.com"
+                  href={company?.google_maps_url || "https://maps.google.com"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="absolute bottom-4 right-4 bg-white text-brand-blue px-4 py-2 rounded-lg text-sm font-bold shadow-lg flex items-center gap-2 hover:bg-brand-orange hover:text-white transition-colors z-20"

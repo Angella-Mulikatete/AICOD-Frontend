@@ -106,50 +106,66 @@ export default function ImpactPage() {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [activePage, setActivePage] = useState(0);
   const [stats, setStats] = useState<Statistic[]>([]);
+  const [pageData, setPageData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const [loadingStats, setLoadingStats] = useState(true);
 
   useEffect(() => {
-    async function fetchStats() {
+    async function fetchData() {
       try {
-        const response = await publicService.getStatistics();
-        if (response.success) {
-          setStats(response.data);
-        }
+        const [statsRes, pageRes] = await Promise.all([
+          publicService.getStatistics(),
+          publicService.getPageBySlug('cause')
+        ]);
+
+        if (statsRes.success) setStats(statsRes.data);
+        if (pageRes.success) setPageData(pageRes.data);
       } catch (error) {
-        console.error('Failed to fetch statistics:', error);
+        console.error('Failed to fetch cause page data:', error);
       } finally {
+        setLoading(false);
         setLoadingStats(false);
       }
     }
-    fetchStats();
+    fetchData();
   }, []);
 
-  // Example YouTube URL (Placeholder for now as specific videos weren't provided URLs yet)
+  // Use dynamic sections if available, otherwise fallback to empty
+  const sections = pageData?.sections || [];
+  const currentSection = sections[activePage];
+
+  // Hero background from CMS or fallback
+  const heroImage = pageData?.featured_image || "/assets/images/cause_hero.png";
+
+  // Example YouTube URL
   const youtubeVideoUrl = 'https://www.youtube.com/watch?v=4oAtw0U3DJw';
   const embedUrl = getYouTubeEmbedUrl(youtubeVideoUrl);
 
-  const currentCause = causesData[activePage];
+  if (loading && !pageData) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Loader2 className="w-12 h-12 animate-spin text-brand-blue" />
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white min-h-screen font-sans text-foreground">
 
       {/* --- HERO SECTION --- */}
       <header className="relative py-20 md:py-32 overflow-hidden text-white">
-        {/* 1. Background Image Layer */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/assets/images/cause_hero.png"
-            alt="Impact Background"
+            src={heroImage}
+            alt={pageData?.title || "Our Cause"}
             fill
             className="object-cover"
             priority
           />
-          {/* Overlays */}
           <div className="absolute inset-0 bg-brand-orange/80 mix-blend-multiply" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         </div>
 
-        {/* 2. Content Layer */}
         <div className="container mx-auto px-4 relative z-10 text-center">
           <motion.div
             initial="hidden"
@@ -161,10 +177,10 @@ export default function ImpactPage() {
               Driving Change
             </span>
             <h1 className="font-bold text-4xl md:text-6xl mb-6 shadow-sm drop-shadow-md">
-              Our <span className="text-white border-b-4 border-brand-blue">Cause</span>
+              {pageData?.title || "Our Cause"}
             </h1>
             <p className="text-lg md:text-xl text-orange-50 leading-relaxed drop-shadow-sm">
-              We define our success not just by numbers, but by the tangible, positive changes we create together with our communities.
+              {pageData?.excerpt || "We define our success not just by numbers, but by the tangible, positive changes we create together with our communities."}
             </p>
           </motion.div>
         </div>
@@ -217,131 +233,119 @@ export default function ImpactPage() {
         </div>
       </section>
 
-      {/* --- MAIN CONTENT (Pagination + Split Layout) --- */}
+      {/* --- MAIN CONTENT (Sections) --- */}
       <div className="container mx-auto px-4 py-8 md:py-12">
-        {/* Dynamic Content Area */}
         <AnimatePresence mode="wait">
-          <motion.div
-            key={activePage}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.4 }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start min-h-[500px]"
-          >
-            {/* LEFT COLUMN: Media (Video + Carousel) */}
-            <div className="w-full flex flex-col gap-8 order-1 lg:sticky lg:top-24">
-              {/* 1. YouTube Video Container */}
-              <div className="relative w-full aspect-video rounded-xl md:rounded-2xl overflow-hidden shadow-xl bg-black">
-                {!isVideoPlaying ? (
-                  <>
-                    <Image
-                      src="https://images.unsplash.com/photo-1542601906990-24ccd08d7455?q=80&w=2000&auto=format&fit=crop"
-                      alt="Impact Stories Video"
-                      fill
-                      className="object-cover"
+          {sections.length > 0 ? (
+            <motion.div
+              key={activePage}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.4 }}
+              className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start min-h-[500px]"
+            >
+              <div className="w-full flex flex-col gap-8 order-1 lg:sticky lg:top-24">
+                <div className="relative w-full aspect-video rounded-xl md:rounded-2xl overflow-hidden shadow-xl bg-black">
+                  {!isVideoPlaying ? (
+                    <>
+                      <Image
+                        src={currentSection?.background_image || "https://images.unsplash.com/photo-1542601906990-24ccd08d7455?q=80&w=2000&auto=format&fit=crop"}
+                        alt={currentSection?.title || "Impact Story"}
+                        fill
+                        className="object-cover"
+                      />
+                      <button
+                        onClick={() => setIsVideoPlaying(true)}
+                        className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-all duration-300 group z-10"
+                        aria-label="Play video"
+                      >
+                        <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-brand-orange/90 flex items-center justify-center group-hover:scale-110 group-hover:bg-brand-orange transition-all duration-300 shadow-2xl backdrop-blur-sm">
+                          <Play className="w-8 h-8 md:w-10 md:h-10 text-white ml-1" fill="white" />
+                        </div>
+                      </button>
+                    </>
+                  ) : (
+                    <iframe
+                      src={`${embedUrl}?autoplay=1`}
+                      title="Impact Stories"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="absolute inset-0 w-full h-full"
                     />
-                    <button
-                      onClick={() => setIsVideoPlaying(true)}
-                      className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-all duration-300 group z-10"
-                      aria-label="Play video"
+                  )}
+                </div>
+
+                <div className="w-full overflow-hidden rounded-xl md:rounded-2xl shadow-lg border border-gray-100 bg-slate-50 relative h-48 md:h-64">
+                  <div className="flex h-full items-center">
+                    <motion.div
+                      className="flex gap-4 pr-4"
+                      animate={{ x: [0, -600] }}
+                      transition={{ repeat: Infinity, ease: "linear", duration: 15 }}
                     >
-                      <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-brand-orange/90 flex items-center justify-center group-hover:scale-110 group-hover:bg-brand-orange transition-all duration-300 shadow-2xl backdrop-blur-sm">
-                        <Play className="w-8 h-8 md:w-10 md:h-10 text-white ml-1" fill="white" />
-                      </div>
-                    </button>
-                    <div className="absolute bottom-3 left-3 md:bottom-4 md:left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-white text-xs md:text-sm font-medium border border-white/10 z-10">
-                      See Impact
-                    </div>
-                  </>
-                ) : (
-                  <iframe
-                    src={`${embedUrl}?autoplay=1`}
-                    title="Impact Stories"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="absolute inset-0 w-full h-full"
-                  />
-                )}
-              </div>
-
-              <div className="w-full overflow-hidden rounded-xl md:rounded-2xl shadow-lg border border-gray-100 bg-slate-50 relative h-48 md:h-64">
-                <div className="absolute left-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-r from-slate-50 to-transparent pointer-events-none" />
-                <div className="absolute right-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-l from-slate-50 to-transparent pointer-events-none" />
-
-                <div className="flex h-full items-center">
-                  <motion.div
-                    className="flex gap-4 pr-4"
-                    animate={{ x: [0, -600] }}
-                    transition={{ repeat: Infinity, ease: "linear", duration: 15 }} // Reduced duration from 25 to 15 for faster scroll
-                  >
-                    {[...impactImages, ...impactImages, ...impactImages, ...impactImages].map((img, i) => (
-                      <div key={i} className="relative w-48 h-36 md:w-64 md:h-48 flex-shrink-0 rounded-lg md:rounded-xl overflow-hidden bg-gray-200">
-                        <Image
-                          src={img.imageUrl}
-                          alt={img.description}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    ))}
-                  </motion.div>
+                      {[...impactImages, ...impactImages].map((img, i) => (
+                        <div key={i} className="relative w-48 h-36 md:w-64 md:h-48 flex-shrink-0 rounded-lg md:rounded-xl overflow-hidden bg-gray-200">
+                          <Image src={img.imageUrl} alt={img.description} fill className="object-cover" />
+                        </div>
+                      ))}
+                    </motion.div>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* RIGHT COLUMN: Text Content */}
-            <div className="w-full order-2">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-1.5 h-8 md:h-10 bg-brand-orange rounded-full"></div>
-                <h2 className="text-2xl md:text-3xl font-bold text-brand-blue">{currentCause.title}</h2>
+              <div className="w-full order-2">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-1.5 h-8 md:h-10 bg-brand-orange rounded-full"></div>
+                  <h2 className="text-2xl md:text-3xl font-bold text-brand-blue">{currentSection?.title}</h2>
+                </div>
+
+                <div
+                  className="prose prose-lg max-w-none text-gray-600 leading-relaxed text-justify"
+                  dangerouslySetInnerHTML={{ __html: currentSection?.content || '' }}
+                />
               </div>
-
-              <div className="space-y-6 text-gray-600 text-lg leading-relaxed text-justify">
-                {currentCause.content.map((paragraph, idx) => (
-                  <p key={idx}>{paragraph}</p>
-                ))}
-              </div>
-
-
+            </motion.div>
+          ) : (
+            <div className="text-center py-20">
+              <p className="text-xl text-gray-500">No impact stories found.</p>
             </div>
+          )}
 
-          </motion.div>
-
-          {/* Pagination Controls */}
-          <div className="flex justify-center items-center gap-2  flex-wrap p-10">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setActivePage(prev => Math.max(0, prev - 1))}
-              disabled={activePage === 0}
-              className="rounded-full w-10 h-10 p-0"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            {causesData.map((_, idx) => (
+          {sections.length > 1 && (
+            <div className="flex justify-center items-center gap-2 flex-wrap p-10">
               <Button
-                key={idx}
-                variant={activePage === idx ? "default" : "outline"}
-                className={cn(
-                  "rounded-full w-10 h-10 p-0 transition-all font-bold",
-                  activePage === idx ? "bg-brand-blue text-white hover:bg-brand-orange" : "text-gray-500 hover:text-brand-orange"
-                )}
-                onClick={() => setActivePage(idx)}
+                variant="outline"
+                size="sm"
+                onClick={() => { setActivePage(prev => Math.max(0, prev - 1)); setIsVideoPlaying(false); }}
+                disabled={activePage === 0}
+                className="rounded-full w-10 h-10 p-0"
               >
-                {idx + 1}
+                <ChevronLeft className="h-4 w-4" />
               </Button>
-            ))}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setActivePage(prev => Math.min(causesData.length - 1, prev + 1))}
-              disabled={activePage === causesData.length - 1}
-              className="rounded-full w-10 h-10 p-0"
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </div>
+              {sections.map((_, idx) => (
+                <Button
+                  key={idx}
+                  variant={activePage === idx ? "default" : "outline"}
+                  className={cn(
+                    "rounded-full w-10 h-10 p-0 transition-all font-bold",
+                    activePage === idx ? "bg-brand-blue text-white hover:bg-brand-orange" : "text-gray-500 hover:text-brand-orange"
+                  )}
+                  onClick={() => { setActivePage(idx); setIsVideoPlaying(false); }}
+                >
+                  {idx + 1}
+                </Button>
+              ))}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => { setActivePage(prev => Math.min(sections.length - 1, prev + 1)); setIsVideoPlaying(false); }}
+                disabled={activePage === sections.length - 1}
+                className="rounded-full w-10 h-10 p-0"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
         </AnimatePresence>
       </div>
     </div>

@@ -949,8 +949,29 @@ function MapPopup({
 // -------------------------
 
 export default function AICODMap() {
+    const [company, setCompany] = useState<Company | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        async function fetchCompany() {
+            try {
+                const res = await publicService.getCompany(1);
+                if (res.success) setCompany(res.data);
+            } catch (err) {
+                console.error("Map company fetch error", err);
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchCompany();
+    }, []);
+
     // Coordinates for Kisaru (AICOD) - MapLibre uses [lng, lat]
     const center: [number, number] = [30.998194, 1.400449];
+
+    if (loading) {
+        return <div className="h-full w-full flex items-center justify-center bg-slate-50 rounded-lg"><Loader2 className="animate-spin text-brand-blue" /></div>;
+    }
 
     return (
         <Map
@@ -970,11 +991,13 @@ export default function AICODMap() {
                     </div>
                 </MarkerContent>
                 <MarkerPopup closeButton>
-                    <div className="p-1">
-                        <h4 className="font-bold text-brand-blue">AICOD Headquarters</h4>
-                        <p className="text-sm text-gray-600">Kisaru, Hoima</p>
+                    <div className="p-1 min-w-[150px]">
+                        <h4 className="font-bold text-brand-blue">{company?.name || 'AICOD Headquarters'}</h4>
+                        <p className="text-sm text-gray-600">{company?.address || 'Kisaru, Hoima'}</p>
                         <div className="mt-2 h-0.5 w-full bg-brand-yellow/30" />
-                        <p className="mt-1 text-xs text-brand-orange font-medium uppercase tracking-wider">Mission Base</p>
+                        <p className="mt-1 text-xs text-brand-orange font-medium uppercase tracking-wider">
+                            {company?.slogan || 'Mission Base'}
+                        </p>
                     </div>
                 </MarkerPopup>
             </MapMarker>
