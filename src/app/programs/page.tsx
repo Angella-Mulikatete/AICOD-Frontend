@@ -7,8 +7,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
-import { publicService } from '@/lib/api/services/public.service';
+import { publicService, contentService } from '@/lib/api/services/public.service';
 import { Program } from '@/lib/api/models';
+import { resolveImageUrl } from '@/lib/utils';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -24,23 +25,36 @@ const iconMap: Record<string, any> = {
 
 export default function ProgrammesPage() {
   const [programs, setPrograms] = useState<Program[]>([]);
+  const [pageData, setPageData] = useState<any>(null);
+  const [hero, setHero] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchPrograms() {
+    async function fetchData() {
       try {
-        const response = await publicService.getPrograms({ per_page: 15 });
-        if (response.success && Array.isArray(response.data)) {
-          setPrograms(response.data);
+        const [programsRes, pageRes, heroRes] = await Promise.all([
+          publicService.getPrograms({ per_page: 15 }).catch(() => ({ success: false, data: [] })),
+          publicService.getPageBySlug('programs').catch(() => ({ success: false, data: null })),
+          contentService.getHeroByPage('programs').catch(() => ({ data: null }))
+        ]);
+
+        if (programsRes.success && Array.isArray(programsRes.data)) {
+          setPrograms(programsRes.data);
         }
+        if (pageRes.success) {
+          setPageData(pageRes.data);
+        }
+        setHero(heroRes.data);
       } catch (error) {
-        console.error('Failed to fetch programs:', error);
+        console.error('Failed to fetch programs data:', error);
       } finally {
         setLoading(false);
       }
     }
-    fetchPrograms();
+    fetchData();
   }, []);
+
+  const approachSection = pageData?.sections?.find((s: any) => s.section_type === 'approach' || s.title?.toLowerCase().includes('approach'));
 
   if (loading) {
     return (
@@ -52,13 +66,26 @@ export default function ProgrammesPage() {
 
   return (
     <div className="bg-white min-h-screen font-sans">
-      <div className="bg-brand-blue py-12 text-center text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-brand-green/10 mix-blend-multiply" />
-        <h1 className="text-4xl md:text-5xl font-bold relative z-10">Our Programmes</h1>
-        <p className="max-w-xl mx-auto mt-4 text-blue-100 relative z-10">
-          Holistic approaches to sustainable development.
-        </p>
-      </div>
+      <header className="relative py-20 text-white text-center md:py-32 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={resolveImageUrl(hero?.background_image, "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2000&auto=format&fit=crop")}
+            alt="Our Programmes"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-brand-blue/80 mix-blend-multiply" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 drop-shadow-xl">{hero?.title || pageData?.title || "Our Programmes"}</h1>
+          <p className="max-w-2xl mx-auto text-lg md:text-xl text-blue-100 drop-shadow-md">
+            {hero?.subtitle || pageData?.excerpt || "Holistic approaches to sustainable development."}
+          </p>
+        </div>
+      </header>
 
       <div className="container mx-auto px-4 py-12">
         <div className="grid md:grid-cols-2 gap-10 items-start">
@@ -71,11 +98,18 @@ export default function ProgrammesPage() {
             className="space-y-8"
           >
             <div>
-              <h2 className="text-3xl font-bold text-brand-blue mb-4">Our Approach</h2>
+              <h2 className="text-3xl font-bold text-brand-blue mb-4">{approachSection?.title || "Our Approach"}</h2>
               <div className="w-20 h-1.5 bg-brand-orange rounded-full mb-6" />
-              <p className="text-lg text-gray-700 leading-relaxed">
-                At AICOD, our programmes are designed to address the interconnected challenges of environmental degradation, human rights violations, and poverty. We believe in a community-centered approach where local voices drive the agenda for sustainable change.
-              </p>
+              {approachSection?.content ? (
+                <div
+                  className="text-lg text-gray-700 leading-relaxed prose prose-slate max-w-none"
+                  dangerouslySetInnerHTML={{ __html: approachSection.content }}
+                />
+              ) : (
+                <p className="text-lg text-gray-700 leading-relaxed">
+                  At AICOD, our programmes are designed to address the interconnected challenges of environmental degradation, human rights violations, and poverty. We believe in a community-centered approach where local voices drive the agenda for sustainable change.
+                </p>
+              )}
             </div>
 
             <div>
@@ -112,17 +146,29 @@ export default function ProgrammesPage() {
               viewport={{ once: true }}
               className="rounded-2xl overflow-hidden shadow-xl aspect-video relative bg-black"
             >
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="h-full w-full object-cover"
-                poster="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=2072&auto=format&fit=crop"
-              >
-                <source src="/assets/video/aicod.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
+              {hero?.background_video ? (
+                <iframe
+                  className="h-full w-full object-cover"
+                  src={hero.background_video.includes('youtube.com') || hero.background_video.includes('youtu.be')
+                    ? `https://www.youtube.com/embed/${hero.background_video.split('v=')[1] || hero.background_video.split('/').pop()}?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0`
+                    : hero.background_video
+                  }
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                />
+              ) : (
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="h-full w-full object-cover"
+                  poster="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=2072&auto=format&fit=crop"
+                >
+                  <source src="/assets/video/aicod.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              )}
               <div className="absolute bottom-4 left-4 bg-black/50 backdrop-blur-sm px-4 py-2 rounded-lg text-white text-sm font-medium">
                 AICOD in Action
               </div>
@@ -152,9 +198,8 @@ export default function ProgrammesPage() {
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
-  )
+  );
 }

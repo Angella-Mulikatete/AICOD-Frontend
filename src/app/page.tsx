@@ -103,14 +103,26 @@ export default function Home() {
         >
           {hero.background_video ? (
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300%] h-[300%]">
-              <iframe
-                src={`https://www.youtube.com/embed/${hero.background_video.split('v=')[1] || 'P85JijiJl0c'}?autoplay=1&mute=1&loop=1&playlist=${hero.background_video.split('v=')[1] || 'P85JijiJl0c'}&controls=0`}
-                className="w-full h-full object-cover"
-                title="Hero Background Video"
-                allow="autoplay; encrypted-media"
-                allowFullScreen
-                style={{ pointerEvents: 'none' }}
-              />
+              {hero.background_video.includes('youtube.com') || hero.background_video.includes('youtu.be') ? (
+                <iframe
+                  src={`https://www.youtube.com/embed/${hero.background_video.split('v=')[1]?.split('&')[0] || hero.background_video.split('/').pop()}?autoplay=1&mute=1&loop=1&playlist=${hero.background_video.split('v=')[1]?.split('&')[0] || hero.background_video.split('/').pop()}&controls=0&modestbranding=1&rel=0`}
+                  className="w-full h-full object-cover"
+                  title="Hero Background Video"
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                  style={{ pointerEvents: 'none' }}
+                />
+              ) : (
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="w-full h-full object-cover"
+                >
+                  <source src={hero.background_video} type="video/mp4" />
+                </video>
+              )}
             </div>
           ) : (
             <Image
@@ -449,7 +461,7 @@ export default function Home() {
         </div>
       </section>
 
-  
+
 
 
     </div>

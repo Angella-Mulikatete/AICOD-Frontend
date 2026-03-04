@@ -92,5 +92,13 @@ export const publicService = {
 
     async getSettings(): Promise<{ success: boolean; data: SiteSettings }> {
         return apiClient<{ success: boolean; data: SiteSettings }>('/api/v1/settings');
+    },
+
+    async getTeam(): Promise<any> {
+        return apiClient<any>('/api/v1/team');
+    },
+
+    async getPartners(): Promise<any> {
+        return apiClient<any>('/api/v1/partners');
     }
 };

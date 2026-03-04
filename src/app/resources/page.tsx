@@ -3,14 +3,17 @@
 import { useState, useEffect } from 'react';
 import { FileText, Download, Calendar, ArrowRight, Loader2, Search, Filter } from 'lucide-react';
 import Image from 'next/image';
-import { publicService } from '@/lib/api/services/public.service';
+import { publicService, contentService } from '@/lib/api/services/public.service';
 import { DocumentItem } from '@/lib/api/models';
+import { resolveImageUrl } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 
 export default function ResourcesPage() {
     const [documents, setDocuments] = useState<DocumentItem[]>([]);
+    const [hero, setHero] = useState<any>(null);
+    const [pageData, setPageData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedYear, setSelectedYear] = useState<string>('all');
@@ -18,18 +21,29 @@ export default function ResourcesPage() {
     useEffect(() => {
         async function fetchDocs() {
             try {
-                const response = await publicService.getDocuments();
-                if (response.success) {
-                    setDocuments(response.data);
+                const [docsRes, heroRes, pageRes] = await Promise.all([
+                    publicService.getDocuments().catch(() => ({ success: false, data: [] })),
+                    contentService.getHeroByPage('resources').catch(() => ({ data: null })),
+                    publicService.getPageBySlug('resources').catch(() => ({ success: false, data: null }))
+                ]);
+
+                if (docsRes.success) {
+                    setDocuments(docsRes.data);
+                }
+                setHero(heroRes.data);
+                if (pageRes.success) {
+                    setPageData(pageRes.data);
                 }
             } catch (error) {
-                console.error('Failed to fetch documents:', error);
+                console.error('Failed to fetch resources data:', error);
             } finally {
                 setLoading(false);
             }
         }
         fetchDocs();
     }, []);
+
+    const transparencySection = pageData?.sections?.find((s: any) => s.section_type === 'info_box' || s.title?.toLowerCase().includes('transparency'));
 
     const filteredDocs = documents.filter(doc => {
         const matchesSearch = doc.title.toLowerCase().includes(searchQuery.toLowerCase());
@@ -49,18 +63,29 @@ export default function ResourcesPage() {
 
     return (
         <div className="bg-slate-50 min-h-screen">
-            <header className="bg-brand-green py-20 text-white text-center">
-                <div className="container mx-auto px-4">
-                    <h1 className="text-4xl md:text-5xl font-extrabold mb-4">Resources & Reports</h1>
-                    <p className="text-green-50 max-w-2xl mx-auto text-lg">
-                        Access our annual reports, research findings, and strategic documents to stay informed about our impact and operations.
+            <header className="relative py-20 text-white text-center md:py-32 overflow-hidden">
+                <div className="absolute inset-0 z-0">
+                    <Image
+                        src={resolveImageUrl(hero?.background_image, "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?q=80&w=2070&auto=format&fit=crop")}
+                        alt="Resources & Reports"
+                        fill
+                        className="object-cover"
+                        priority
+                    />
+                    <div className="absolute inset-0 bg-brand-green/85 mix-blend-multiply" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                </div>
+
+                <div className="container mx-auto px-4 relative z-10">
+                    <h1 className="text-4xl md:text-6xl font-extrabold mb-6 drop-shadow-xl">{hero?.title || 'Resources & Reports'}</h1>
+                    <p className="text-green-50 max-w-2xl mx-auto text-lg md:text-xl drop-shadow-md">
+                        {hero?.subtitle || 'Access our annual reports, research findings, and strategic documents to stay informed.'}
                     </p>
                 </div>
             </header>
 
             <div className="container mx-auto px-4 py-16 max-w-6xl">
-
-                {/* Filters & Search */}
+                {/* ... existing Search and Filters ... */}
                 <div className="flex flex-col md:flex-row gap-6 mb-12 items-center justify-between">
                     <div className="relative w-full md:w-96">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -139,16 +164,17 @@ export default function ResourcesPage() {
                     </div>
                 )}
 
-                {/* Info Box */}
+                {/* Dynamic Info Box */}
                 <div className="mt-20 p-8 rounded-3xl bg-brand-orange/10 border border-brand-orange/20 flex flex-col md:flex-row items-center gap-8">
                     <div className="w-20 h-20 rounded-2xl bg-brand-orange flex items-center justify-center flex-shrink-0 shadow-lg rotate-3">
                         <Download className="w-10 h-10 text-white" />
                     </div>
                     <div className="flex-1 text-center md:text-left">
-                        <h3 className="text-2xl font-bold text-brand-blue mb-2">Need physical copies?</h3>
-                        <p className="text-slate-600">
-                            Our publications are also available at our main offices. For inquiries regarding specific archival records or data requests, please contact our transparency office.
-                        </p>
+                        <h3 className="text-2xl font-bold text-brand-blue mb-2">{transparencySection?.title || 'Need physical copies?'}</h3>
+                        <div
+                            className="text-slate-600 prose prose-sm max-w-none"
+                            dangerouslySetInnerHTML={{ __html: transparencySection?.content || '<p>Our publications are also available at our main offices. For inquiries regarding specific archival records or data requests, please contact our transparency office.</p>' }}
+                        />
                     </div>
                     <Button asChild className="bg-brand-blue hover:bg-brand-blue/90 text-white rounded-full px-8 py-6 text-lg">
                         <a href="/contact">Contact Our Office</a>

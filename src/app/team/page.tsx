@@ -1,23 +1,65 @@
+'use client';
+
 import Image from 'next/image';
 import { publicService } from '@/lib/api/services/public.service';
 import { resolveImageUrl } from '@/lib/utils';
-import { type Metadata } from 'next';
+import { useState, useEffect } from 'react';
+import { Loader2 } from 'lucide-react';
 
-export const metadata: Metadata = {
-  title: 'Our Team',
-};
+export default function TeamPage() {
+  const [team, setTeam] = useState<any[]>([]);
+  const [hero, setHero] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-export default async function TeamPage() {
-  const team: any[] = [];
-  // Team API is currently unsupported/broken, showing placeholder by default
+  useEffect(() => {
+    async function fetchTeam() {
+      try {
+        const [teamRes, heroRes] = await Promise.all([
+          publicService.getTeam().catch(() => ({ success: false, data: [] })),
+          contentService.getHeroByPage('team').catch(() => ({ data: null }))
+        ]);
+
+        if (teamRes.success) {
+          setTeam(teamRes.data);
+        }
+        setHero(heroRes.data);
+      } catch (error) {
+        console.error('Failed to fetch team:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchTeam();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <Loader2 className="w-12 h-12 animate-spin text-brand-blue" />
+      </div>
+    );
+  }
 
   return (
-    <div className="animate-enter">
-      <header className="bg-brand-blue py-16 text-white md:py-24">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="font-headline text-4xl font-bold md:text-5xl">Our Team</h1>
-          <p className="mt-4 max-w-2xl mx-auto text-lg text-blue-100">
-            Meet the passionate individuals behind AICOD.
+    <div className="animate-enter min-h-screen">
+      <header className="relative py-20 text-white md:py-32 overflow-hidden">
+        {/* Background Layer */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={resolveImageUrl(hero?.background_image, "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop")}
+            alt="Our Team"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-brand-blue/80 mix-blend-multiply" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+        </div>
+
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <h1 className="font-bold text-4xl md:text-6xl drop-shadow-lg">{hero?.title || 'Our Team'}</h1>
+          <p className="mt-6 max-w-2xl mx-auto text-lg md:text-xl text-blue-100 drop-shadow-md">
+            {hero?.subtitle || 'Meet the passionate individuals behind AICOD.'}
           </p>
         </div>
       </header>
@@ -35,9 +77,9 @@ export default async function TeamPage() {
                     className="object-cover"
                   />
                 </div>
-                <h3 className="text-xl font-bold text-brand-blue">{member.name}</h3>
-                <p className="text-brand-orange font-medium">{member.position || 'Team Member'}</p>
-                <p className="text-gray-500 text-sm mt-2 text-center">{member.bio}</p>
+                <h3 className="text-xl font-bold text-brand-blue text-center">{member.name}</h3>
+                <p className="text-brand-orange font-medium text-center">{member.position || 'Team Member'}</p>
+                <p className="text-gray-500 text-sm mt-2 text-center line-clamp-3">{member.bio}</p>
               </div>
             ))}
           </div>

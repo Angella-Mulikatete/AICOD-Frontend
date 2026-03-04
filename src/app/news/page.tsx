@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Search, Loader2, Calendar, User, ArrowRight, Video, FileText, ChevronLeft, ChevronRight } from 'lucide-react';
-import { publicService } from '@/lib/api/services/public.service';
+import { publicService, contentService } from '@/lib/api/services/public.service';
 import { NewsItem, PaginatedNews } from '@/lib/api/models';
 import { resolveImageUrl } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -283,13 +283,41 @@ function NewsContent() {
 }
 
 export default function NewsPage() {
+    const [hero, setHero] = useState<any>(null);
+
+    useEffect(() => {
+        async function fetchHero() {
+            try {
+                const response = await contentService.getHeroByPage('news').catch(() => ({ data: null }));
+                setHero(response.data);
+            } catch (error) {
+                console.error('Failed to fetch news hero:', error);
+            }
+        }
+        fetchHero();
+    }, []);
+
     return (
         <div className="bg-white min-h-screen">
-            <header className="bg-brand-blue py-16 text-white text-center">
-                <h1 className="text-4xl md:text-5xl font-bold mb-4">News & Updates</h1>
-                <p className="text-blue-100 max-w-2xl mx-auto px-4">
-                    Stay informed about our latest campaigns, community impacts, and environmental initiatives in the Albertine region.
-                </p>
+            <header className="relative py-20 text-white text-center md:py-32 overflow-hidden">
+                <div className="absolute inset-0 z-0">
+                    <Image
+                        src={resolveImageUrl(hero?.background_image, "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080")}
+                        alt="News & Updates"
+                        fill
+                        className="object-cover"
+                        priority
+                    />
+                    <div className="absolute inset-0 bg-brand-blue/80 mix-blend-multiply" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                </div>
+
+                <div className="container mx-auto px-4 relative z-10">
+                    <h1 className="text-4xl md:text-6xl font-bold mb-6 drop-shadow-xl">{hero?.title || 'News & Updates'}</h1>
+                    <p className="text-blue-100 max-w-2xl mx-auto text-lg md:text-xl drop-shadow-md">
+                        {hero?.subtitle || 'Stay informed about our latest campaigns, community impacts, and environmental initiatives.'}
+                    </p>
+                </div>
             </header>
             <Suspense fallback={<div className="flex items-center justify-center min-h-[60vh]"><Loader2 className="w-12 h-12 animate-spin text-brand-blue" /></div>}>
                 <NewsContent />

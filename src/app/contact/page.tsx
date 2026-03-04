@@ -5,6 +5,10 @@ import { Mail, MapPin, Phone, Clock, ArrowRight } from 'lucide-react';
 import MapWrapper from '@/components/ui/map-wrapper';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { publicService, contentService } from '@/lib/api/services/public.service';
+import { resolveImageUrl } from '@/lib/utils';
+import { Loader2 } from 'lucide-react';
 
 // Animation Variants
 const fadeInUp = {
@@ -21,27 +25,64 @@ const staggerContainer = {
 };
 
 export default function ContactPage() {
+  const [settings, setSettings] = useState<any>(null);
+  const [company, setCompany] = useState<any>(null);
+  const [hero, setHero] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [settingsRes, companyRes, heroRes] = await Promise.all([
+          publicService.getSettings().catch(() => ({ success: false, data: null })),
+          publicService.getCompanies().catch(() => ({ success: false, data: [] })),
+          contentService.getHeroByPage('contact').catch(() => ({ data: null }))
+        ]);
+        if (settingsRes.success) {
+          setSettings(settingsRes.data);
+        }
+        if (companyRes.success && companyRes.data?.length > 0) {
+          setCompany(companyRes.data[0]);
+        }
+        setHero(heroRes.data);
+      } catch (error) {
+        console.error('Failed to fetch contact data:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[80vh]">
+        <Loader2 className="w-12 h-12 animate-spin text-brand-blue" />
+      </div>
+    );
+  }
+
   const contactDetails = [
     {
       icon: MapPin,
       label: "Visit Us",
-      text: "Hoima, Kikube",
+      text: company?.address || settings?.address || "Hoima, Kikuube",
       subtext: "Hoima district, Uganda",
-      href: "#"
+      href: company?.google_maps_url || "#"
     },
     {
       icon: Mail,
       label: "Email Us",
-      text: "info@albertinecommunity.org",
+      text: company?.contact_email || settings?.email || "info@albertinecommunity.org",
       subtext: "We reply within 24 hours",
-      href: "mailto:info@albertinecommunity.org"
+      href: `mailto:${company?.contact_email || settings?.email || 'info@albertinecommunity.org'}`
     },
     {
       icon: Phone,
       label: "Call Us",
-      text: "+256 123 456 789",
+      text: company?.contact_phone || settings?.phone || "+256 123 456 789",
       subtext: "Mon-Fri from 8am to 5pm",
-      href: "tel:+256123456789"
+      href: `tel:${(company?.contact_phone || settings?.phone || '+256123456789').replace(/\s+/g, '')}`
     },
   ];
 
@@ -58,7 +99,7 @@ export default function ContactPage() {
           className="absolute inset-0 z-0"
         >
           <Image
-            src="/assets/images/contact-hero.png"
+            src={resolveImageUrl(hero?.background_image, "/assets/images/contact-hero.png")}
             alt="Get in touch with AICOD"
             fill
             className="object-cover"
@@ -81,10 +122,10 @@ export default function ContactPage() {
               Connect with Us
             </span>
             <h1 className="font-bold text-4xl md:text-6xl text-white drop-shadow-lg mb-6">
-              Get in <span className="text-brand-orange">Touch</span>
+              {hero?.title || 'Get in Touch'}
             </h1>
             <p className="mx-auto max-w-2xl text-lg md:text-xl text-green-50 leading-relaxed">
-              We'd love to hear from you. Whether you have a question, feedback, or want to collaborate, please reach out.
+              {hero?.subtitle || "We'd love to hear from you. Whether you have a question, feedback, or want to collaborate, please reach out."}
             </p>
           </motion.div>
         </div>
@@ -178,7 +219,7 @@ export default function ContactPage() {
 
                 {/* Map Overlay Button */}
                 <a
-                  href="https://maps.google.com"
+                  href={company?.google_maps_url || "https://maps.google.com"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="absolute bottom-4 right-4 bg-white text-brand-blue px-4 py-2 rounded-lg text-sm font-bold shadow-lg flex items-center gap-2 hover:bg-brand-orange hover:text-white transition-colors z-20"

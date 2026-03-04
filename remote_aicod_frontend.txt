@@ -1,0 +1,2 @@
+﻿origin	https://github.com/Angella-Mulikatete/AICOD-Frontend.git (fetch)
+origin	https://github.com/Angella-Mulikatete/AICOD-Frontend.git (push)

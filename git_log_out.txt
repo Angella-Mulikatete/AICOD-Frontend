@@ -1,0 +1,9 @@
+﻿commit 223833ed9f3bffc51a82ee09454483a781aeaeaf
+Author: Angella Mulikatete <mulikateteangella@gmail.com>
+Date:   Wed Feb 25 16:56:10 2026 +0300
+
+    feat: integrate document API resources and models
+
+ src/lib/api/models.ts                     | 31 +++++++++++++++++++++++
+ src/lib/api/services/documents.service.ts | 42 +++++++++++++++++++++++++++++++
+ 2 files changed, 73 insertions(+)

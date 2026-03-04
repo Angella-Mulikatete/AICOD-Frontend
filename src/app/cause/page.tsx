@@ -7,8 +7,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { publicService } from '@/lib/api/services/public.service';
+import { publicService, contentService } from '@/lib/api/services/public.service';
 import { Statistic } from '@/lib/api/models';
+import { resolveImageUrl } from '@/lib/utils';
 
 // --- Data ---
 const causesData = [
@@ -106,29 +107,66 @@ export default function ImpactPage() {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [activePage, setActivePage] = useState(0);
   const [stats, setStats] = useState<Statistic[]>([]);
-  const [loadingStats, setLoadingStats] = useState(true);
+  const [hero, setHero] = useState<any>(null);
+  const [causes, setCauses] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchStats() {
+    async function fetchData() {
       try {
-        const response = await publicService.getStatistics();
-        if (response.success) {
-          setStats(response.data);
+        const [statsRes, heroRes, pageRes] = await Promise.all([
+          publicService.getStatistics().catch(() => ({ success: false, data: [] })),
+          contentService.getHeroByPage('our-cause').catch(() => ({ data: null })), // The seeder uses 'our-cause' or 'cause'? Let's check seeder.
+          publicService.getPageBySlug('cause').catch(() => ({ success: false, data: null }))
+        ]);
+
+        if (statsRes.success) {
+          setStats(statsRes.data);
+        }
+        setHero(heroRes.data);
+
+        // Normalize causes from PageSections
+        if (pageRes.success && pageRes.data?.sections) {
+          const blocks = pageRes.data.sections
+            .filter((s: any) => s.section_type === 'cause_block')
+            .sort((a: any, b: any) => (a.order || 0) - (b.order || 0))
+            .map((s: any) => ({
+              title: s.title,
+              content: [s.content], // The UI expects an array of strings
+              highlight: s.background_image || s.title
+            }));
+
+          if (blocks.length > 0) {
+            setCauses(blocks);
+          } else {
+            setCauses(causesData); // Fallback
+          }
+        } else {
+          setCauses(causesData); // Fallback
         }
       } catch (error) {
-        console.error('Failed to fetch statistics:', error);
+        console.error('Failed to fetch cause data:', error);
+        setCauses(causesData);
       } finally {
-        setLoadingStats(false);
+        setLoading(false);
       }
     }
-    fetchStats();
+    fetchData();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[80vh]">
+        <Loader2 className="w-12 h-12 animate-spin text-brand-blue" />
+      </div>
+    );
+  }
 
   // Example YouTube URL (Placeholder for now as specific videos weren't provided URLs yet)
   const youtubeVideoUrl = 'https://www.youtube.com/watch?v=4oAtw0U3DJw';
   const embedUrl = getYouTubeEmbedUrl(youtubeVideoUrl);
 
-  const currentCause = causesData[activePage];
+  const currentCause = causes[activePage] || causes[0];
 
   return (
     <div className="bg-white min-h-screen font-sans text-foreground">
@@ -138,7 +176,7 @@ export default function ImpactPage() {
         {/* 1. Background Image Layer */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/assets/images/cause_hero.png"
+            src={resolveImageUrl(hero?.background_image, "/assets/images/cause_hero.png")}
             alt="Impact Background"
             fill
             className="object-cover"
@@ -161,10 +199,10 @@ export default function ImpactPage() {
               Driving Change
             </span>
             <h1 className="font-bold text-4xl md:text-6xl mb-6 shadow-sm drop-shadow-md">
-              Our <span className="text-white border-b-4 border-brand-blue">Cause</span>
+              {hero?.title || 'Our Cause'}
             </h1>
             <p className="text-lg md:text-xl text-orange-50 leading-relaxed drop-shadow-sm">
-              We define our success not just by numbers, but by the tangible, positive changes we create together with our communities.
+              {hero?.subtitle || 'We define our success not just by numbers, but by the tangible, positive changes we create together with our communities.'}
             </p>
           </motion.div>
         </div>
@@ -173,47 +211,41 @@ export default function ImpactPage() {
       {/* --- STATS SECTION --- */}
       <section className="relative -mt-10 mb-8 z-20">
         <div className="container mx-auto px-4">
-          {loadingStats ? (
-            <div className="flex justify-center items-center py-10">
-              <Loader2 className="w-10 h-10 animate-spin text-brand-blue" />
-            </div>
-          ) : (
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-4"
-            >
-              {stats.map((stat) => {
-                const IconComponent = iconMap[stat.icon] || TrendingUp;
-                return (
-                  <motion.div
-                    key={stat.id}
-                    variants={scaleIn}
-                    whileHover={{ y: -5 }}
-                    className="bg-white rounded-xl shadow-xl p-4 text-center border-b-4 border-transparent hover:border-brand-orange transition-all duration-300"
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-4"
+          >
+            {stats.map((stat) => {
+              const IconComponent = iconMap[stat.icon] || TrendingUp;
+              return (
+                <motion.div
+                  key={stat.id}
+                  variants={scaleIn}
+                  whileHover={{ y: -5 }}
+                  className="bg-white rounded-xl shadow-xl p-4 text-center border-b-4 border-transparent hover:border-brand-orange transition-all duration-300"
+                >
+                  <div
+                    className="mx-auto w-10 h-10 mb-3 rounded-full flex items-center justify-center"
+                    style={{ backgroundColor: `${stat.color}10`, color: stat.color }}
                   >
-                    <div
-                      className="mx-auto w-10 h-10 mb-3 rounded-full flex items-center justify-center"
-                      style={{ backgroundColor: `${stat.color}10`, color: stat.color }}
-                    >
-                      <IconComponent className="w-5 h-5" />
-                    </div>
-                    <p
-                      className="text-2xl md:text-3xl font-bold mb-1"
-                      style={{ color: stat.color }}
-                    >
-                      {stat.prefix}{stat.value.toLocaleString()}{stat.suffix}
-                    </p>
-                    <p className="text-xs font-bold uppercase tracking-wider text-gray-500">
-                      {stat.label}
-                    </p>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          )}
+                    <IconComponent className="w-5 h-5" />
+                  </div>
+                  <p
+                    className="text-2xl md:text-3xl font-bold mb-1"
+                    style={{ color: stat.color }}
+                  >
+                    {stat.prefix}{stat.value.toLocaleString()}{stat.suffix}
+                  </p>
+                  <p className="text-xs font-bold uppercase tracking-wider text-gray-500">
+                    {stat.label}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </motion.div>
         </div>
       </section>
 
@@ -298,7 +330,7 @@ export default function ImpactPage() {
               </div>
 
               <div className="space-y-6 text-gray-600 text-lg leading-relaxed text-justify">
-                {currentCause.content.map((paragraph, idx) => (
+                {currentCause.content.map((paragraph: string, idx: number) => (
                   <p key={idx}>{paragraph}</p>
                 ))}
               </div>
@@ -319,7 +351,7 @@ export default function ImpactPage() {
             >
               <ChevronLeft className="h-4 w-4" />
             </Button>
-            {causesData.map((_, idx) => (
+            {causes.map((_, idx) => (
               <Button
                 key={idx}
                 variant={activePage === idx ? "default" : "outline"}
@@ -335,8 +367,8 @@ export default function ImpactPage() {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setActivePage(prev => Math.min(causesData.length - 1, prev + 1))}
-              disabled={activePage === causesData.length - 1}
+              onClick={() => setActivePage(prev => Math.min(causes.length - 1, prev + 1))}
+              disabled={activePage === causes.length - 1}
               className="rounded-full w-10 h-10 p-0"
             >
               <ChevronRight className="h-4 w-4" />

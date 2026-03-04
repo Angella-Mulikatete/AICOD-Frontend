@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { publicService } from '@/lib/api/services/public.service';
+import { publicService, contentService } from '@/lib/api/services/public.service';
 import { Card, CardContent } from '@/components/ui/card';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
@@ -11,12 +11,16 @@ import { Building2, Loader2 } from 'lucide-react';
 
 export default function PartnersPage() {
   const [partners, setPartners] = useState<any[]>([]);
+  const [hero, setHero] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchPartners() {
       try {
-        const response = await publicService.getCompanies().catch(() => ({ data: [] }));
+        const [response, heroRes] = await Promise.all([
+          publicService.getPartners().catch(() => ({ data: [] })),
+          contentService.getHeroByPage('partners').catch(() => ({ data: null }))
+        ]);
 
         // Defensive normalization of partners data
         let partnersData = [];
@@ -24,10 +28,11 @@ export default function PartnersPage() {
           partnersData = response;
         } else if (response?.data && Array.isArray(response.data)) {
           partnersData = response.data;
-        } else if (response?.data?.companies && Array.isArray(response.data.companies)) {
-          partnersData = response.data.companies;
+        } else if (response?.data?.partners && Array.isArray(response.data.partners)) {
+          partnersData = response.data.partners;
         }
         setPartners(partnersData);
+        setHero(heroRes.data);
       } catch (error) {
         console.error('Failed to fetch partners:', error);
       } finally {
@@ -47,11 +52,23 @@ export default function PartnersPage() {
 
   return (
     <div className="animate-enter overflow-hidden">
-      <header className="bg-accent py-16 text-accent-foreground md:py-24">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="font-headline text-4xl font-bold md:text-5xl">Our Partners</h1>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-accent-foreground/80">
-            Collaboration is key to our success. We are proud to work with a diverse group of organizations who share our vision.
+      <header className="relative py-20 text-white md:py-32 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={resolveImageUrl(hero?.background_image, "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop")}
+            alt="Our Partners"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-brand-blue/80 mix-blend-multiply" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+        </div>
+
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <h1 className="font-bold text-4xl md:text-6xl drop-shadow-lg">{hero?.title || 'Our Partners'}</h1>
+          <p className="mx-auto mt-6 max-w-2xl text-lg md:text-xl text-blue-100 drop-shadow-md">
+            {hero?.subtitle || 'Collaboration is key to our success. We are proud to work with a diverse group of organizations who share our vision.'}
           </p>
         </div>
       </header>
